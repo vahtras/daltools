@@ -4,7 +4,7 @@ Utility routines to generate density matrices
 """
 #import numpy.oldnumeric as Numeric
 import math
-from dalton import one,sirifc
+from daltools import one,sirifc
 from util import full,blocked
 def h1diag(nisht,nasht):
    """Generate density from diagonalized one-electron Hamiltonian"""
