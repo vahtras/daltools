@@ -2,7 +2,6 @@
 import numpy
 from util import unformatted,blocked,full
 
-
 class sirifc(unformatted.fortranbinary):
    """Read data from dalton interface file"""
    ifclabel = "SIR IPH "
@@ -131,109 +130,108 @@ class sirifc(unformatted.fortranbinary):
       return 
    def get_cmo(self):
       if self._cmo is None:
-	 #print  "in get_cmo"
-	 self.file=open(self.name,'rb')
-	 self.find(self.ifclabel)
-	 for i in range(3): self.readrec()
-	 self.file.close()
-	 ncmot4=max(self.ncmot,4)
-	 dbl=self.readbuf(ncmot4,'d')
-	 n=0
-	 self._cmo=blocked.matrix(self.nbas,self.norb)
-	 for isym in range(8):
-	    for mo in range(self.norb[isym]):
-	       for ao in range(self.nbas[isym]):
-		  self._cmo.subblock[isym][ao,mo]=dbl[n]
-		  n+=1
-	 assert(n == self.ncmot)
+         #print  "in get_cmo"
+         self.file=open(self.name,'rb')
+         self.find(self.ifclabel)
+         for i in range(3): self.readrec()
+         self.file.close()
+         ncmot4=max(self.ncmot,4)
+         dbl=self.readbuf(ncmot4,'d')
+         n=0
+         self._cmo=blocked.matrix(self.nbas,self.norb)
+         for isym in range(8):
+            for mo in range(self.norb[isym]):
+               for ao in range(self.nbas[isym]):
+                  self._cmo.subblock[isym][ao,mo]=dbl[n]
+                  n+=1
+         assert(n == self.ncmot)
       return self._cmo
 
    def get_dv(self):
       if self._dv is None:
-	 self.file=open(self.name,'rb')
-	 self.find(self.ifclabel)
-	 for i in range(5): 
-	    self.readrec()
-	 mmashx=max(self.nnashx,4)
-	 dbl=self.readbuf(mmashx,'d')
-	 self._dv=full.triangular((self.nasht,self.nasht))
-	 for i in range(self.nnashx):self._dv[i,0]=dbl[i]
+         self.file=open(self.name,'rb')
+         self.find(self.ifclabel)
+         for i in range(5): 
+            self.readrec()
+         mmashx=max(self.nnashx,4)
+         dbl=self.readbuf(self.nnashx,'d')
+         self._dv=full.triangular.init(dbl)
       return self._dv
 
    def get_pv(self):
       print "in get_pv"
       if self._pv is None:
-	 self.file=open(self.name,'rb')
-	 self.find(self.ifclabel)
-	 for i in range(7): self.readrec()
-	 self.file.close()
-	 m2ashy=max(self.nnashx**2,4)
-	 dbl=self.readbuf(m2ashy,'d')
-	 self._pv=full.matrix((self.nnashx,self.nnashx))
-	 n=0
-	 for i in range(self.nnashx):
-	    for j in range(self.nnashx):
-	       self._pv[j,i]=dbl[n]
-	       n+=1
-	 assert(n == self.nnashx**2)
+         self.file=open(self.name,'rb')
+         self.find(self.ifclabel)
+         for i in range(7): self.readrec()
+         self.file.close()
+         m2ashy=max(self.nnashx**2,4)
+         dbl=self.readbuf(m2ashy,'d')
+         self._pv=full.matrix((self.nnashx,self.nnashx))
+         n=0
+         for i in range(self.nnashx):
+            for j in range(self.nnashx):
+               self._pv[j,i]=dbl[n]
+               n+=1
+         assert(n == self.nnashx**2)
       return self._pv
 
    def get_fock(self):
       if self._fock is None:
-	 self.file=open(self.name,'rb')
-	 self.find(self.ifclabel)
-	 for i in range(6): self.readrec()
-	 self.file.close()
-	 m2orbt=max(self.n2orbt,4)
-	 dbl=self.readbuf(m2orbt,'d')
-	 self._fock=blocked.matrix(self.norb,self.norb)
-	 n=0
-	 for isym in range(8):
-	    for i in range(self.norb[isym]):
-	       for j in range(self.norb[isym]):
-		  self._fock.subblock[isym][j,i] = dbl[n]
-		  n+=1
-	 assert (n == self.n2orbt)
+         self.file=open(self.name,'rb')
+         self.find(self.ifclabel)
+         for i in range(6): self.readrec()
+         self.file.close()
+         m2orbt=max(self.n2orbt,4)
+         dbl=self.readbuf(m2orbt,'d')
+         self._fock=blocked.matrix(self.norb,self.norb)
+         n=0
+         for isym in range(8):
+            for i in range(self.norb[isym]):
+               for j in range(self.norb[isym]):
+                  self._fock.subblock[isym][j,i] = dbl[n]
+                  n+=1
+         assert (n == self.n2orbt)
       return self._fock
    def get_fc(self):
       if self._fc is None:
-	 self.file=open(self.name,'rb')
-	 self.find(self.ifclabel)
-	 for i in range(8): self.readrec()
-	 mmorbt=max(self.nnorbt,4)
-	 dbl=self.readbuf(mmorbt,'d')
-	 self._fc=blocked.triangular(self.norb)
-	 #print self.fc
-	 n=0
-	 #print "self.norb",self.norb
-	 for isym in range(8):
-	    ij=0
-	    for i in range(self.norb[isym]):
-	       for j in range(i+1):
-		  self._fc.subblock[isym][i,j]=dbl[ij]
-		  ij+=1
-	    n+=ij
-	 assert (n == self.nnorbt)
+         self.file=open(self.name,'rb')
+         self.find(self.ifclabel)
+         for i in range(8): self.readrec()
+         mmorbt=max(self.nnorbt,4)
+         dbl=self.readbuf(mmorbt,'d')
+         self._fc=blocked.triangular(self.norb)
+         #print self.fc
+         n=0
+         #print "self.norb",self.norb
+         for isym in range(8):
+            ij=0
+            for i in range(self.norb[isym]):
+               for j in range(i+1):
+                  self._fc.subblock[isym][i,j]=dbl[ij]
+                  ij+=1
+            n+=ij
+         assert (n == self.nnorbt)
       return self._fc
    def get_fv(self):
       if self._fv is None:
-	 self.file=open(self.name,'rb')
-	 self.find(self.ifclabel)
-	 for i in range(9): self.readrec()
-	 mmorbt=max(self.nnorbt,4)
-	 dbl=self.readbuf(mmorbt,'d')
-	 self._fv=blocked.triangular(self.norb)
-	 #print self.fc
-	 n=0
-	 #print "self.norb",self.norb
-	 for isym in range(8):
-	    ij=0
-	    for i in range(self.norb[isym]):
-	       for j in range(i+1):
-		  self._fv.subblock[isym][i,j]=dbl[ij]
-		  ij+=1
-	    n+=ij
-	 assert (n == self.nnorbt)
+         self.file=open(self.name,'rb')
+         self.find(self.ifclabel)
+         for i in range(9): self.readrec()
+         mmorbt=max(self.nnorbt,4)
+         dbl=self.readbuf(mmorbt,'d')
+         self._fv=blocked.triangular(self.norb)
+         #print self.fc
+         n=0
+         #print "self.norb",self.norb
+         for isym in range(8):
+            ij=0
+            for i in range(self.norb[isym]):
+               for j in range(i+1):
+                  self._fv.subblock[isym][i,j]=dbl[ij]
+                  ij+=1
+            n+=ij
+         assert (n == self.nnorbt)
       return self._fv
    dv = property(fget=get_dv)
    pv = property(fget=get_pv)
@@ -302,9 +300,10 @@ class sirifc(unformatted.fortranbinary):
 if __name__ == "__main__":
     import sys
     try:
-	filename = sys.argv[1]
-	print sirifc(name = filename)
-    except IndexError:
-	print "Usage: %s [path]/SIRIFC"%sys.argv[0]
-	sys.exit(1)
-	
+        filename = sys.argv[1]
+        ifc = sirifc(name=filename)
+        print ifc
+    except(IndexError):
+        print "Usage: %s [path]/SIRIFC"%sys.argv[0]
+        sys.exit(1)
+        
