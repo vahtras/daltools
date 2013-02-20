@@ -2,11 +2,11 @@
 import numpy
 from util import unformatted,blocked,full
 
-class sirifc(unformatted.fortranbinary):
+class sirifc(unformatted.FortranBinary):
    """Read data from dalton interface file"""
    ifclabel = "SIR IPH "
    def __init__(self,name="SIRIFC"):
-      unformatted.fortranbinary.__init__(self,name)
+      unformatted.FortranBinary.__init__(self,name)
       self.getdata()
       self.close()
       self._cmo=None

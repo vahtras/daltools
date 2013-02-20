@@ -5,7 +5,7 @@ def read(property,propfile="RSPVEC",timing=False):
    from util import full,unformatted
    if timing:
       t0=time.clock()
-   rspvec=unformatted.fortranbinary(propfile)
+   rspvec=unformatted.FortranBinary(propfile)
    rspvec.find(property)
    rspvec.readrec()
    kzyvar = rspvec.reclen / 8

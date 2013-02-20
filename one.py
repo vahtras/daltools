@@ -2,7 +2,7 @@
 import struct,sys,numpy
 from util import unformatted
 def readhead(file="AOONEINT"):
-   aooneint=unformatted.fortranbinary(file)
+   aooneint=unformatted.FortranBinary(file)
    aooneint.readrec()
    if len(aooneint.data) == 144:
       #
@@ -37,7 +37,7 @@ def readhead(file="AOONEINT"):
    return unlabeled
 
 def readisordk(file="AOONEINT"):
-   aooneint=unformatted.fortranbinary(file)
+   aooneint=unformatted.FortranBinary(file)
    table1=aooneint.find("ISORDK")
    aooneint.readrec() #dummy
    aooneint.readrec()
@@ -57,7 +57,7 @@ def readisordk(file="AOONEINT"):
    return isordk
 
 def readscfinp(file="AOONEINT"):
-   aooneint=unformatted.fortranbinary(file)
+   aooneint=unformatted.FortranBinary(file)
    table2=aooneint.find("SCFINP")
    #print table2
    scfinp={}
@@ -113,7 +113,7 @@ def read(label="OVERLAP",filename="AOONEINT"):
    #
    # Open file, locate label
    #
-   aooneint=unformatted.fortranbinary(filename)
+   aooneint=unformatted.FortranBinary(filename)
    labinfo=aooneint.find(label)
    #
    # Loop over records

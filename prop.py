@@ -3,7 +3,7 @@ def read(n, prop="OVERLAP", propfile="AOPROPER"):
     import numpy
     from daltools import one
     from util import unformatted, full
-    ufile = unformatted.fortranbinary(propfile)
+    ufile = unformatted.FortranBinary(propfile)
     ufile.find(prop)
     line = ufile.data
     stars, data, symtype, label = (

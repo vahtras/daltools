@@ -159,7 +159,7 @@ def tomat(N,ifc,tmpdir='/tmp'):
 
 def jwop(luindf="LUINDF"):
    from util import unformatted
-   luindf=unformatted.fortranbinary(luindf)
+   luindf=unformatted.FortranBinary(luindf)
    import one
    table=luindf.find("EXOPSYM1")
    #print "table",table
