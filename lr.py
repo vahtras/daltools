@@ -34,7 +34,7 @@ def Dk(label, ifc=None, tmpdir='/tmp'):
     #
     # Vector to matrix
     #
-    kB = oli.tomat(NB, ifc, tmpdir=tmpdir).T
+    kB = rspvec.tomat(NB, ifc, tmpdir=tmpdir).T
     cmo = ifc.cmo.unblock()
     t_kb = timing("kB")
     kb = cmo*kB*cmo.T
