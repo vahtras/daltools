@@ -1,10 +1,13 @@
+import os
 import numpy as np
 from daltools import prop, sirifc
 
 def setup():
     global propfile, nbast
-    propfile = 'test/data/AOPROPER'
-    ifcfile = 'test/data/SIRIFC'
+    n, e = os.path.splitext(__file__)
+    tmpdir = n + ".d"
+    propfile = os.path.join(tmpdir, 'AOPROPER')
+    ifcfile = os.path.join(tmpdir, 'SIRIFC')
     nbast = sirifc.sirifc(ifcfile).nbast
 
 def teardown():

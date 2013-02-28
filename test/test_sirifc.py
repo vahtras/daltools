@@ -1,9 +1,13 @@
+import os
 import numpy as np
 from daltools import sirifc
 
 def setup():
+    global tmpdir
+    n, e = os.path.splitext(__file__)
+    tmpdir = n + ".d"
     global ifc
-    ifc = sirifc.sirifc('test/data/SIRIFC')
+    ifc = sirifc.sirifc(os.path.join(tmpdir, 'SIRIFC'))
 
 def teardown():
     global ifc

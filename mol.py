@@ -199,11 +199,8 @@ def nuc(molecule):
 
 def dist(A, B):
     """distance beteen two atoms"""
-    import math
-    d = 0
-    for i in range(3):
-        d += (A[i]-B[i])*(A[i]-B[i])
-    return math.sqrt(d)
+    from math import sqrt
+    return sqrt((A[0]-B[0])**2 + (A[1]-B[1])**2 + (A[2]-B[2])**2)
 
 if __name__ == "__main__":
     #mo=readin("MOLECULE.INP")
@@ -227,9 +224,9 @@ if __name__ == "__main__":
     if 2:
         header("occupied_per_atom")
         print occupied_per_atom(mo)
-    if 0:
+    if 1:
         header("nuc")
         print nuc(mo)
-    if 0:
+    if 1:
         header("dist")
         print dist(mo[0]["center"][0], mo[1]["center"][0])
