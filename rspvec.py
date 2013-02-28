@@ -73,11 +73,10 @@ def jwop(luindf="LUINDF"):
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 3:
         print "Usage: %s ncdim property file" % sys.argv[0]
         sys.exit(1)
-    kzyvar = int(sys.argv[1])
-    prop = sys.argv[2]
-    filename = sys.argv[3]
+    prop = sys.argv[1]
+    filename = sys.argv[2]
     rvec = read(prop, filename, timing=True)
     print rvec
