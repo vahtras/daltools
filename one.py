@@ -114,8 +114,8 @@ def read(label="OVERLAP", filename="AOONEINT"):
     nsym = unlabeled["nsym"]
     nbas = unlabeled["naos"]
     nnbast = 0
-    for isym in range(nsym):
-        nnbast += nbas[isym]*(nbas[isym]+1)/2
+    for nbasi in nbas:
+        nnbast += nbasi*(nbasi+1)/2
     s = full.matrix((nnbast,))
     #
     # Open file, locate label
@@ -132,27 +132,20 @@ def read(label="OVERLAP", filename="AOONEINT"):
             ibuf = aooneint.readbuf(lbuf,'i')
             length = aooneint.readbuf(1,'i')[0]
             if length < 0: raise Exception("EOD")
-            for i in range(length):
-                ind = ibuf[i]-1
-                s[ind] = buf[i]
+            for i, b in zip(ibuf[:length], buf[:length]):
+                s[i-1] = b
         except Exception, inst:
             if inst[0] == "EOD":
                 break
             else:
                 raise
-    S = blocked.triangular(nbas)
+    _S = blocked.triangular(nbas)
     off = 0
     for isym in range(nsym):
-        if 1:
-            nbasi = nbas[isym]*(nbas[isym]+1)/2
-            S.subblock[isym] = np.array(s[off:off+nbasi]).view(full.triangular)
-        else:
-            for i in range(nbas[isym]):
-                for j in range(i+1):
-                    S.subblock[isym][i, j] = s[off]
-                    off += 1
+        nbasi = nbas[isym]*(nbas[isym]+1)/2
+        _S.subblock[isym] = np.array(s[off:off+nbasi]).view(full.triangular)
     #aooneint.close()
-    return S
+    return _S
 
 
 if __name__ == "__main__":
@@ -185,10 +178,9 @@ if __name__ == "__main__":
     if gethead: 
         t = timing('head')
         head = readhead()
-        if head:
-            print "Header on AOONEINT"
-            for i in head.keys():
-                print i, head[i]
+        print "Header on AOONEINT"
+        for k in head:
+            print k, head[k]
         print t
 
     if getisordk:
@@ -200,18 +192,15 @@ if __name__ == "__main__":
         cooo = isordk["cooo"]
         mxcent = len(chrn)
         print "nucdep=%i" % n, "mxcent=%i" % mxcent
-        for i in range(n):
-            print "Z[%i]=%g" % (i, chrn[i]), \
-                "r[%i]=(%g, %g, %g)" % (
-                    i, cooo[i], cooo[i+mxcent], cooo[i+mxcent*2]
-                    )
+        print full.init(chrn)[:n]
+        print full.init(cooo).reshape((3, mxcent))[:, :n]
         print t
 
     if getscfinp:
         t = timing('scfinp')
         scfinp = readscfinp()
-        for i in scfinp.keys():
-            print i, scfinp[i]
+        for k in scfinp:
+            print k, scfinp[k]
         print t
 
     for lab in arg:
