@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Module for reading data fro property integral file AOPROPER"""
+import math
 import numpy as np
 
 def read(prop="OVERLAP", propfile="AOPROPER"):
@@ -25,7 +26,7 @@ def read(prop="OVERLAP", propfile="AOPROPER"):
     return mat
 
 if __name__ == "__main__":
-    import os, sys, sirifc, getopt
+    import os, sys, getopt
     from util.timing import timing
     t_all = timing("main")
     unpack = False
@@ -42,15 +43,13 @@ if __name__ == "__main__":
                 verbose = True
             if o in ('-t','--tmpdir'):
                 tmpdir = v
-        label = arg[0]
+        proplabel = arg[0]
     except IndexError:
         print "Usage: %s property" % sys.argv[0]
         sys.exit(1)
     t_read = timing("prop.read")
-    propfile = os.path.join(tmpdir, 'AOPROPER')
-    ifcfile = os.path.join(tmpdir, 'SIRIFC')
-    n = sirifc.sirifc(name=ifcfile).nbast
-    propint = read(n, prop=label, propfile=propfile)
+    aoproper = os.path.join(tmpdir, 'AOPROPER')
+    propint = read(prop=proplabel, propfile=aoproper)
     print t_read
     if unpack:
         t_unpack = timing("unpack")
