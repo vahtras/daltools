@@ -8,7 +8,7 @@ def read(property_label, propfile="RSPVEC", timing=False):
         t0 = time.clock()
     rspvec = unformatted.FortranBinary(propfile)
     rspvec.find(property_label)
-    rspvec.readrec()
+    rspvec.next()
     kzyvar = rspvec.reclen / 8
     buffer_ = rspvec.readbuf(kzyvar,'d')
     mat = numpy.array(buffer_).view(full.matrix)
@@ -53,7 +53,7 @@ def jwop(luindf="LUINDF"):
     import one
     table = luindf.find("EXOPSYM1")
     #print "table",table
-    luindf.readrec()
+    luindf.next()
     ints = luindf.readbuf(8,'i')
     nwopt = ints[0]
     nwoph = ints[1]
@@ -62,7 +62,7 @@ def jwop(luindf="LUINDF"):
     #print "sirset",nwopt,nwoph,jwopsy,nklwop
     kzy = 2*nwopt
     #print "kzy",kzy
-    luindf.readrec()
+    luindf.next()
     ints = luindf.readbuf(kzy,'i')
     wop = []
     for i in range(0, kzy, 2):

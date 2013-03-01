@@ -13,7 +13,7 @@ def read(prop="OVERLAP", propfile="AOPROPER"):
     stars, data, symtype, label = (
           line[:8], line[8:16], line[16:24], line[24:32]
           )
-    ufile.readrec()
+    ufile.next()
     matsize = ufile.reclen / 8
     buffer_ = ufile.readbuf(matsize, 'd')
     if symtype == "SQUARE  ":

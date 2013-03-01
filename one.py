@@ -8,7 +8,7 @@ from util import unformatted, full, blocked
 def readhead(filename="AOONEINT"):
     """Read data in header of AOONEINT"""
     aooneint = unformatted.FortranBinary(filename)
-    aooneint.readrec()
+    aooneint.next()
     if len(aooneint.data) == 144:
         #
         # Newer versions: title in own record
@@ -17,7 +17,7 @@ def readhead(filename="AOONEINT"):
         #
         # Next record contains MAXREP...
         #
-        aooneint.readrec()
+        aooneint.next()
     else:
         #
         # Older versions: title ans MAXREP in same record
@@ -45,8 +45,8 @@ def readisordk(filename="AOONEINT"):
     """Read data under label ISORDK in AOONEINT"""
     aooneint = unformatted.FortranBinary(filename)
     table1 = aooneint.find("ISORDK")
-    aooneint.readrec() #dummy
-    aooneint.readrec()
+    aooneint.next() #dummy
+    aooneint.next()
     sizeofi = struct.calcsize('i')
     sizeofd = struct.calcsize('d')
     mxcent_ = (len(aooneint.data)-sizeofi)/(4*sizeofd)
@@ -69,10 +69,10 @@ def readscfinp(filename="AOONEINT"):
     #print table2
     scfinp_ = {}
     scfinp_["table"] = table2
-    aooneint.readrec()
+    aooneint.next()
     if len(aooneint.data) == 144:
         title = aooneint.data
-        aooneint.readrec()
+        aooneint.next()
     else:
         title = aooneint.readbuf(192,'c')
     scfinp_["ttitle"] = title
@@ -127,7 +127,7 @@ def read(label="OVERLAP", filename="AOONEINT"):
     #
     while True:
         try:
-            aooneint.readrec()
+            aooneint.next()
             buf = aooneint.readbuf(lbuf,'d')
             ibuf = aooneint.readbuf(lbuf,'i')
             length = aooneint.readbuf(1,'i')[0]

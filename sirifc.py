@@ -18,11 +18,11 @@ class sirifc(unformatted.FortranBinary):
    def getdata(self):
       self.find(sirifc.ifclabel)
 
-      self.readrec()
+      self.next()
       self.potnuc, self.emy, self.eactive, self.emcscf = self.readbuf(4,'d')
       self.istate, self.ispin, self.nactel, self.lsym  = self.readbuf(4,'i')
 
-      self.readrec()
+      self.next()
       self.nisht, self.nasht, self.nocct, self.norbt, self.nbast, \
       self.nconf, self.nwopt, self.nwoph, self.ncdets, self.ncmot, \
       self.nnashx, self.nnashy, self.nnorbt, self.n2orbt, self.nsym, \
@@ -50,7 +50,7 @@ class sirifc(unformatted.FortranBinary):
 
       return
 
-      self.readrec()
+      self.next()
       ncmot4=max(self.ncmot,4)
       #print "ncmot4 len",ncmot4,len(self.data)
       dbl=self.readbuf(ncmot4,'d')
@@ -64,7 +64,7 @@ class sirifc(unformatted.FortranBinary):
                n+=1
       assert(n == self.ncmot)
 
-      self.readrec()
+      self.next()
       mmashx=max(self.nnashx,4)
       #print "mmashx len",mmashx,len(self.data)
       dbl=self.readbuf(mmashx,'d')
@@ -72,8 +72,8 @@ class sirifc(unformatted.FortranBinary):
       self.dv=full.triangular((self.nasht,self.nasht))
       for i in range(self.nnashx):self.dv[i,0]=dbl[i]
 
-      self.readrec()
-      self.readrec()
+      self.next()
+      self.next()
       m2orbt=max(self.n2orbt,4)
       #print "m2orbt,len",m2orbt,len(self.data)
       dbl=self.readbuf(m2orbt,'d')
@@ -87,7 +87,7 @@ class sirifc(unformatted.FortranBinary):
                n+=1
       assert (n == self.n2orbt)
 
-      self.readrec()
+      self.next()
       m2ashy=max(self.nnashx**2,4)
       dbl=self.readbuf(m2ashy,'d')
       self.pv=full.matrix((self.nnashx,self.nnashx))
@@ -98,7 +98,7 @@ class sirifc(unformatted.FortranBinary):
             n+=1
       assert(n == self.nnashx**2)
 
-      self.readrec()
+      self.next()
       mmorbt=max(self.nnorbt,4)
       dbl=self.readbuf(mmorbt,'d')
       self.fc=blocked.triangular(self.norb)
@@ -112,7 +112,7 @@ class sirifc(unformatted.FortranBinary):
          n+=ij
       assert (n == self.nnorbt)
 
-      self.readrec()
+      self.next()
       mmorbt=max(self.nnorbt,4)
       dbl=self.readbuf(mmorbt,'d')
       self.fv=blocked.triangular(self.norb)
@@ -133,7 +133,7 @@ class sirifc(unformatted.FortranBinary):
          #print  "in get_cmo"
          self.file=open(self.name,'rb')
          self.find(self.ifclabel)
-         for i in range(3): self.readrec()
+         for i in range(3): self.next()
          self.file.close()
          ncmot4=max(self.ncmot,4)
          dbl=self.readbuf(ncmot4,'d')
@@ -152,7 +152,7 @@ class sirifc(unformatted.FortranBinary):
          self.file=open(self.name,'rb')
          self.find(self.ifclabel)
          for i in range(5): 
-            self.readrec()
+            self.next()
          mmashx=max(self.nnashx,4)
          dbl=self.readbuf(self.nnashx,'d')
          self._dv=full.triangular.init(dbl)
@@ -163,7 +163,7 @@ class sirifc(unformatted.FortranBinary):
       if self._pv is None:
          self.file=open(self.name,'rb')
          self.find(self.ifclabel)
-         for i in range(7): self.readrec()
+         for i in range(7): self.next()
          self.file.close()
          m2ashy=max(self.nnashx**2,4)
          dbl=self.readbuf(m2ashy,'d')
@@ -180,7 +180,7 @@ class sirifc(unformatted.FortranBinary):
       if self._fock is None:
          self.file=open(self.name,'rb')
          self.find(self.ifclabel)
-         for i in range(6): self.readrec()
+         for i in range(6): self.next()
          self.file.close()
          m2orbt=max(self.n2orbt,4)
          dbl=self.readbuf(m2orbt,'d')
@@ -197,7 +197,7 @@ class sirifc(unformatted.FortranBinary):
       if self._fc is None:
          self.file=open(self.name,'rb')
          self.find(self.ifclabel)
-         for i in range(8): self.readrec()
+         for i in range(8): self.next()
          mmorbt=max(self.nnorbt,4)
          dbl=self.readbuf(mmorbt,'d')
          self._fc=blocked.triangular(self.norb)
@@ -217,7 +217,7 @@ class sirifc(unformatted.FortranBinary):
       if self._fv is None:
          self.file=open(self.name,'rb')
          self.find(self.ifclabel)
-         for i in range(9): self.readrec()
+         for i in range(9): self.next()
          mmorbt=max(self.nnorbt,4)
          dbl=self.readbuf(mmorbt,'d')
          self._fv=blocked.triangular(self.norb)
