@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """Module for reading data fro property integral file AOPROPER"""
+import numpy as np
 
-def read(n, prop="OVERLAP", propfile="AOPROPER"):
+def read(prop="OVERLAP", propfile="AOPROPER"):
     """Read property integral"""
-    import numpy
     from daltools import one
     from util import unformatted, full
     ufile = unformatted.FortranBinary(propfile)
@@ -13,17 +13,14 @@ def read(n, prop="OVERLAP", propfile="AOPROPER"):
           line[:8], line[8:16], line[16:24], line[24:32]
           )
     ufile.readrec()
-    shape = (n, n)
+    matsize = ufile.reclen / 8
+    buffer_ = ufile.readbuf(matsize, 'd')
     if symtype == "SQUARE  ":
-        square = 1
-        matsize = n*n
-        buffer_ = ufile.readbuf(matsize, 'd')
-        mat = full.matrix(shape)
+        n = int(round(math.sqrt(matsize)))
+        assert n*n == matsize
+        mat = full.init(buffer_).reshape((n, n))
     else:
-        square = 0
-        matsize = n*(n+1)/2
-        buffer_ = ufile.readbuf(matsize, 'd')
-        mat = numpy.array(buffer_).view(full.triangular)
+        mat = np.array(buffer_).view(full.triangular)
         mat.anti = (symtype == "ANTISYMM")
     return mat
 
