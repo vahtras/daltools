@@ -125,20 +125,15 @@ def read(label="OVERLAP", filename="AOONEINT"):
     #
     # Loop over records
     #
-    while True:
-        try:
-            aooneint.next()
-            buf = aooneint.readbuf(lbuf,'d')
-            ibuf = aooneint.readbuf(lbuf,'i')
-            length = aooneint.readbuf(1,'i')[0]
-            if length < 0: raise Exception("EOD")
-            for i, b in zip(ibuf[:length], buf[:length]):
-                s[i-1] = b
-        except Exception, inst:
-            if inst[0] == "EOD":
-                break
-            else:
-                raise
+
+    for rec in aooneint:
+       buf = rec.read(lbuf, 'd')
+       ibuf = rec.read(lbuf, 'i')
+       length, = rec.read(1, 'i')
+       if length < 0: break
+       for i, b in zip(ibuf[:length], buf[:length]):
+           s[i-1] = b
+
     _S = blocked.triangular(nbas)
     off = 0
     for isym in range(nsym):
