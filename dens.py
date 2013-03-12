@@ -6,36 +6,45 @@ from math import sqrt
 from daltools import one, sirifc
 from util import full, blocked
 
-def h1diag(nisht, nasht):
+def h1diag(nisht, nasht, filename='AOONEINT'):
     """Generate density from diagonalized one-electron Hamiltonian"""
-    h1 = one.read('ONEHAMIL', 'AOONEINT').unpack().unblock()
-    return fdiag(h1, nisht, nasht)
+    h1 = one.read('ONEHAMIL', filename).unpack().unblock()
+    S = one.read('OVERLAP', filename).unpack().unblock()
+    return fdiag(h1, S, nisht, nasht)
 
-def fdiag(F, nisht, nasht):
+def fdiag(F, S, nisht, nasht):
     """Generate density from diagonalizing input Fock matrix"""
-    C = cmo(F)
+    C = cmo(F, S)
     return C2D(C, nisht, nasht)
 
-def cmo(F, S=None, filename='AOONEINT'):
+def cmo(F, S, filename='AOONEINT'):
     """Return MO coefficients from diagonalization of a provided Fock matrix F,
     an optional overlap matrix S. The returned MOs are normalized and ordered 
     with respect to eigenvalue"""
     nbast = F.shape[0]
-    if S is not None:
-        e, V = (F/S).eigvec()
-    else:
-        e, V = (F).eigvec()
-        S = one.read('OVERLAP', filename).unpack().unblock()
+    e, V = (F/S).eigvec()
     C = full.matrix((nbast, nbast))
     N2 = (V.T*S*V).diagonal()
     for i in range(nbast):
         Ni = 1.0 / sqrt(N2[i])
         C[:, i] = V[:, i]*Ni
+        # Set the phase such that the largest component is positive
+        Cmx = 0.
+        rephase = False
+        for j in range(nbast):
+            if abs(C[j, i]) > Cmx:
+                Cmx = abs(C[j, i])
+                rephase = (C[j, i] < 0)
+        if rephase:
+            C[:, i] *= -1
+                
     #
     # Finish off with Gram Schmidt because degenerate orbitals are not
     # properly orthonormalized
     #
     C = C.GS(S)
+    #
+    #
     return C
 
 def C2D(C, nisht, nasht):
@@ -46,6 +55,15 @@ def C2D(C, nisht, nasht):
     Di = 2*Ci*Ci.T
     Da = Ca*Ca.T
     return Di, Da
+
+def C2Dab(C, na, nb):
+    """Given orbitals and occupancy inactive/active 
+    return inactive/active densities"""
+    Ca = C[:, :na]
+    Cb = C[:, :nb]
+    Da = Ca*Ca.T
+    Db = Cb*Cb.T
+    return Da, Db
 
 def C1D(C, n):
     """Given orbitals C and number of occupied n return density C*C.T"""
