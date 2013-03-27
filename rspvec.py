@@ -34,6 +34,19 @@ def tomat(N, ifc, tmpdir='/tmp'):
         ij += 1
     return new
 
+def tovec(mat, ifc, tmpdir='/tmp'):
+    """Vector to matrix"""
+    import os
+    from util import full
+    lwop = ifc.nisht*ifc.nasht + ifc.nocct*(ifc.norbt-ifc.nocct)
+    N = full.matrix((2*lwop,))
+    ij = 0
+    for i, j in  jwop(ifc):
+        N[ij] = new[i, j]
+        N[ij+lwop] = new[j, i]
+        ij += 1
+    return new
+
 def jwop(ifc):
     """Generate  orbital excitation list"""
     for i in range(ifc.nisht):
@@ -42,6 +55,7 @@ def jwop(ifc):
     for i in range(ifc.nisht, ifc.nocct):
         for j in range(ifc.nocct, ifc.norbt):
             yield (i, j)
+
 
 if __name__ == "__main__":
     import sys
