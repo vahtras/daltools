@@ -27,5 +27,11 @@ def test_tomat():
     ref = 0.75732690
     assert_(this, ref)
 
+def test_jwop():
+    LUINDF = os.path.join(tmpdir, 'LUINDF')
+    this = rspvec.jwop(LUINDF)
+    ref = [ (i, j) for i in range(1, 9) for j in range(9,13)]
+    assert_(this, ref)
+
 if __name__ == "__main__":
     setup()

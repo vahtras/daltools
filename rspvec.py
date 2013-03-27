@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 """Module for reading response vector data from RSPVEC"""
+
+import numpy as np
+
 def read(property_label, propfile="RSPVEC", timing=False):
     """Read response vector given property"""
     import time, numpy
@@ -52,24 +55,16 @@ def jwop(luindf="LUINDF"):
     luindf = unformatted.FortranBinary(luindf)
     import one
     table = luindf.find("EXOPSYM1")
-    #print "table",table
-    luindf.next()
-    ints = luindf.readbuf(8,'i')
-    nwopt = ints[0]
-    nwoph = ints[1]
-    jwopsy = ints[2]
-    nklwop = ints[3]
-    #print "sirset",nwopt,nwoph,jwopsy,nklwop
+    rec = luindf.next()
+    nwopt, = rec.read(1, 'i')
     kzy = 2*nwopt
-    #print "kzy",kzy
-    luindf.next()
-    ints = luindf.readbuf(kzy,'i')
+    rec = luindf.next()
+    ints = rec.read(2*nwopt,'i')
     wop = []
     for i in range(0, kzy, 2):
         wop.append((ints[i], ints[i+1]))
     return wop
-       
-    #return ints
+      
 
 if __name__ == "__main__":
     import sys
