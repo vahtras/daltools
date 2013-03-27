@@ -28,6 +28,14 @@ def test_tomat():
     ref = 0.75732690
     assert_(this, ref)
 
+def test_tovec():
+    Nx = rspvec.read("XDIPLEN", RSPVEC)
+    kx = rspvec.tomat(Nx, ifc, tmpdir=tmpdir)
+    Nx = rspvec.tovec(kx, ifc, tmpdir=tmpdir)
+    this = Nx[44]
+    ref = 0.75732690
+    assert_(this, ref)
+
 def test_jwop():
     LUINDF = os.path.join(tmpdir, 'LUINDF')
     this = list(rspvec.jwop(ifc))

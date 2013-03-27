@@ -42,10 +42,10 @@ def tovec(mat, ifc, tmpdir='/tmp'):
     N = full.matrix((2*lwop,))
     ij = 0
     for i, j in  jwop(ifc):
-        N[ij] = new[i, j]
-        N[ij+lwop] = new[j, i]
+        N[ij] = mat[i, j]
+        N[ij+lwop] = mat[j, i]
         ij += 1
-    return new
+    return N
 
 def jwop(ifc):
     """Generate  orbital excitation list"""
