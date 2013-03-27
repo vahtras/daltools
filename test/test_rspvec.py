@@ -11,7 +11,8 @@ def setup():
     ifc = sirifc.sirifc(name=SIRIFC)
 
 def assert_(this, ref):
-    print this, ref
+    print this
+    print ref
     assert np.allclose(this, ref)
 
 def test_read():
@@ -23,14 +24,14 @@ def test_read():
 def test_tomat():
     Nx = rspvec.read("XDIPLEN", RSPVEC)
     kx = rspvec.tomat(Nx, ifc, tmpdir=tmpdir)
-    this = kx[8,3]
+    this = kx[8, 3]
     ref = 0.75732690
     assert_(this, ref)
 
 def test_jwop():
     LUINDF = os.path.join(tmpdir, 'LUINDF')
-    this = rspvec.jwop(LUINDF)
-    ref = [ (i, j) for i in range(1, 9) for j in range(9,13)]
+    this = list(rspvec.jwop(ifc))
+    ref = [ (i, j) for i in range(8) for j in range(8, 12)]
     assert_(this, ref)
 
 if __name__ == "__main__":
