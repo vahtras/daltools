@@ -20,51 +20,28 @@ def read(property_label, propfile="RSPVEC", timing=False):
         print "Time used in rspvec.read: %g" % (t1-t0)
     return mat
 
-def tovec(k, luindf="LUINDF"):
-    """Matrix to vector """
-    from util import full
-    wop = jwop(luindf=luindf)
-    lwop = len(wop)
-    kzyvar = 2*lwop
-    new = full.matrix((kzyvar,))
-    for j in range(lwop):
-        r = wop[j][0]-1
-        s = wop[j][1]-1
-        new[j] = k[r, s]
-        new[j+lwop] = k[s, r]
-    return new
-
 def tomat(N, ifc, tmpdir='/tmp'):
     """Vector to matrix"""
     import os
     from util import full
     norbt = ifc.norbt
     new = full.matrix((norbt, norbt))
-    wop = jwop(luindf=os.path.join(tmpdir, "LUINDF"))
-    lwop = len(wop)
-    for j in range(lwop):
-        r = wop[j][0]-1
-        s = wop[j][1]-1
-        new[r, s] = N[j]
-        new[s, r] = N[j+lwop]
+    lwop = len(N)/2
+    ij = 0
+    for i, j in jwop(ifc):
+        new[i, j] = N[ij]
+        new[j, i] = N[ij+lwop]
+        ij += 1
     return new
 
-def jwop(luindf="LUINDF"):
-    """Get orbital excitation list from LUINDF"""
-    from util import unformatted
-    luindf = unformatted.FortranBinary(luindf)
-    import one
-    table = luindf.find("EXOPSYM1")
-    rec = luindf.next()
-    nwopt, = rec.read(1, 'i')
-    kzy = 2*nwopt
-    rec = luindf.next()
-    ints = rec.read(2*nwopt,'i')
-    wop = []
-    for i in range(0, kzy, 2):
-        wop.append((ints[i], ints[i+1]))
-    return wop
-      
+def jwop(ifc):
+    """Generate  orbital excitation list"""
+    for i in range(ifc.nisht):
+        for j in range(ifc.nisht, ifc.norbt):
+            yield (i, j)
+    for i in range(ifc.nisht, ifc.nocct):
+        for j in range(ifc.nocct, ifc.norbt):
+            yield (i, j)
 
 if __name__ == "__main__":
     import sys
