@@ -9,7 +9,7 @@ def LR(A, B, tmpdir='/tmp'):
     ifcfile = os.path.join(tmpdir, 'SIRIFC')
     propfile = os.path.join(tmpdir, 'AOPROPER')
     ifc = sirifc.sirifc(ifcfile)
-    a = prop.read(A, propfile).unpack()
+    a, = prop.read(A, filename=propfile, unpack=True)
     dkb =  Dk(B, ifc, tmpdir)
     return a&dkb
 

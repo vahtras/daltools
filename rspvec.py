@@ -3,21 +3,16 @@
 
 import numpy as np
 
-def read(property_label, propfile="RSPVEC", timing=False):
+def read(property_label, propfile="RSPVEC"):
     """Read response vector given property"""
     import time, numpy
     from util import full, unformatted
-    if timing:
-        t0 = time.clock()
     rspvec = unformatted.FortranBinary(propfile)
     rspvec.find(property_label)
     rspvec.next()
     kzyvar = rspvec.reclen / 8
     buffer_ = rspvec.readbuf(kzyvar,'d')
     mat = numpy.array(buffer_).view(full.matrix)
-    if timing:
-        t1 = time.clock()
-        print "Time used in rspvec.read: %g" % (t1-t0)
     return mat
 
 def tomat(N, ifc, tmpdir='/tmp'):
@@ -64,5 +59,5 @@ if __name__ == "__main__":
         sys.exit(1)
     prop = sys.argv[1]
     filename = sys.argv[2]
-    rvec = read(prop, filename, timing=True)
+    rvec = read(prop, filename)
     print rvec

@@ -33,4 +33,4 @@ def test_ZZ():
 
 if __name__ == "__main__":
     setup()
-    test_XY()
+    test_XX()
