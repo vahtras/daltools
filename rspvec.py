@@ -45,9 +45,12 @@ def tovec(mat, ifc, tmpdir='/tmp'):
 def jwop(ifc):
     """Generate  orbital excitation list"""
     for i in range(ifc.nisht):
-        for j in range(ifc.nisht, ifc.norbt):
+        for j in range(ifc.nisht, ifc.nocct):
             yield (i, j)
-    for i in range(ifc.nisht, ifc.nocct):
+    for i in range(ifc.nisht):
+        for j in range(ifc.nocct, ifc.norbt):
+            yield (i, j)
+    for i in range(ifc.nisht,ifc.nocct):
         for j in range(ifc.nocct, ifc.norbt):
             yield (i, j)
 

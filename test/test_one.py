@@ -50,4 +50,3 @@ def test_overlap():
 
 if __name__ == "__main__":
     setup()
-    test_overlap()

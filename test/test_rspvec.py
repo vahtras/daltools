@@ -37,7 +37,6 @@ def test_tovec():
     assert_(this, ref)
 
 def test_jwop():
-    LUINDF = os.path.join(tmpdir, 'LUINDF')
     this = list(rspvec.jwop(ifc))
     ref = [ (i, j) for i in range(8) for j in range(8, 12)]
     assert_(this, ref)
