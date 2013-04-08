@@ -1,14 +1,19 @@
 #!/usr/bin/env python
 """Module for reading data fro property integral file AOPROPER"""
+import os
 import math
 import numpy as np
+from util import unformatted, full
+from daltools import one, sirifc, dens, rspvec
 
 def read(*args, **kwargs):
     """Read property integral"""
-    from daltools import one
-    from util import unformatted, full
-    propfile = kwargs.get("filename", "AOPROPER")
-    unpack = kwargs.get("unpack", False)
+    propfile = kwargs.get("filename")
+    if not propfile:
+        tmpdir = kwargs.get('tmpdir', '/tmp')
+        propfile = os.path.join(tmpdir, 'AOPROPER')
+
+    unpack = kwargs.get("unpack", True)
     AOPROPER = unformatted.FortranBinary(propfile)
     mat = {}
     for rec in AOPROPER:
@@ -20,7 +25,7 @@ def read(*args, **kwargs):
         symtype = "".join(buf[16:24])
         label = "".join(buf[24:32]).strip()
         if stars == "********":
-            print label, label in args
+            pass #print label, label in args
         if label.strip() in args:
             rec = next(AOPROPER)
             buffer_ = rec.read(rec.reclen/8, 'd')
@@ -36,8 +41,32 @@ def read(*args, **kwargs):
     else:
         return tuple([mat[lab] for lab in args])
 
+def grad(*args, **kwargs):
+    print args, kwargs
+    tmpdir = kwargs.get('tmpdir', '/tmp')
+
+    propmat = read(*args, **kwargs)
+
+    AOONEINT = os.path.join(tmpdir, 'AOONEINT')
+    S = one.read(label='OVERLAP', filename=AOONEINT).unpack().unblock()
+
+    SIRIFC  = os.path.join(tmpdir, 'SIRIFC')
+    ifc = sirifc.sirifc(SIRIFC)
+    Da, Db = dens.Dab(ifc_=ifc)
+    cmo = ifc.cmo.unblock()
+    cmoS = cmo*S
+        
+    G = (rspvec.tovec(
+         cmo.T*(S*Da*P.T - P.T*Da*S)*cmo
+       + cmo.T*(S*Db*P.T - P.T*Db*S)*cmo,
+        ifc
+        )
+      for P in propmat)
+
+    return tuple(G)
+
 if __name__ == "__main__":
-    import os, sys, getopt
+    import sys, getopt
     from util.timing import timing
     t_all = timing("main")
     unpack = False
