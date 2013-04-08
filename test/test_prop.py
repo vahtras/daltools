@@ -18,17 +18,17 @@ def assert_(this, ref):
     assert np.allclose(this, ref)
 
 def test_xdiplen():
-    x, = prop.read('XDIPLEN', filename=propfile)
+    x, = prop.read('XDIPLEN', filename=propfile, unpack=False)
     xref = [0, 0, 0, 0.62318216, 2.00000000, 0.00000000]
     assert_(x, xref)
 
 def test_ydiplen():
-    y, = prop.read('YDIPLEN', filename=propfile)
+    y, = prop.read('YDIPLEN', filename=propfile, unpack=False)
     yref = [-0.22490589, 0.42047202, 2.63189861, 0.00000000, 0.00000000, 0.96659568]
     assert_(y, yref)
 
 def test_zdiplen():
-    z, = prop.read('ZDIPLEN', filename=propfile)
+    z, = prop.read('ZDIPLEN', filename=propfile, unpack=False)
     zref = [0, 0, 0, 0, 0, 0]
     assert_(z, zref)
 
