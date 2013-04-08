@@ -97,5 +97,11 @@ def ifc(filename='SIRIFC', ifc_=None):
         Dv = full.matrix((ifc_.nbast, ifc_.nbast))
     return Di, Dv
 
+def Dab(*args, **kwargs):
+    Di, Dv = ifc(*args, **kwargs)
+    Db = 0.5*Di 
+    Da = Db + Dv
+    return (Da, Db)
+
 if __name__ == "__main__":
     pass
