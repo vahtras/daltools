@@ -166,7 +166,7 @@ def occupied_per_atom(molecule):
             if Z <= 1:
                 if l == 0:
                     nocclist[a].append(offset)
-            elif Z <= 3:
+            elif Z <= 2:
                 if l == 0:
                     nocclist[a].append(offset)
                     nocclist[a].append(offset+1)
@@ -178,6 +178,18 @@ def occupied_per_atom(molecule):
                     nocclist[a].append(offset)
                     nocclist[a].append(offset+1)
                     nocclist[a].append(offset+2)
+            elif Z <= 18:
+                if l == 0:
+                    nocclist[a].append(offset)
+                    nocclist[a].append(offset+1)
+                    nocclist[a].append(offset+2)
+                elif l == 1:
+                    nocclist[a].append(offset)
+                    nocclist[a].append(offset+1)
+                    nocclist[a].append(offset+2)
+                    nocclist[a].append(offset+3)
+                    nocclist[a].append(offset+4)
+                    nocclist[a].append(offset+5)
             else:
                 raise Exception( "occupied_per_atom:not implemented")
             offset += cpal[a][l]
