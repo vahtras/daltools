@@ -144,43 +144,32 @@ def read(label="OVERLAP", filename="AOONEINT"):
 
 
 if __name__ == "__main__":
-    import getopt
+    import argparse
     from util.timing import timing
-    gethead = False
-    getisordk = False
-    getscfinp = False
-    verbose = False
-    unpack = False
-    try:
-        opt, arg = getopt.getopt(
-            sys.argv[1:],'hisvu',['head','isordk','scfinp','verbose','unpack']
-            )
-        for o, v in opt:
-            if o in ('-h','--head'):
-                gethead = True
-            if o in ('-i','--isordk'):
-                getisordk = True
-            if o in ('-s','--scfinp'):
-                getscfinp = True
-            if o in ('-v','--verbose'):
-                verbose = True
-            if o in ('-u','--unpack'):
-                unpack = True
-    except IndexError:
-        print "Usage: %s integral" % sys.argv[0]
-        sys.exit(1)
 
-    if gethead: 
+    parser = argparse.ArgumentParser()
+    
+    parser.add_argument('-H', '--head', dest='head', action='store_true')
+    parser.add_argument('-i', '--isordk', dest='isordk', action='store_true')
+    parser.add_argument('-s', '--scfinp', dest='scfinp', action='store_true')
+    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
+    parser.add_argument('-u', '--unpack', dest='unpack', action='store_true')
+    parser.add_argument('-l', '--label')
+    parser.add_argument('aooneint')
+    
+    args = parser.parse_args()
+
+    if args.head: 
         t = timing('head')
-        head = readhead()
+        head = readhead(args.aooneint)
         print "Header on AOONEINT"
         for k in head:
             print k, head[k]
         print t
 
-    if getisordk:
+    if args.isordk:
         t = timing('getisrordk')
-        isordk = readisordk()
+        isordk = readisordk(args.aooneint)
         print "isordk table", isordk["table"]
         n = isordk["nucdep"]
         chrn = isordk["chrn"]
@@ -191,18 +180,18 @@ if __name__ == "__main__":
         print full.init(cooo).reshape((3, mxcent))[:, :n]
         print t
 
-    if getscfinp:
+    if args.scfinp:
         t = timing('scfinp')
-        scfinp = readscfinp()
+        scfinp = readscfinp(args.aooneint)
         for k in scfinp:
             print k, scfinp[k]
         print t
 
-    for lab in arg:
+    if args.label is not None:
         tread = timing("read")
-        s1 = read(lab)
+        s1 = read(label=args.label, filename=args.aooneint)
         print tread
-        if unpack:
+        if args.unpack:
             t = timing("unpack")
             s2 = s1.unpack()
             print t
@@ -211,5 +200,5 @@ if __name__ == "__main__":
             print t
         else:
             S = s1
-        if verbose:
-            print lab, S
+        if args.verbose:
+            print args.label, S
