@@ -27,6 +27,14 @@ def test_read_w():
     ref = -2.242435
     assert_(this, ref)
 
+def test_read_all():
+    N1, N2 = rspvec.readall("XDIPLEN", RSPVEC)
+    f1, f2 = N1[1], N2[1]
+    assert_([f1, f2], [0, 0.5])
+    this = (N1[0][12], N2[0][12])
+    ref = (-0.75732690, -2.242435)
+    assert_(this, ref)
+
 def test_tomat():
     Nx = rspvec.read("XDIPLEN", 0, RSPVEC)
     kx = rspvec.tomat(Nx, ifc, tmpdir=tmpdir)

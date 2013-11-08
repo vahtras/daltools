@@ -22,6 +22,23 @@ def read(property_label, freq=0.0, propfile="RSPVEC"):
             mat = numpy.array(buffer_).view(full.matrix)
             return mat
 
+def readall(property_label, propfile="RSPVEC"):
+    """Read response all vectors given property"""
+    import time, numpy
+    from util import full, unformatted
+    rspvec = unformatted.FortranBinary(propfile)
+    found=[]
+    while rspvec.find(property_label) is not None:
+        # rspvec.rec contains matching record
+        veclabs = rspvec.rec.read(16,'c')
+        vfreq = rspvec.rec.read(1, 'd')[0]
+        rspvec.next()
+        kzyvar = rspvec.reclen / 8
+        buffer_ = rspvec.readbuf(kzyvar,'d')
+        mat = numpy.array(buffer_).view(full.matrix)
+        found.append((mat, vfreq))
+    return found
+
 def tomat(N, ifc, tmpdir='/tmp'):
     """Vector to matrix"""
     import os

@@ -3,17 +3,17 @@
 import os
 from util.timing import timing
 import prop, sirifc, dens, rspvec, one
-def LR(A, B, tmpdir='/tmp'):
+def LR(A, B, w=0.0, tmpdir='/tmp'):
     """Calculate the linear response function <<A;B>> from response vector
     on RSPVEC for B, as <[kB,A]>"""
     ifcfile = os.path.join(tmpdir, 'SIRIFC')
     propfile = os.path.join(tmpdir, 'AOPROPER')
     ifc = sirifc.sirifc(ifcfile)
     a, = prop.read(A, filename=propfile, unpack=True)
-    dkb =  Dk(B, ifc, tmpdir)
+    dkb =  Dk(B, w, ifc, tmpdir)
     return a&dkb
 
-def Dk(label, ifc=None, tmpdir='/tmp'):
+def Dk(label, freq=0.0, ifc=None, tmpdir='/tmp'):
     """Calculate the density transformed with response vector kb
     on RSPVEC for B, as d S kb - kb S d"""
     #
@@ -30,7 +30,7 @@ def Dk(label, ifc=None, tmpdir='/tmp'):
     # Get response vector (no symmetry)
     #
     kzywop = 2*ifc.nwopt
-    NB = rspvec.read(label, propfile=os.path.join(tmpdir, "RSPVEC"))
+    NB = rspvec.read(label, freq, propfile=os.path.join(tmpdir, "RSPVEC"))
     #
     # Vector to matrix
     #

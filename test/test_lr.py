@@ -9,25 +9,25 @@ def setup():
 
 def test_XX():
     print tmpdir
-    XX = LR('XDIPLEN', 'XDIPLEN', tmpdir)
+    XX = LR('XDIPLEN', 'XDIPLEN', 0, tmpdir)
     XXref = -2.461169664950
     assert np.allclose(XX, XXref)
 
 def test_YY():
     print tmpdir
-    YY = LR('YDIPLEN', 'YDIPLEN', tmpdir)
+    YY = LR('YDIPLEN', 'YDIPLEN', 0, tmpdir)
     YYref = -6.184500121159
     assert np.allclose(YY, YYref)
 
 def test_YZ():
     print tmpdir
-    YZ = LR('YDIPLEN', 'ZDIPLEN', tmpdir)
+    YZ = LR('YDIPLEN', 'ZDIPLEN', 0, tmpdir)
     YZref = 0.016158638023
     assert np.allclose(YZ, YZref)
 
 def test_ZZ():
     print tmpdir
-    ZZ = LR('ZDIPLEN', 'ZDIPLEN', tmpdir)
+    ZZ = LR('ZDIPLEN', 'ZDIPLEN', 0, tmpdir)
     ZZref = -10.308181624834
     assert np.allclose(ZZ, ZZref)
 
