@@ -16,20 +16,26 @@ def assert_(this, ref):
     assert np.allclose(this, ref)
 
 def test_read():
-    Nx = rspvec.read("XDIPLEN", RSPVEC)
+    Nx = rspvec.read("XDIPLEN", 0, RSPVEC)
     this = Nx[12]
     ref = -0.75732690
     assert_(this, ref)
 
+def test_read_w():
+    Nx = rspvec.read("XDIPLEN", 0.5, RSPVEC)
+    this = Nx[12]
+    ref = -2.242435
+    assert_(this, ref)
+
 def test_tomat():
-    Nx = rspvec.read("XDIPLEN", RSPVEC)
+    Nx = rspvec.read("XDIPLEN", 0, RSPVEC)
     kx = rspvec.tomat(Nx, ifc, tmpdir=tmpdir)
     this = kx[8, 3]
     ref = 0.75732690
     assert_(this, ref)
 
 def test_tovec():
-    Nx = rspvec.read("XDIPLEN", RSPVEC)
+    Nx = rspvec.read("XDIPLEN", 0, RSPVEC)
     kx = rspvec.tomat(Nx, ifc, tmpdir=tmpdir)
     Nx = rspvec.tovec(kx, ifc, tmpdir=tmpdir)
     this = Nx[44]

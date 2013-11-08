@@ -1,19 +1,26 @@
 #!/usr/bin/env python
 """Module for reading response vector data from RSPVEC"""
 
+THRESHOLD = 1e-5
+
 import numpy as np
 
-def read(property_label, propfile="RSPVEC"):
+def read(property_label, freq=0.0, propfile="RSPVEC"):
     """Read response vector given property"""
     import time, numpy
     from util import full, unformatted
     rspvec = unformatted.FortranBinary(propfile)
-    rspvec.find(property_label)
-    rspvec.next()
-    kzyvar = rspvec.reclen / 8
-    buffer_ = rspvec.readbuf(kzyvar,'d')
-    mat = numpy.array(buffer_).view(full.matrix)
-    return mat
+    while rspvec.find(property_label) is not None:
+        # rspvec.rec contains matching record
+        # check that frequncy matches
+        veclabs = rspvec.rec.read(16,'c')
+        vfreq = rspvec.rec.read(1, 'd')[0]
+        if abs(vfreq-freq) < THRESHOLD:
+            rspvec.next()
+            kzyvar = rspvec.reclen / 8
+            buffer_ = rspvec.readbuf(kzyvar,'d')
+            mat = numpy.array(buffer_).view(full.matrix)
+            return mat
 
 def tomat(N, ifc, tmpdir='/tmp'):
     """Vector to matrix"""

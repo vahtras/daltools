@@ -1,14 +1,14 @@
 
 
-   ****************************************************************************
-   *************** DALTON2011 - An electronic structure program ***************
-   ****************************************************************************
+     ************************************************************************
+     *************** Dalton - An Electronic Structure Program ***************
+     ************************************************************************
 
-    This is output from DALTON Release 2011 (DEVELOPMENT VERSION)
+    This is output from DALTON (Release Dalton2013 patch 0)
    ----------------------------------------------------------------------------
     NOTE:
      
-    DALTON is an experimental code for the evaluation of molecular
+    Dalton is an experimental code for the evaluation of molecular
     properties using (MC)SCF, DFT, CI, and CC wave functions.
     The authors accept no responsibility for the performance of
     the code or for the correctness of the results.
@@ -20,83 +20,146 @@
     See the home page "http://daltonprogram.org" for further information.
      
     If results obtained with this code are published,
-    an appropriate citation would be:
+    the appropriate citations would be both of:
      
-    "Dalton, a molecular electronic structure program,
-    Release Dalton2011 (2011), see http://daltonprogram.org"
+       K. Aidas, C. Angeli, K. L. Bak, V. Bakken, R. Bast,
+       L. Boman, O. Christiansen, R. Cimiraglia, S. Coriani,
+       P. Dahle, E. K. Dalskov, U. Ekstroem, T. Enevoldsen,
+       J. J. Eriksen, P. Ettenhuber, B. Fernandez, L. Ferrighi,
+       H. Fliegl, L. Frediani, K. Hald, A. Halkier, C. Haettig,
+       H. Heiberg, T. Helgaker, A. C. Hennum, H. Hettema,
+       E. Hjertenaes, S. Hoest, I.-M. Hoeyvik, M. F. Iozzi,
+       B. Jansik, H. J. Aa. Jensen, D. Jonsson, P. Joergensen,
+       J. Kauczor, S. Kirpekar, T. Kjaergaard, W. Klopper,
+       S. Knecht, R. Kobayashi, H. Koch, J. Kongsted, A. Krapp,
+       K. Kristensen, A. Ligabue, O. B. Lutnaes, J. I. Melo,
+       K. V. Mikkelsen, R. H. Myhre, C. Neiss, C. B. Nielsen,
+       P. Norman, J. Olsen, J. M. H. Olsen, A. Osted,
+       M. J. Packer, F. Pawlowski, T. B. Pedersen, P. F. Provasi,
+       S. Reine, Z. Rinkevicius, T. A. Ruden, K. Ruud, V. Rybkin,
+       P. Salek, C. C. M. Samson, A. Sanchez de Meras, T. Saue,
+       S. P. A. Sauer, B. Schimmelpfennig, K. Sneskov,
+       A. H. Steindal, K. O. Sylvester-Hvid, P. R. Taylor,
+       A. M. Teale, E. I. Tellgren, D. P. Tew, A. J. Thorvaldsen,
+       L. Thoegersen, O. Vahtras, M. A. Watson, D. J. D. Wilson,
+       M. Ziolkowski and H. Aagren,
+       "The Dalton quantum chemistry program system",
+       WIREs Comput. Mol. Sci. 2013. (doi: 10.1002/wcms.1172)
+    
+    and
+    
+       Dalton, a Molecular Electronic Structure Program,
+       Release DALTON2013.0 (2013), see http://daltonprogram.org
    ----------------------------------------------------------------------------
 
     Authors in alphabetical order (major contribution(s) in parenthesis):
 
+  Kestutis Aidas,           Vilnius University,           Lithuania   (QM/MM)
   Celestino Angeli,         University of Ferrara,        Italy       (NEVPT2)
   Keld L. Bak,              UNI-C,                        Denmark     (AOSOPPA, non-adiabatic coupling, magnetic properties)
   Vebjoern Bakken,          University of Oslo,           Norway      (DALTON; geometry optimizer, symmetry detection)
+  Radovan Bast,             KTH Stockholm,                Sweden      (DALTON installation and execution frameworks)
+  Linus Boman,              NTNU,                         Norway      (Cholesky decomposition and subsystems)
   Ove Christiansen,         Aarhus University,            Denmark     (CC module)
   Renzo Cimiraglia,         University of Ferrara,        Italy       (NEVPT2)
   Sonia Coriani,            University of Trieste,        Italy       (CC module, MCD in RESPONS)
   Paal Dahle,               University of Oslo,           Norway      (Parallelization)
   Erik K. Dalskov,          UNI-C,                        Denmark     (SOPPA)
-  Thomas Enevoldsen,        SDU - Odense University,      Denmark     (SOPPA)
+  Thomas Enevoldsen,        Univ. of Southern Denmark,    Denmark     (SOPPA)
+  Janus J. Eriksen,         Aarhus University,            Denmark     (PE-MP2/SOPPA, TDA)
   Berta Fernandez,          U. of Santiago de Compostela, Spain       (doublet spin, ESR in RESPONS)
   Lara Ferrighi,            Aarhus University,            Denmark     (PCM Cubic response)
-  Heike Fliegl,             University of Helsinki,       Finland     (CCSD(R12))
-  Luca Frediani,            University of Tromsoe,        Norway      (PCM)
-  Bin Gao,                  University of Tromsoe,        Norway      (Gen1Int module)
-  Christof Haettig,         Ruhr University Bochum,       Germany     (CC module)
+  Heike Fliegl,             University of Oslo,           Norway      (CCSD(R12))
+  Luca Frediani,            UiT The Arctic U. of Norway,  Norway      (PCM)
+  Bin Gao,                  UiT The Arctic U. of Norway,  Norway      (Gen1Int library)
+  Christof Haettig,         Ruhr-University Bochum,       Germany     (CC module)
   Kasper Hald,              Aarhus University,            Denmark     (CC module)
   Asger Halkier,            Aarhus University,            Denmark     (CC module)
   Hanne Heiberg,            University of Oslo,           Norway      (geometry analysis, selected one-electron integrals)
   Trygve Helgaker,          University of Oslo,           Norway      (DALTON; ABACUS, ERI, DFT modules, London, and much more)
+  Alf Christian Hennum,     University of Oslo,           Norway      (Parity violation)
   Hinne Hettema,            University of Auckland,       New Zealand (quadratic response in RESPONS; SIRIUS supersymmetry)
-  Brano Jansik              University of Aarhus          Denmark     (DFT cubic response)
+  Eirik Hjertenaes,         NTNU,                         Norway      (Cholesky decomposition)
+  Maria Francesca Iozzi,    University of Oslo,           Norway      (RPA)
+  Brano Jansik              Technical Univ. of Ostrava    Czech Rep.  (DFT cubic response)
   Hans Joergen Aa. Jensen,  Univ. of Southern Denmark,    Denmark     (DALTON; SIRIUS, RESPONS, ABACUS modules, London, and much more)
-  Dan Jonsson,              University of Tromsoe,        Norway      (cubic response in RESPONS module)
+  Dan Jonsson,              UiT The Arctic U. of Norway,  Norway      (cubic response in RESPONS module)
   Poul Joergensen,          Aarhus University,            Denmark     (RESPONS, ABACUS, and CC modules)
-  Sheela Kirpekar,          SDU - Odense University,      Denmark     (Mass-velocity & Darwin integrals)
-  Wim Klopper,              University of Karlsruhe,      Germany     (R12 code in CC, SIRIUS, and ABACUS modules)
-  Stefan Knecht,            Univ. of Southern Denmark,    Denmark     (Parallel CI)
-  Rika Kobayashi,           ANU Supercomputer Facility,   Australia   (DIIS in CC, London in MCSCF)
-  Jacob Kongsted,           Univ. of Southern Denmark,    Denmark     (QM/MM code)
-  Henrik Koch,              University of Trondheim,      Norway      (CC module, Cholesky decomposition)
+  Joanna Kauczor,           Linkoeping University,        Sweden      (Complex polarization propagator (CPP) module)
+  Sheela Kirpekar,          Univ. of Southern Denmark,    Denmark     (Mass-velocity & Darwin integrals)
+  Wim Klopper,              KIT Karlsruhe,                Germany     (R12 code in CC, SIRIUS, and ABACUS modules)
+  Stefan Knecht,            ETH Zurich,                   Switzerland (Parallel CI and MCSCF)
+  Rika Kobayashi,           Australian National Univ.,    Australia   (DIIS in CC, London in MCSCF)
+  Henrik Koch,              NTNU,                         Norway      (CC module, Cholesky decomposition)
+  Jacob Kongsted,           Univ. of Southern Denmark,    Denmark     (Polarizable embedding, QM/MM)
   Andrea Ligabue,           University of Modena,         Italy       (CTOCD, AOSOPPA)
   Ola B. Lutnaes,           University of Oslo,           Norway      (DFT Hessian)
   Juan I. Melo,             University of Buenos Aires,   Argentina   (LRESC, Relativistic Effects on NMR Shieldings)
-  Kurt V. Mikkelsen,        University of Copenhagen,     Denmark     (MC-SCRF and QM/MM code)
+  Kurt V. Mikkelsen,        University of Copenhagen,     Denmark     (MC-SCRF and QM/MM)
+  Rolf H. Myhre,            NTNU,                         Norway      (Cholesky, subsystems and ECC2)
   Christian Neiss,          Univ. Erlangen-Nuernberg,     Germany     (CCSD(R12))
-  Christian B. Nielsen,     University of Copenhagen,     Denmark     (QM/MM code)
-  Patrick Norman,           University of Linkoeping,     Sweden      (cubic response and complex response in RESPONS)
+  Christian B. Nielsen,     University of Copenhagen,     Denmark     (QM/MM)
+  Patrick Norman,           Linkoeping University,        Sweden      (Cubic response and complex response in RESPONS)
   Jeppe Olsen,              Aarhus University,            Denmark     (SIRIUS CI/density modules)
-  Anders Osted,             Copenhagen University,        Denmark     (QM/MM code)
+  Jogvan Magnus H. Olsen,   Univ. of Southern Denmark,    Denmark     (Polarizable embedding, PE library, QM/MM)
+  Anders Osted,             Copenhagen University,        Denmark     (QM/MM)
   Martin J. Packer,         University of Sheffield,      UK          (SOPPA)
-  Filip Pawlowski,          Kazimierz Wielki University   Poland      (CC3)
+  Filip Pawlowski,          Kazimierz Wielki University,  Poland      (CC3)
   Thomas B. Pedersen,       University of Oslo,           Norway      (Cholesky decomposition)
   Patricio F. Provasi,      University of Northeastern,   Argentina   (Analysis of coupling constants in localized orbitals)
   Zilvinas Rinkevicius,     KTH Stockholm,                Sweden      (open-shell DFT, ESR)
   Elias Rudberg,            KTH Stockholm,                Sweden      (DFT grid and basis info)
   Torgeir A. Ruden,         University of Oslo,           Norway      (Numerical derivatives in ABACUS)
-  Kenneth Ruud,             University of Tromsoe,        Norway      (DALTON; ABACUS magnetic properties and  much more)
+  Kenneth Ruud,             UiT The Arctic U. of Norway,  Norway      (DALTON; ABACUS magnetic properties and  much more)
   Pawel Salek,              KTH Stockholm,                Sweden      (DALTON; DFT code)
-  Claire C.M. Samson        University of Karlsruhe       Germany     (Boys localization, r12 integrals in ERI)
+  Claire C. M. Samson       University of Karlsruhe       Germany     (Boys localization, r12 integrals in ERI)
   Alfredo Sanchez de Meras, University of Valencia,       Spain       (CC module, Cholesky decomposition)
-  Trond Saue,               CNRS/ULP Toulouse,            France      (direct Fock matrix construction)
+  Trond Saue,               Paul Sabatier University,     France      (direct Fock matrix construction)
   Stephan P. A. Sauer,      University of Copenhagen,     Denmark     (SOPPA(CCSD), SOPPA prop., AOSOPPA, vibrational g-factors)
   Bernd Schimmelpfennig,    Forschungszentrum Karlsruhe,  Germany     (AMFI module)
-  Arnfinn H. Steindal,      University of Tromsoe,        Norway      (parallel QM/MM)
+  Kristian Sneskov,         Aarhus University,            Denmark     (QM/MM, PE-CC)
+  Arnfinn H. Steindal,      UiT The Arctic U. of Norway,  Norway      (parallel QM/MM)
   K. O. Sylvester-Hvid,     University of Copenhagen,     Denmark     (MC-SCRF)
   Peter R. Taylor,          VLSCI/Univ. of Melbourne,     Australia   (Symmetry handling ABACUS, integral transformation)
+  Andrew M. Teale,          University of Nottingham,     England     (DFT-AC, DFT-D)
   David P. Tew,             University of Bristol,        England     (CCSD(R12))
   Olav Vahtras,             KTH Stockholm,                Sweden      (triplet response, spin-orbit, ESR, TDDFT, open-shell DFT)
   David J. Wilson,          La Trobe University,          Australia   (DFT Hessian and DFT magnetizabilities)
-  Hans Agren,               KTH Stockholm,                Sweden      (SIRIUS module, MC-SCRF solvation model)
+  Hans Agren,               KTH Stockholm,                Sweden      (SIRIUS module, RESPONS, MC-SCRF solvation model)
  --------------------------------------------------------------------------------
 
-     Date and time (Linux)  : Mon Feb 25 17:28:50 2013
+     Date and time (Linux)  : Fri Nov  8 13:22:28 2013
      Host name              : ubuntu                                  
 
  * Work memory size             :    64000000 =  488.28 megabytes.
 
  * Directories for basis set searches:
-   1) /home/olav/dev/dalton/git/basis/
+   1) /opt/dalton/basis/
+
+
+Compilation information
+-----------------------
+
+ Who compiled             | vahtras
+ Host                     | ubuntu
+ System                   | Linux-3.11.0-13-generic
+ CMake generator          | Unix Makefiles
+ Processor                | x86_64
+ 64-bit integers          | OFF
+ MPI                      | ON
+ Fortran compiler         | /usr/bin/mpif90
+ Fortran compiler version | GNU Fortran (Ubuntu/Linaro 4.8.1-10ubuntu8) 4.8.1
+ C compiler               | /usr/bin/mpicc
+ C compiler version       | gcc (Ubuntu/Linaro 4.8.1-10ubuntu8) 4.8.1
+ C++ compiler             | /usr/bin/g++
+ C++ compiler version     | g++ (Ubuntu/Linaro 4.8.1-10ubuntu8) 4.8.1
+ BLAS                     | /usr/lib/libblas.so
+ LAPACK                   | /usr/lib/liblapack.so
+ Static linking           | OFF
+ Last Git revision        | c2851356ff9e6fe64dd5aab660a9c0b565265199
+ Configuration time       | 2013-11-08 10:55:15.952159
+
+ * Sequential calculation using 1 CPU
 
 
    Content of the .dal input file
@@ -118,6 +181,9 @@
 .DIPLEN                                           
 .THCLR                                            
 1.0D-9                                            
+.FREQUE                                           
+ 2                                                
+ 0. 0.5                                           
 **END OF DALTON INPUT                             
 
 
@@ -173,7 +239,7 @@ H           -2.508043   -1.382001     .040282
   Number of basis sets to read;    2
   The basis set is "STO-3G" from the basis set library.
   Basis set file used for this atomic type with Z =   6 :
-     "/home/olav/dev/dalton/git/basis/STO-3G"
+     "/opt/dalton/basis/STO-3G"
 
   Atomic type no.    2
   --------------------
@@ -182,7 +248,7 @@ H           -2.508043   -1.382001     .040282
   Number of basis sets to read;    2
   The basis set is "STO-3G" from the basis set library.
   Basis set file used for this atomic type with Z =   8 :
-     "/home/olav/dev/dalton/git/basis/STO-3G"
+     "/opt/dalton/basis/STO-3G"
 
   Atomic type no.    3
   --------------------
@@ -191,7 +257,7 @@ H           -2.508043   -1.382001     .040282
   Number of basis sets to read;    2
   The basis set is "STO-3G" from the basis set library.
   Basis set file used for this atomic type with Z =   1 :
-     "/home/olav/dev/dalton/git/basis/STO-3G"
+     "/opt/dalton/basis/STO-3G"
 
 
                       SYMADD: Requested addition of symmetry
@@ -208,8 +274,8 @@ H           -2.508043   -1.382001     .040282
  ----------------------------
        8 :      0.00000000     0.00105827     1.13941835  Isotope  1
        6 :      0.00001741     0.00105028    -1.14582446  Isotope  1
-       1 :     -0.00007111     1.77050338    -2.23969756  Isotope  1
        1 :     -0.00006987    -1.79980438    -2.20056359  Isotope  1
+       1 :     -0.00007111     1.77050338    -2.23969756  Isotope  1
 
  No symmetry elements were found.
 
@@ -362,8 +428,8 @@ Represented as:      C1
  Number of two-electron integrals written:        2772 ( 90.0% )
  Megabytes written:                              0.034
 
- >>>> Total CPU  time used in HERMIT:   0.02 seconds
- >>>> Total wall time used in HERMIT:   0.03 seconds
+ >>>> Total CPU  time used in HERMIT:   0.01 seconds
+ >>>> Total wall time used in HERMIT:   0.01 seconds
 
 
                         .----------------------------------.
@@ -442,7 +508,7 @@ Represented as:      C1
  **********************************************************************
 
  
-     Date and time (Linux)  : Mon Feb 25 17:28:50 2013
+     Date and time (Linux)  : Fri Nov  8 13:22:28 2013
      Host name              : ubuntu                                  
 
  Title lines from ".mol" input file:
@@ -461,20 +527,20 @@ Represented as:      C1
 
      Wave function specification
      ============================
-     For the wave function of type :      >>> HF       <<<
-     Number of closed shell electrons          16
-     Number of electrons in active shells       0
-     Total charge of the molecule               0
+@    For the wave function of type :      >>> HF <<<
+@    Number of closed shell electrons          16
+@    Number of electrons in active shells       0
+@    Total charge of the molecule               0
 
-     Spin multiplicity and 2 M_S                1         0
+@    Spin multiplicity and 2 M_S                1         0
      Total number of symmetries                 1
-     Reference state symmetry                   1
+@    Reference state symmetry                   1
 
      Orbital specifications
      ======================
      Abelian symmetry species          All |    1
                                        --- |  ---
-     Occupied SCF orbitals               8 |    8
+@    Occupied SCF orbitals               8 |    8
      Secondary orbitals                  4 |    4
      Total number of orbitals           12 |   12
      Number of basis functions          12 |   12
@@ -494,181 +560,188 @@ Represented as:      C1
 
  >>>>> DIIS optimization of Hartree-Fock <<<<<
 
- C1-DIIS algorithm; max error vectors =   10
+ C1-DIIS algorithm; max error vectors =    5
  -----------------------------------------------------------------------------
      (Precalculated two-electron integrals are transformed to P-supermatrix elements.
       Threshold for discarding integrals :  1.00D-12 )
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    1    -112.128425712        1.63457D+00   -1.12D+02   -6    T
+@ DIIS iter.   1    -112.128425712        1.63457D+00   -1.12D+02  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -2.67D+00
+ DIIS C vector; C2DIIS = F, LAMBDA = -2.67D+00
     1.000000
       Virial theorem: -V/T =      2.002358
 @      MULPOP C       1.10; O      -0.82; H      -0.14; H      -0.14; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    2    -112.279310189        1.07267D+00   -1.51D-01   -6    T
+@ DIIS iter.   2    -112.279310189        1.07267D+00   -1.51D-01  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -9.39D-02
+ DIIS C vector; C2DIIS = F, LAMBDA = -9.39D-02
     0.390332    0.609668
       Virial theorem: -V/T =      2.011710
 @      MULPOP C      -0.47; O       0.28; H       0.09; H       0.09; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    3    -112.353421199        5.10041D-02   -7.41D-02   -6    T
+@ DIIS iter.   3    -112.353421199        5.10041D-02   -7.41D-02  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -1.66D-03
+ DIIS C vector; C2DIIS = F, LAMBDA = -1.66D-03
    -0.045535   -0.063425    1.108960
       Virial theorem: -V/T =      2.008826
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    4    -112.353675938        1.38491D-02   -2.55D-04   -6    T
+@ DIIS iter.   4    -112.353675938        1.38491D-02   -2.55D-04  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -3.36D-05
+ DIIS C vector; C2DIIS = F, LAMBDA = -3.36D-05
     0.005502   -0.003473   -0.228428    1.226399
       Virial theorem: -V/T =      2.008767
 @      MULPOP C       0.07; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    5    -112.353695014        3.70690D-03   -1.91D-05   -6    T
+@ DIIS iter.   5    -112.353695014        3.70690D-03   -1.91D-05  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -2.70D-06
+ DIIS C vector; C2DIIS = F, LAMBDA = -2.70D-06
    -0.002922    0.000021    0.137674   -0.857772    1.722999
       Virial theorem: -V/T =      2.008740
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    6    -112.353697423        6.98061D-04   -2.41D-06   -6    T
+@ DIIS iter.   6    -112.353697423        6.98061D-04   -2.41D-06  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -7.47D-08
-    0.000705   -0.000164   -0.032329    0.228583   -0.630037    1.433242
+ DIIS C vector; C2DIIS = F, LAMBDA = -1.19D-07
+    1.307593   -0.000400   -0.008100    0.094873   -0.393967
       Virial theorem: -V/T =      2.008744
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    7    -112.353697509        9.36682D-05   -8.56D-08   -6    T
+@ DIIS iter.   7    -112.353697508        1.13410D-04   -8.49D-08  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -4.39D-10
-   -0.000062    0.000024    0.003453   -0.033719    0.127608   -0.433229
-    1.335924
+ DIIS C vector; C2DIIS = F, LAMBDA = -9.05D-10
+   -0.460496    1.378300    0.000435   -0.012508    0.094269
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    8    -112.353697510        6.52754D-06   -1.02D-09   -6    T
+@ DIIS iter.   8    -112.353697510        7.82982D-06   -1.69D-09  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -4.87D-12
-    0.000014   -0.000004   -0.000805    0.008564   -0.033259    0.117073
-   -0.373481    1.281898
+ DIIS C vector; C2DIIS = F, LAMBDA = -1.78D-11
+    0.061692   -0.219555    1.168717    0.001186   -0.012040
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.    9    -112.353697510        8.41124D-07   -4.55D-12   -6    T
+@ DIIS iter.   9    -112.353697510        1.05097D-06   -7.53D-12  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -5.83D-14
-   -0.000001    0.000000    0.000077   -0.000911    0.003536   -0.012653
-    0.038194   -0.190839    1.162597
+ DIIS C vector; C2DIIS = F, LAMBDA = -2.48D-13
+   -0.002583    0.014548   -0.215155    1.202644    0.000545
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   10    -112.353697510        8.19246D-08   -2.56D-13   -6    T
+@ DIIS iter.  10    -112.353697510        2.75131D-07   -8.53D-14  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -1.51D-15
-    0.000000    0.000000   -0.000004    0.000073   -0.000292    0.001093
-   -0.002843    0.023389   -0.241596    1.220180
+ DIIS C vector; C2DIIS = F, LAMBDA = -1.74D-14
+   -0.000100    0.001102   -0.035913    0.149510    0.885402
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   11    -112.353697510        1.46923D-08    2.84D-14   -6    T
+@ DIIS iter.  11    -112.353697510        4.48059D-08   -1.14D-13  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -1.28D-17
-    1.552492   -0.000000    0.000002   -0.000029    0.000118   -0.000442
-    0.001093   -0.009627    0.104462   -0.648067
+ DIIS C vector; C2DIIS = F, LAMBDA = -7.93D-16
+    1.131613   -0.000169    0.009477   -0.055851   -0.085070
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   12    -112.353697510        1.14741D-09    5.68D-14   -6    T
+@ DIIS iter.  12    -112.353697510        1.02725D-08    2.27D-13  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -9.95D-19
-   -0.104087    1.076647   -0.000000    0.000002   -0.000007    0.000025
-   -0.000064    0.000487   -0.004672    0.031670
+ DIIS C vector; C2DIIS = F, LAMBDA = -2.95D-17
+   -0.289856    1.304961   -0.000950    0.008376   -0.022531
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   13    -112.353697510        6.02449D-10   -5.68D-14   -6    T
+@ DIIS iter.  13    -112.353697510        2.36011D-09   -2.84D-14  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -1.97D-19
-    0.018590   -0.765908    1.747858    0.000000    0.000000   -0.000000
-   -0.000000   -0.000000   -0.000215   -0.000324
+ DIIS C vector; C2DIIS = F, LAMBDA = -8.36D-19
+    0.011511   -0.269924    1.246521   -0.000664    0.012556
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   14    -112.353697510        2.64004D-10   -1.14D-13   -6    T
+@ DIIS iter.  14    -112.353697510        5.28171D-10   -5.68D-14  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -1.54D-20
-   -0.007186    0.385269   -1.360592    1.982605   -0.000000    0.000000
-   -0.000001    0.000005    0.000095   -0.000197
+ DIIS C vector; C2DIIS = F, LAMBDA = -1.91D-19
+   -0.000395    0.055188   -0.357423    1.304818   -0.002188
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   15    -112.353697510        7.95558D-11    1.99D-13   -6    T
+@ DIIS iter.  15    -112.353697510        2.80838D-10    0.00D+00  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -4.02D-21
-    0.003439   -0.150583    0.614695   -1.088678    1.621406    0.000000
-   -0.000000   -0.000003    0.000023   -0.000298
+ DIIS C vector; C2DIIS = F, LAMBDA = -2.33D-20
+    0.001997   -0.016282    0.117148   -1.237000    2.134137
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   16    -112.353697510        3.62773D-11    2.84D-14   -6    T
+@ DIIS iter.  16    -112.353697510        9.24117D-11    5.68D-14  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -3.54D-23
-   -0.000656    0.034394   -0.151456    0.315836   -1.216780    2.018632
-    0.000000    0.000001   -0.000005    0.000034
+ DIIS C vector; C2DIIS = F, LAMBDA = -3.15D-21
+    1.657695    0.003220   -0.044127    0.565930   -1.182717
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   17    -112.353697510        2.18042D-12   -1.71D-13   -6    T
+@ DIIS iter.  17    -112.353697510        3.59014D-11   -8.53D-14  -20    T
 
- DIIS C vector; C2DIIS = F LAMBDA = -7.62D-25
-    0.000022    0.000032    0.000907   -0.003918    0.035757   -0.081634
-    1.048844   -0.000000    0.000002   -0.000010
+ DIIS C vector; C2DIIS = F, LAMBDA = -4.80D-22
+   -1.407051    1.950814    0.013745   -0.347752    0.790244
       Virial theorem: -V/T =      2.008746
 @      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
  -----------------------------------------------------------------------------
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
- DIIS iter.   18    -112.353697510        5.85443D-13    1.14D-13   -6    T
+@ DIIS iter.  18    -112.353697510        1.19668D-11    8.53D-14  -20    T
 
- *** DIIS converged in  18 iterations !
-@    Converged SCF energy, gradient:   -112.353697509557    5.85D-13
-   - total time used in SIRFCK :              0.00 seconds
+ DIIS C vector; C2DIIS = F, LAMBDA = -5.87D-23
+    0.050703   -0.240715    1.228051    0.042638   -0.080677
+      Virial theorem: -V/T =      2.008746
+@      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
+ -----------------------------------------------------------------------------
+
+ ITDIIS, energy, error norm, change in energy, scr.thr., difden:
+@ DIIS iter.  19    -112.353697510        3.58887D-12    5.68D-14  -20    T
+
+ DIIS C vector; C2DIIS = F, LAMBDA = -3.06D-24
+    0.057213   -0.121386   -0.085202    1.156810   -0.007435
+      Virial theorem: -V/T =      2.008746
+@      MULPOP C       0.08; O      -0.19; H       0.06; H       0.06; 
+ -----------------------------------------------------------------------------
+
+ ITDIIS, energy, error norm, change in energy, scr.thr., difden:
+@ DIIS iter.  20    -112.353697510        8.70353D-13    0.00D+00  -20    T
+
+@ *** DIIS converged in  20 iterations !
+@     Converged SCF energy, gradient:   -112.353697509557    8.70D-13
+    - total time used in SIRFCK :              0.00 seconds
 
 
  *** SCF orbital energy analysis ***
@@ -691,7 +764,7 @@ Represented as:      C1
 
  >>> Writing SIRIFC interface file <<<
 
- >>>> CPU and wall time for SCF :       0.008       0.008
+ >>>> CPU and wall time for SCF :       0.006       0.007
 
 
                        .-----------------------------------.
@@ -710,7 +783,7 @@ Represented as:      C1
 @    Final gradient norm:           0.000000000001
 
  
-     Date and time (Linux)  : Mon Feb 25 17:28:50 2013
+     Date and time (Linux)  : Fri Nov  8 13:22:28 2013
      Host name              : ubuntu                                  
 
  (Only coefficients >0.0100 are printed.)
@@ -749,10 +822,10 @@ Represented as:      C1
 
 
  >>>> Total CPU  time used in SIRIUS :      0.01 seconds
- >>>> Total wall time used in SIRIUS :      0.04 seconds
+ >>>> Total wall time used in SIRIUS :      0.01 seconds
 
  
-     Date and time (Linux)  : Mon Feb 25 17:28:50 2013
+     Date and time (Linux)  : Fri Nov  8 13:22:28 2013
      Host name              : ubuntu                                  
 
 
@@ -785,7 +858,7 @@ Represented as:      C1
  Threshold for relative convergence             : THCLR  = 1.000D-09
  Maximum iterations in optimal orbital algorithm: MAXITO =   5
 
-  1 B-frequencies  0.000000D+00
+  2 B-frequencies  0.000000D+00  5.000000D-01
 
     3 second order properties calculated with symmetry no.    1 and labels:
 
@@ -793,11 +866,11 @@ Represented as:      C1
           YDIPLEN 
           ZDIPLEN 
 
- Integral transformation: Total CPU and WALL times (sec)       0.000       0.002
+ Integral transformation: Total CPU and WALL times (sec)       0.000       0.001
 
 
-   SCF energy         :     -112.353697509556596
- -- inactive part     :     -143.602912825773444
+   SCF energy         :     -112.353697509556540
+ -- inactive part     :     -143.602912825773387
  -- nuclear repulsion :       31.249215316216844
 
 
@@ -824,8 +897,9 @@ Represented as:      C1
 
  RSPLR -- linear response calculation for symmetry  1
  RSPLR -- operator label : XDIPLEN 
- RSPLR -- frequencies :   0.000000
- FREQ 2    0.0000000000000000     
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000  0.500000
+ FREQ 2    0.0000000000000000       0.50000000000000000     
 
 
 
@@ -834,20 +908,134 @@ Represented as:      C1
  Operator symmetry =  1; triplet =   F
 
 
- *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    2 linear transformations is      2.91983133
+ INERTIA (POS,ZER,NEG) of reduced matrix is    3    0    1
+ Determinant of reduced matrix is -5.01 * 10 ** -1.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    4 linear transformations is      3.62918673
+ INERTIA (POS,ZER,NEG) of reduced matrix is    7    0    1
+ Determinant of reduced matrix is -2.24 * 10 **  1.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    6 linear transformations is      3.58317052
+ INERTIA (POS,ZER,NEG) of reduced matrix is   10    0    2
+ Determinant of reduced matrix is  1.01 * 10 **  2.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    8 linear transformations is      3.60952962
+ INERTIA (POS,ZER,NEG) of reduced matrix is   14    0    2
+ Determinant of reduced matrix is  6.29 * 10 **  3.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   10 linear transformations is      3.61021136
+ INERTIA (POS,ZER,NEG) of reduced matrix is   18    0    2
+ Determinant of reduced matrix is  6.22 * 10 **  3.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   12 linear transformations is      3.63194690
+ INERTIA (POS,ZER,NEG) of reduced matrix is   21    0    3
+ Determinant of reduced matrix is -9.66 * 10 **  3.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   14 linear transformations is      3.63360943
+ INERTIA (POS,ZER,NEG) of reduced matrix is   25    0    3
+ Determinant of reduced matrix is -7.19 * 10 **  5.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   16 linear transformations is      3.63366254
+ INERTIA (POS,ZER,NEG) of reduced matrix is   29    0    3
+ Determinant of reduced matrix is -1.85 * 10 **  7.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   18 linear transformations is      3.63366316
+ INERTIA (POS,ZER,NEG) of reduced matrix is   33    0    3
+ Determinant of reduced matrix is -8.86 * 10 **  9.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   19 linear transformations is      3.63366319
+ INERTIA (POS,ZER,NEG) of reduced matrix is   35    0    3
+ Determinant of reduced matrix is -4.94 * 10 ** 11.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   20 linear transformations is      3.63366319
+ INERTIA (POS,ZER,NEG) of reduced matrix is   37    0    3
+ Determinant of reduced matrix is -3.11 * 10 ** 12.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   21 linear transformations is      3.63366319
+ INERTIA (POS,ZER,NEG) of reduced matrix is   39    0    3
+ Determinant of reduced matrix is -3.13 * 10 ** 13.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   22 linear transformations is      3.63366319
+ INERTIA (POS,ZER,NEG) of reduced matrix is   41    0    3
+ Determinant of reduced matrix is -2.33 * 10 ** 15.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   23 linear transformations is      3.63366319
+ INERTIA (POS,ZER,NEG) of reduced matrix is   43    0    3
+ Determinant of reduced matrix is -1.94 * 10 ** 16.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   24 linear transformations is      3.63366319
+ INERTIA (POS,ZER,NEG) of reduced matrix is   45    0    3
+ Determinant of reduced matrix is -2.04 * 10 ** 17.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   25 linear transformations is      3.63366319
+ INERTIA (POS,ZER,NEG) of reduced matrix is   47    0    3
+ Determinant of reduced matrix is -7.81 * 10 ** 18.0
+
+ *** THE REQUESTED    2 SOLUTION VECTORS CONVERGED
 
  Convergence of RSP solution vectors, threshold = 1.00D-09
  ---------------------------------------------------------------
- (dimension of paired reduced space:   22)
- RSP solution vector no.    1; norm of residual   7.15D-10
+ (dimension of paired reduced space:   50)
+ RSP solution vector no.    1; norm of residual   2.86D-11
+ RSP solution vector no.    2; norm of residual   8.62D-10
 
  *** RSPCTL MICROITERATIONS CONVERGED
 
 
  RSPLR -- linear response calculation for symmetry  1
  RSPLR -- operator label : YDIPLEN 
- RSPLR -- frequencies :   0.000000
- FREQ 2    0.0000000000000000     
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000  0.500000
+ FREQ 2    0.0000000000000000       0.50000000000000000     
 
 
 
@@ -856,20 +1044,134 @@ Represented as:      C1
  Operator symmetry =  1; triplet =   F
 
 
- *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    8 linear transformations is     10.49649552
+ INERTIA (POS,ZER,NEG) of reduced matrix is   15    0    1
+ Determinant of reduced matrix is -4.90 * 10 **  3.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   10 linear transformations is     10.49216162
+ INERTIA (POS,ZER,NEG) of reduced matrix is   18    0    2
+ Determinant of reduced matrix is  4.10 * 10 **  4.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   12 linear transformations is     10.49584536
+ INERTIA (POS,ZER,NEG) of reduced matrix is   22    0    2
+ Determinant of reduced matrix is  2.44 * 10 **  6.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   14 linear transformations is     10.49589580
+ INERTIA (POS,ZER,NEG) of reduced matrix is   26    0    2
+ Determinant of reduced matrix is  1.20 * 10 **  8.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   16 linear transformations is     10.49589712
+ INERTIA (POS,ZER,NEG) of reduced matrix is   30    0    2
+ Determinant of reduced matrix is  2.19 * 10 **  9.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   18 linear transformations is     10.49589723
+ INERTIA (POS,ZER,NEG) of reduced matrix is   34    0    2
+ Determinant of reduced matrix is  5.49 * 10 ** 10.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   20 linear transformations is     10.49589649
+ INERTIA (POS,ZER,NEG) of reduced matrix is   37    0    3
+ Determinant of reduced matrix is -5.26 * 10 ** 12.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   21 linear transformations is     10.49589768
+ INERTIA (POS,ZER,NEG) of reduced matrix is   39    0    3
+ Determinant of reduced matrix is -1.23 * 10 ** 13.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   22 linear transformations is     10.49589828
+ INERTIA (POS,ZER,NEG) of reduced matrix is   41    0    3
+ Determinant of reduced matrix is -7.73 * 10 ** 13.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   23 linear transformations is     10.49589830
+ INERTIA (POS,ZER,NEG) of reduced matrix is   43    0    3
+ Determinant of reduced matrix is -7.56 * 10 ** 14.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   24 linear transformations is     10.49589830
+ INERTIA (POS,ZER,NEG) of reduced matrix is   45    0    3
+ Determinant of reduced matrix is -1.02 * 10 ** 16.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   25 linear transformations is     10.49589830
+ INERTIA (POS,ZER,NEG) of reduced matrix is   47    0    3
+ Determinant of reduced matrix is -2.18 * 10 ** 17.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   26 linear transformations is     10.49589830
+ INERTIA (POS,ZER,NEG) of reduced matrix is   49    0    3
+ Determinant of reduced matrix is -1.10 * 10 ** 18.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   27 linear transformations is     10.49589830
+ INERTIA (POS,ZER,NEG) of reduced matrix is   51    0    3
+ Determinant of reduced matrix is -2.04 * 10 ** 19.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   28 linear transformations is     10.49589830
+ INERTIA (POS,ZER,NEG) of reduced matrix is   53    0    3
+ Determinant of reduced matrix is -7.94 * 10 ** 20.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   29 linear transformations is     10.49589830
+ INERTIA (POS,ZER,NEG) of reduced matrix is   55    0    3
+ Determinant of reduced matrix is -1.06 * 10 ** 22.0
+
+ *** THE REQUESTED    2 SOLUTION VECTORS CONVERGED
 
  Convergence of RSP solution vectors, threshold = 1.00D-09
  ---------------------------------------------------------------
- (dimension of paired reduced space:   24)
- RSP solution vector no.    1; norm of residual   4.19D-10
+ (dimension of paired reduced space:   58)
+ RSP solution vector no.    1; norm of residual   2.32D-10
+ RSP solution vector no.    2; norm of residual   8.16D-10
 
  *** RSPCTL MICROITERATIONS CONVERGED
 
 
  RSPLR -- linear response calculation for symmetry  1
  RSPLR -- operator label : ZDIPLEN 
- RSPLR -- frequencies :   0.000000
- FREQ 2    0.0000000000000000     
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000  0.500000
+ FREQ 2    0.0000000000000000       0.50000000000000000     
 
 
 
@@ -878,12 +1180,160 @@ Represented as:      C1
  Operator symmetry =  1; triplet =   F
 
 
- *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    2 linear transformations is    -12.40409647
+ INERTIA (POS,ZER,NEG) of reduced matrix is    3    0    1
+ Determinant of reduced matrix is -3.48 * 10 ** -1.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    4 linear transformations is     -0.38892419
+ INERTIA (POS,ZER,NEG) of reduced matrix is    7    0    1
+ Determinant of reduced matrix is -2.42 * 10 **  1.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    6 linear transformations is     -0.27359530
+ INERTIA (POS,ZER,NEG) of reduced matrix is   11    0    1
+ Determinant of reduced matrix is -1.03 * 10 **  3.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after    8 linear transformations is     -0.26859348
+ INERTIA (POS,ZER,NEG) of reduced matrix is   15    0    1
+ Determinant of reduced matrix is -3.57 * 10 **  5.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   10 linear transformations is     -0.26835998
+ INERTIA (POS,ZER,NEG) of reduced matrix is   19    0    1
+ Determinant of reduced matrix is -6.26 * 10 **  7.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   12 linear transformations is     -0.26841199
+ INERTIA (POS,ZER,NEG) of reduced matrix is   22    0    2
+ Determinant of reduced matrix is  1.07 * 10 **  9.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   14 linear transformations is     -0.26837721
+ INERTIA (POS,ZER,NEG) of reduced matrix is   26    0    2
+ Determinant of reduced matrix is  1.88 * 10 ** 10.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   16 linear transformations is     -0.26839019
+ INERTIA (POS,ZER,NEG) of reduced matrix is   29    0    3
+ Determinant of reduced matrix is -3.02 * 10 ** 12.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   18 linear transformations is     -0.26838748
+ INERTIA (POS,ZER,NEG) of reduced matrix is   33    0    3
+ Determinant of reduced matrix is -2.96 * 10 ** 14.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   20 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   37    0    3
+ Determinant of reduced matrix is -2.58 * 10 ** 15.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   21 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   39    0    3
+ Determinant of reduced matrix is -5.87 * 10 ** 16.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   22 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   41    0    3
+ Determinant of reduced matrix is -8.23 * 10 ** 17.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   23 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   43    0    3
+ Determinant of reduced matrix is -6.34 * 10 ** 18.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   24 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   45    0    3
+ Determinant of reduced matrix is -1.02 * 10 ** 19.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   25 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   47    0    3
+ Determinant of reduced matrix is -1.34 * 10 ** 19.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   26 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   49    0    3
+ Determinant of reduced matrix is -1.55 * 10 ** 20.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   27 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   51    0    3
+ Determinant of reduced matrix is -1.42 * 10 ** 21.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   28 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   53    0    3
+ Determinant of reduced matrix is -2.34 * 10 ** 22.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   29 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   55    0    3
+ Determinant of reduced matrix is -3.13 * 10 ** 23.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   30 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   57    0    3
+ Determinant of reduced matrix is -4.06 * 10 ** 25.0
+
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  1,  triplet       F
+
+ GP * SOLUTION vector at frequency     0.50000 a.u.
+ after   31 linear transformations is     -0.26838744
+ INERTIA (POS,ZER,NEG) of reduced matrix is   59    0    3
+ Determinant of reduced matrix is -6.70 * 10 ** 26.0
+
+ *** THE REQUESTED    2 SOLUTION VECTORS CONVERGED
 
  Convergence of RSP solution vectors, threshold = 1.00D-09
  ---------------------------------------------------------------
- (dimension of paired reduced space:   28)
- RSP solution vector no.    1; norm of residual   7.23D-11
+ (dimension of paired reduced space:   62)
+ RSP solution vector no.    1; norm of residual   4.51D-11
+ RSP solution vector no.    2; norm of residual   7.53D-11
 
  *** RSPCTL MICROITERATIONS CONVERGED
 
@@ -900,28 +1350,43 @@ Represented as:      C1
 @ FREQUENCY INDEPENDENT SECOND ORDER PROPERTIES
 
 @ -<< XDIPLEN  ; XDIPLEN  >> =  2.461169664950D+00
-@ -<< XDIPLEN  ; YDIPLEN  >> =  1.523790982329D-06
-@ -<< XDIPLEN  ; ZDIPLEN  >> =  6.075061184716D-07
-@ -<< YDIPLEN  ; YDIPLEN  >> =  6.184500121159D+00
-@ -<< YDIPLEN  ; ZDIPLEN  >> = -1.615863802319D-02
+@ -<< XDIPLEN  ; YDIPLEN  >> =  1.523790891148D-06
+@ -<< XDIPLEN  ; ZDIPLEN  >> =  6.075063792719D-07
+@ -<< YDIPLEN  ; YDIPLEN  >> =  6.184500121160D+00
+@ -<< YDIPLEN  ; ZDIPLEN  >> = -1.615863802295D-02
 @ -<< ZDIPLEN  ; ZDIPLEN  >> =  1.030818162483D+01
 
+@ FREQUENCY DEPENDENT SECOND ORDER PROPERTIES WITH FREQUENCY :
 
- Time used in linear response calculation is      0.01 CPU seconds for symmetry 1
+@    a.u.:  5.0000000D-01
+     cm-1:  1.0973731D+05
+     e.V.:  1.3605692D+01
+  kJ/mol.:  1.3127498D+03
+     nm  :  9.1126706D+01
+
+@ -<< XDIPLEN  ; XDIPLEN  >> =  3.633663187527D+00
+@ -<< XDIPLEN  ; YDIPLEN  >> =  1.816349141823D-04
+@ -<< XDIPLEN  ; ZDIPLEN  >> =  6.003044585501D-04
+@ -<< YDIPLEN  ; YDIPLEN  >> =  1.049589830174D+01
+@ -<< YDIPLEN  ; ZDIPLEN  >> = -8.443164847673D-02
+@ -<< ZDIPLEN  ; ZDIPLEN  >> = -2.683874356517D-01
+
+
+ Time used in linear response calculation is      0.02 CPU seconds for symmetry 1
 
  >>>> Total CPU  time used in RESPONSE:   0.02 seconds
- >>>> Total wall time used in RESPONSE:   0.04 seconds
+ >>>> Total wall time used in RESPONSE:   0.02 seconds
 
 
                    .-------------------------------------------.
                    | End of Dynamic Property Section (RESPONS) |
                    `-------------------------------------------'
 
- >>>> Total CPU  time used in DALTON:   0.04 seconds
- >>>> Total wall time used in DALTON:   0.13 seconds
+ >>>> Total CPU  time used in DALTON:   0.05 seconds
+ >>>> Total wall time used in DALTON:   0.05 seconds
 
  
-     Date and time (Linux)  : Mon Feb 25 17:28:50 2013
+     Date and time (Linux)  : Fri Nov  8 13:22:28 2013
      Host name              : ubuntu                                  
   
 
@@ -938,8 +1403,14 @@ Represented as:      C1
  #  2 1 <<XDIPLEN ,XDIPLEN >>( 0.000000) =      2.461169664950
  #  3 1 <<XDIPLEN ,YDIPLEN >>( 0.000000) =      0.000001523791
  #  4 1 <<XDIPLEN ,ZDIPLEN >>( 0.000000) =      0.000000607506
- #  5 1 <<YDIPLEN ,YDIPLEN >>( 0.000000) =      6.184500121159
+ #  5 1 <<YDIPLEN ,YDIPLEN >>( 0.000000) =      6.184500121160
  #  6 1 <<YDIPLEN ,ZDIPLEN >>( 0.000000) =     -0.016158638023
  #  7 1 <<ZDIPLEN ,ZDIPLEN >>( 0.000000) =     10.308181624834
+ #  8 1 <<XDIPLEN ,XDIPLEN >>( 0.500000) =      3.633663187527
+ #  9 1 <<XDIPLEN ,YDIPLEN >>( 0.500000) =      0.000181634914
+ # 10 1 <<XDIPLEN ,ZDIPLEN >>( 0.500000) =      0.000600304459
+ # 11 1 <<YDIPLEN ,YDIPLEN >>( 0.500000) =     10.495898301739
+ # 12 1 <<YDIPLEN ,ZDIPLEN >>( 0.500000) =     -0.084431648477
+ # 13 1 <<ZDIPLEN ,ZDIPLEN >>( 0.500000) =     -0.268387435652
 
  THE_END   
