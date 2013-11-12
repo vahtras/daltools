@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from nose.tools import raises
 from daltools import rspvec, sirifc
 
 def setup():
@@ -26,6 +27,10 @@ def test_read_w():
     this = Nx[12]
     ref = -2.242435
     assert_(this, ref)
+
+@raises(rspvec.RspVecError)
+def test_read_missing():
+    Nx = rspvec.read("WRONGLAB", 0.0, RSPVEC)
 
 def test_read_all():
     N1, N2 = rspvec.readall("XDIPLEN", RSPVEC)

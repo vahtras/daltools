@@ -5,6 +5,8 @@ THRESHOLD = 1e-5
 
 import numpy as np
 
+class RspVecError(Exception): pass
+
 def read(property_label, freq=0.0, propfile="RSPVEC"):
     """Read response vector given property"""
     import time, numpy
@@ -21,6 +23,11 @@ def read(property_label, freq=0.0, propfile="RSPVEC"):
             buffer_ = rspvec.readbuf(kzyvar,'d')
             mat = numpy.array(buffer_).view(full.matrix)
             return mat
+    # required vector not found
+    raise RspVecError(
+        "Linear response vector N(%s,%g) not found on file %s" %
+        (property_label, freq, propfile)
+        )
 
 def readall(property_label, propfile="RSPVEC"):
     """Read response all vectors given property"""
