@@ -30,7 +30,10 @@ def Dk(label, freq=0.0, ifc=None, tmpdir='/tmp'):
     # Get response vector (no symmetry)
     #
     kzywop = 2*ifc.nwopt
-    NB = rspvec.read(label, freq, propfile=os.path.join(tmpdir, "RSPVEC"))
+    NB = rspvec.read(
+        label, freqs=(freq,), 
+        propfile=os.path.join(tmpdir, "RSPVEC")
+        )[0][0]
     #
     # Vector to matrix
     #

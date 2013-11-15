@@ -19,20 +19,20 @@ def assert_(this, ref):
         from pdb import set_trace; set_trace()
 
 def test_read():
-    Nx = rspvec.read("XDIPLEN", 0, RSPVEC)
+    Nx = rspvec.read("XDIPLEN", propfile=RSPVEC)[0][0]
     this = Nx[5]
     ref = -2.34009730
     assert_(this, ref)
 
 def test_tomat():
-    Nx = rspvec.read("XDIPLEN", 0, RSPVEC)
+    Nx = rspvec.read("XDIPLEN", propfile=RSPVEC)[0][0]
     kx = rspvec.tomat(Nx, ifc, tmpdir=tmpdir)
     this = kx[5, 7]
     ref = -2.34009730
     assert_(this, ref)
 
 def test_tovec():
-    ref = rspvec.read("XDIPLEN", 0, RSPVEC)
+    ref = rspvec.read("XDIPLEN", propfile=RSPVEC)[0][0]
     kx = rspvec.tomat(ref, ifc, tmpdir=tmpdir)
     this = rspvec.tovec(kx, ifc, tmpdir=tmpdir)
     assert_(this, ref)

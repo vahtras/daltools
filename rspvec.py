@@ -4,30 +4,39 @@
 THRESHOLD = 1e-5
 
 import numpy as np
+import time
+from util import full, unformatted
 
 class RspVecError(Exception): pass
 
-def read(property_label, freq=0.0, propfile="RSPVEC"):
+def read(*args, **kwargs):
     """Read response vector given property"""
-    import time, numpy
-    from util import full, unformatted
+    freqs = kwargs.get('freqs', (0.0,))
+    propfile = kwargs.get('propfile', 'RSPVEC')
+
     rspvec = unformatted.FortranBinary(propfile)
-    while rspvec.find(property_label) is not None:
-        # rspvec.rec contains matching record
-        # check that frequncy matches
-        veclabs = rspvec.rec.read(16,'c')
-        vfreq = rspvec.rec.read(1, 'd')[0]
-        if abs(vfreq-freq) < THRESHOLD:
-            rspvec.next()
-            kzyvar = rspvec.reclen / 8
-            buffer_ = rspvec.readbuf(kzyvar,'d')
-            mat = numpy.array(buffer_).view(full.matrix)
-            return mat
-    # required vector not found
-    raise RspVecError(
+    vecs = {}
+
+    for rec in rspvec:
+        for lab in args:
+            if lab in rec:
+                rec.read(16,'c')
+                vfreq = rec.read(1, 'd')[0]
+                if vfreq in freqs:
+                    rspvec.next()
+                    kzyvar = rspvec.reclen / 8
+                    buffer_ = rspvec.readbuf(kzyvar,'d')
+                    vecs[(lab,vfreq)] = np.array(buffer_).view(full.matrix)
+    # check that all required vectors are saved
+    print 'vecs',vecs.keys()
+    for l in args:
+        for v in freqs:
+            if (l,v) not in vecs:
+                raise RspVecError(
         "Linear response vector N(%s,%g) not found on file %s" %
-        (property_label, freq, propfile)
+        (l, v, propfile)
         )
+    return [[vecs[(l, v)] for l in args] for v in freqs]
 
 def readall(property_label, propfile="RSPVEC"):
     """Read response all vectors given property"""
