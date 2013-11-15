@@ -10,12 +10,15 @@ def LR(A, B, w=0.0, tmpdir='/tmp'):
     propfile = os.path.join(tmpdir, 'AOPROPER')
     ifc = sirifc.sirifc(ifcfile)
     a, = prop.read(A, filename=propfile, unpack=True)
-    dkb =  Dk(B, w, ifc, tmpdir)
+    dkb =  Dk(B, freqs=(w,), ifc=ifc, tmpdir=tmpdir)[0][0]
     return a&dkb
 
-def Dk(label, freq=0.0, ifc=None, tmpdir='/tmp'):
+def Dk(*args, **kwargs):
     """Calculate the density transformed with response vector kb
     on RSPVEC for B, as d S kb - kb S d"""
+    freqs = kwargs.get('freqs', (0.0,))
+    ifc = kwargs.get('ifc', None)
+    tmpdir = kwargs.get('tmpdir', '/tmp')
     #
     # Read interface data from SIRIFC if not provided
     #
@@ -31,23 +34,25 @@ def Dk(label, freq=0.0, ifc=None, tmpdir='/tmp'):
     #
     kzywop = 2*ifc.nwopt
     NB = rspvec.read(
-        label, freqs=(freq,), 
+        *args, freqs=freqs,
         propfile=os.path.join(tmpdir, "RSPVEC")
-        )[0][0]
+        )
     #
     # Vector to matrix
     #
-    kB = rspvec.tomat(NB, ifc, tmpdir=tmpdir).T
     cmo = ifc.cmo.unblock()
-    t_kb = timing("kB")
-    kb = cmo*kB*cmo.T
-    t_kb.stop()
+    kb = [
+        [cmo*rspvec.tomat(n, ifc, tmpdir=tmpdir).T*cmo.T 
+        for n in nw
+        ]
+        for nw in NB
+        ]
     S = one.read(filename=os.path.join(tmpdir, 'AOONEINT')).unpack().unblock()
     #(D S kb - kb S D)
     t_dkb = timing("dkb")
     if 1:
         dS = d*S
-        dkb = dS*kb-kb*dS.T
+        dkb = [[dS*k-k*dS.T for k in kw] for kw in kb]
     else:
         dkb =  d*S*kb-kb*S*d
     t_dkb.stop()
