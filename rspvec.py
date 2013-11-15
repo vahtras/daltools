@@ -28,7 +28,7 @@ def read(*args, **kwargs):
                     buffer_ = rspvec.readbuf(kzyvar,'d')
                     vecs[(lab,vfreq)] = np.array(buffer_).view(full.matrix)
     # check that all required vectors are saved
-    print 'vecs',vecs.keys()
+    # print 'vecs',vecs.keys()
     for l in args:
         for v in freqs:
             if (l,v) not in vecs:
