@@ -97,10 +97,13 @@ def jwop(ifc):
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) != 3:
-        print "Usage: %s ncdim property file" % sys.argv[0]
-        sys.exit(1)
-    prop = sys.argv[1]
-    filename = sys.argv[2]
-    rvec = read(prop, filename)
-    print rvec
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('prop', help='Response property')
+    parser.add_argument('filename', help='File of response vectors(RSPVEC)')
+    parser.add_argument('--w', type=float, default=0., help='Frequency')
+    args = parser.parse_args()
+    rvec = read(args.prop, propfile=args.filename, freqs=(args.w,))
+    print args.prop, args.w, args.filename
+    print rvec[0][0]
