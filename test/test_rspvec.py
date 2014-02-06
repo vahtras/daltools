@@ -4,11 +4,12 @@ from nose.tools import raises
 from daltools import rspvec, sirifc
 
 def setup():
-    global tmpdir, RSPVEC, ifc
+    global tmpdir, ifc, RSPVEC, E3VEC
     n, e = os.path.splitext(__file__)
     tmpdir = n + ".d"
     RSPVEC = os.path.join(tmpdir, 'RSPVEC')
     SIRIFC = os.path.join(tmpdir, 'SIRIFC')
+    E3VEC = os.path.join(tmpdir, 'E3VEC')
     ifc = sirifc.sirifc(name=SIRIFC)
 
 def assert_(this, ref):
@@ -28,12 +29,25 @@ def test_read_w():
     ref = -2.242435
     assert_(this, ref)
 
+def test_read_e3():
+    Nx = rspvec.read("XDIPLEN XDIPLEN", propfile=E3VEC)[0][0]
+    this = Nx[1]
+    ref = 0.03874785
+    print Nx
+    assert_(this, ref)
+
+def test_read_e3_w():
+    Nx = rspvec.read("XDIPLEN XDIPLEN", freqs=(0.5,), propfile=E3VEC)[0][0]
+    this = Nx[1]
+    ref = 0.05668560
+    assert_(this, ref)
+
 @raises(rspvec.RspVecError)
 def test_read_missing():
     Nx = rspvec.read("WRONGLAB", propfile=RSPVEC)
 
 def test_read_all():
-    N1, N2 = rspvec.readall("XDIPLEN", RSPVEC)
+    N1, N2 = rspvec.readall("XDIPLEN         ", RSPVEC)[:4:2]
     f1, f2 = N1[1], N2[1]
     assert_([f1, f2], [0, 0.5])
     this = (N1[0][12], N2[0][12])

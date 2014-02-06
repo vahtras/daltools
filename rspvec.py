@@ -11,7 +11,13 @@ class RspVecError(Exception): pass
 
 def read(*args, **kwargs):
     """Read response vector given property"""
-    freqs = kwargs.get('freqs', (0.0,))
+    if 'freqs' in kwargs:
+        #linear response/one frequency
+        bfreqs = kwargs.get('freqs')
+    else:
+        #non-linear response/two frequencies
+        bfreqs = kwargs.get('bfreqs', (0.0,))
+    cfreqs = kwargs.get('cfreqs', (0.0,))
     propfile = kwargs.get('propfile', 'RSPVEC')
 
     rspvec = unformatted.FortranBinary(propfile)
@@ -21,22 +27,24 @@ def read(*args, **kwargs):
         for lab in args:
             if lab in rec:
                 rec.read(16,'c')
-                vfreq = rec.read(1, 'd')[0]
-                if vfreq in freqs:
+                bfreq, cfreq = rec.read(2, 'd')
+                if bfreq in bfreqs and cfreq in cfreqs:
                     rspvec.next()
                     kzyvar = rspvec.reclen / 8
                     buffer_ = rspvec.readbuf(kzyvar,'d')
-                    vecs[(lab,vfreq)] = np.array(buffer_).view(full.matrix)
+                    vecs[(lab, bfreq, cfreq)] = \
+                       np.array(buffer_).view(full.matrix)
     # check that all required vectors are saved
     # print 'vecs',vecs.keys()
     for l in args:
-        for v in freqs:
-            if (l,v) not in vecs:
-                raise RspVecError(
-        "Linear response vector N(%s,%g) not found on file %s" %
-        (l, v, propfile)
-        )
-    return [[vecs[(l, v)] for l in args] for v in freqs]
+        for b in bfreqs:
+            for c in cfreqs:
+                if (l, b, c) not in vecs:
+                    raise RspVecError(
+                        "Response vector N(%s,%g,%g) not found on file %s" %
+                        (l, b, c, propfile)
+                    )
+    return [[vecs[(l, b, c)] for l in args] for b in bfreqs for c in cfreqs]
 
 def readall(property_label, propfile="RSPVEC"):
     """Read response all vectors given property"""
