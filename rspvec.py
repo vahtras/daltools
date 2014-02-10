@@ -44,7 +44,13 @@ def read(*args, **kwargs):
                         "Response vector N(%s,%g,%g) not found on file %s" %
                         (l, b, c, propfile)
                     )
-    return [[vecs[(l, b, c)] for l in args] for b in bfreqs for c in cfreqs]
+    # complement dict with lr pointers
+    if cfreqs == (0.0,):
+        vecs.update({(l,b):vecs[(l,b,0.0)]  for l in args for b in bfreqs})
+        if bfreqs == (0.0,):
+            vecs.update({l:vecs[(l,0.0,0.0)]  for l in args})
+    return vecs
+    #return [[vecs[(l, b, c)] for l in args] for b in bfreqs for c in cfreqs]
 
 def readall(property_label, propfile="RSPVEC"):
     """Read response all vectors given property"""

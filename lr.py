@@ -10,7 +10,7 @@ def LR(A, B, w=0.0, tmpdir='/tmp'):
     propfile = os.path.join(tmpdir, 'AOPROPER')
     ifc = sirifc.sirifc(ifcfile)
     a, = prop.read(A, filename=propfile, unpack=True)
-    dkb =  Dk(B, freqs=(w,), ifc=ifc, tmpdir=tmpdir)[0][0]
+    dkb =  Dk(B, freqs=(w,), ifc=ifc, tmpdir=tmpdir)[(B,w)]
     return a&dkb
 
 def Dk(*args, **kwargs):
@@ -41,21 +41,11 @@ def Dk(*args, **kwargs):
     # Vector to matrix
     #
     cmo = ifc.cmo.unblock()
-    kb = [
-        [cmo*rspvec.tomat(n, ifc, tmpdir=tmpdir).T*cmo.T 
-        for n in nw
-        ]
-        for nw in NB
-        ]
+    kb = { lw:cmo*rspvec.tomat(NB[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in NB }
     S = one.read(filename=os.path.join(tmpdir, 'AOONEINT')).unpack().unblock()
     #(D S kb - kb S D)
-    t_dkb = timing("dkb")
-    if 1:
-        dS = d*S
-        dkb = [[dS*k-k*dS.T for k in kw] for kw in kb]
-    else:
-        dkb =  d*S*kb-kb*S*d
-    t_dkb.stop()
+    dS = d*S
+    dkb = { lw: dS*kb[lw]-kb[lw]*dS.T for lw in kb }
     return dkb
 
 if __name__ == "__main__":

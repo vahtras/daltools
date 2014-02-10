@@ -18,26 +18,26 @@ def assert_(this, ref):
     assert np.allclose(this, ref)
 
 def test_read():
-    Nx = rspvec.read("XDIPLEN", propfile=RSPVEC)[0][0]
+    Nx = rspvec.read("XDIPLEN", propfile=RSPVEC)["XDIPLEN"]
     this = Nx[12]
     ref = -0.75732690
     assert_(this, ref)
 
 def test_read_w():
-    Nx = rspvec.read("XDIPLEN", freqs=(0.5,), propfile=RSPVEC)[0][0]
+    Nx = rspvec.read("XDIPLEN", freqs=(0.5,), propfile=RSPVEC)[("XDIPLEN", 0.5)]
     this = Nx[12]
     ref = -2.242435
     assert_(this, ref)
 
 def test_read_e3():
-    Nx = rspvec.read("XDIPLEN XDIPLEN", propfile=E3VEC)[0][0]
+    Nx = rspvec.read("XDIPLEN XDIPLEN", propfile=E3VEC)["XDIPLEN XDIPLEN"]
     this = Nx[1]
     ref = 0.03874785
     print Nx
     assert_(this, ref)
 
 def test_read_e3_w():
-    Nx = rspvec.read("XDIPLEN XDIPLEN", freqs=(0.5,), propfile=E3VEC)[0][0]
+    Nx = rspvec.read("XDIPLEN XDIPLEN", freqs=(0.5,), propfile=E3VEC)[("XDIPLEN XDIPLEN",0.5)]
     this = Nx[1]
     ref = 0.05668560
     assert_(this, ref)
@@ -55,14 +55,14 @@ def test_read_all():
     assert_(this, ref)
 
 def test_tomat():
-    Nx = rspvec.read("XDIPLEN", propfile=RSPVEC)[0][0]
+    Nx = rspvec.read("XDIPLEN", propfile=RSPVEC)["XDIPLEN"]
     kx = rspvec.tomat(Nx, ifc, tmpdir=tmpdir)
     this = kx[8, 3]
     ref = 0.75732690
     assert_(this, ref)
 
 def test_tovec():
-    Nx = rspvec.read("XDIPLEN", propfile=RSPVEC)[0][0]
+    Nx = rspvec.read("XDIPLEN", propfile=RSPVEC)["XDIPLEN"]
     kx = rspvec.tomat(Nx, ifc, tmpdir=tmpdir)
     Nx = rspvec.tovec(kx, ifc, tmpdir=tmpdir)
     this = Nx[44]
