@@ -25,7 +25,7 @@ def read(*args, **kwargs):
 
     for rec in rspvec:
         for lab in args:
-            if lab in rec:
+            if lab.ljust(16) in rec:
                 rec.read(16,'c')
                 bfreq, cfreq = rec.read(2, 'd')
                 if bfreq in bfreqs and cfreq in cfreqs:
