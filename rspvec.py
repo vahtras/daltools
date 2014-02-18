@@ -19,8 +19,8 @@ def read(*args, **kwargs):
 
     for rec in rspvec:
         for lab in args:
-            if lab in rec:
-                rec.read(16,'c')
+            if lab.ljust(16) in rec:
+                print rec.read(16,'c')
                 vfreq = rec.read(1, 'd')[0]
                 if vfreq in freqs:
                     rspvec.next()
