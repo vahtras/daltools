@@ -80,6 +80,8 @@ def readin(inputfile):
                     line = lines.pop(4)
                     if nco > 3:
                         line += lines.pop(4)
+                    if nco > 6:
+                        line += lines.pop(4)
                     field = line.split()
                     atom['basis'][l][block]['prim'].append(float(field[0]))
                     atom['basis'][l][block]['cont'].append([])
