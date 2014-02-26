@@ -18,7 +18,6 @@ def setup():
 
 
 def test_XXX_A2():
-    print tmpdir
     XXX = QR('XDIPLEN', 'XDIPLEN', 'XDIPLEN', tmpdir=tmpdir, a2test=True)
     XXXref = 9.652e-05
     assert_(XXX, XXXref)
@@ -26,10 +25,14 @@ def test_XXX_A2():
 
 
 def test_XXX():
-    print tmpdir
-    XX = QR('XDIPLEN', 'XDIPLEN', 'XDIPLEN', tmpdir=tmpdir)
-    XXref = 0.00013323
-    assert_(XX, XXref)
+    XXX = QR('XDIPLEN', 'XDIPLEN', 'XDIPLEN', tmpdir=tmpdir)
+    XXXref = 0.00013323
+    assert_(XXX, XXXref)
+
+def test_ZXX():
+    ZXX = QR('ZDIPLEN', 'XDIPLEN', 'XDIPLEN', tmpdir=tmpdir)
+    ZXXref = -1.68075251
+    assert_(ZXX, ZXXref)
 
 
 if __name__ == '__main__':
