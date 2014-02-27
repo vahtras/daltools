@@ -25,7 +25,7 @@ def D2k(*args, **kwargs):
     
     bclabs = args
 
-    bcfreqs = kwargs.get('bcfreqs', (0.0,))
+    bcfreqs = kwargs.get('bcfreqs', ((0.0, 0.0),))
     tmpdir = kwargs.get('tmpdir', '/tmp')
     ifc = kwargs.get('ifc', None)
 
@@ -37,7 +37,7 @@ def D2k(*args, **kwargs):
     # Read interface data from SIRIFC if not provided
     #
     if ifc is None:
-        ifc = sirifc.sirifc(name=SIRIFC)
+        ifc = sirifc(name=SIRIFC)
     #
     # Get densities in AO basis
     #
@@ -94,7 +94,6 @@ def D2k(*args, **kwargs):
             _kb*S*_dkc - _dkc*S*_kb
             )
 
-        print 'a2test', ('a2test' in kwargs)
         if 'a2test' in kwargs:
             print _dkbc
             _dkbc.clear()
