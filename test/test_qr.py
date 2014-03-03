@@ -1,5 +1,6 @@
 # 2014.02.26 13:49:28 CET
 import os
+import pdb
 import numpy as np
 from daltools.qr import QR
 
@@ -34,10 +35,19 @@ def test_ZXX():
     ZXXref = -1.68075251
     assert_(ZXX, ZXXref)
 
+def test_XZX():
+    XZX = QR('XDIPLEN', 'ZDIPLEN', 'XDIPLEN', tmpdir=tmpdir)
+    XZXref = -1.68075251
+    assert_(XZX, XZXref)
+
+def test_XXZ():
+    XXZ = QR('XDIPLEN', 'XDIPLEN', 'ZDIPLEN', tmpdir=tmpdir)
+    XXZref = -1.68075251
+    assert_(XXZ, XXZref)
+
 
 if __name__ == '__main__':
     setup()
-    test_XXX_A2()
 
 #+++ okay decompyling test_qr.pyc 
 # decompiled 1 files: 1 okay, 0 failed, 0 verify failed

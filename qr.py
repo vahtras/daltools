@@ -17,8 +17,9 @@ def QR(A, B, C, wb=0.0, wc=0.0, tmpdir='/tmp', **kwargs):
     ifc = sirifc(ifcfile)
     a, = prop.read(A, filename=propfile, unpack=True)
     BC = B.ljust(8) + C.ljust(8)
-    dkbc =  D2k(BC, bcfreqs=((wb,wc),), ifc=ifc, tmpdir=tmpdir, **kwargs)[BC,wb,wc]
-    return a&dkbc
+    #pdb.set_trace()
+    dBC =  D2k(BC, bcfreqs=((wb,wc),), ifc=ifc, tmpdir=tmpdir, **kwargs)
+    return a&dBC[BC,wb, wc]
 
 def D2k(*args, **kwargs):
     """Calculated second-order density matrix for quadratic response"""
@@ -52,6 +53,9 @@ def D2k(*args, **kwargs):
     cfreqs = {wbc[1] for wbc in bcfreqs}
     blabs = {bclab[:8] for bclab in bclabs}
     clabs = {bclab[8:] for bclab in bclabs}
+    bkeys = [(l,w) for l in blabs for w in bfreqs]
+    ckeys = [(l,w) for l in clabs for w in cfreqs]
+    bckeys = [(l,wb,wc) for l in bclabs for wb in bfreqs for wc in cfreqs]
 
 
     NB = rspvec.read(
@@ -69,18 +73,18 @@ def D2k(*args, **kwargs):
         )
     # transform density over unique pairs
     cmo = ifc.cmo.unblock()
-    kb = { lw:cmo*rspvec.tomat(NB[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in NB }
-    kc = { lw:cmo*rspvec.tomat(NC[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in NC }
+    kb = { lw:cmo*rspvec.tomat(NB[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in bkeys }
+    kc = { lw:cmo*rspvec.tomat(NC[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in ckeys }
 
-    kbc = { lw:cmo*rspvec.tomat(NBC[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in NBC }
+    kbc = { lw:cmo*rspvec.tomat(NBC[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in bckeys }
 
     S = one.read(filename=AOONEINT).unpack().unblock()
     Sd = S*d
-    dkb = { lw: kb[lw]*Sd - Sd.T*kb[lw] for lw in kb }
-    dkc = { lw: kc[lw]*Sd - Sd.T*kc[lw] for lw in kc }
-    dkbc = { lw: kbc[lw]*Sd - Sd.T*kbc[lw] for lw in kbc }
+    dkb = { lw: kb[lw]*Sd - Sd.T*kb[lw] for lw in bkeys }
+    dkc = { lw: kc[lw]*Sd - Sd.T*kc[lw] for lw in ckeys }
+    dkbc = { lw: kbc[lw]*Sd - Sd.T*kbc[lw] for lw in bckeys }
 
-    for lbc, wb, wc in dkbc:
+    for lbc, wb, wc in bckeys:
         lb, lc = lbc[:8], lbc[8:]
         print "lb=%s lc=%s" % (lb, lc)
         _dkbc = dkbc[(lbc, wb, wc)]
@@ -99,7 +103,6 @@ def D2k(*args, **kwargs):
             _dkbc.clear()
             print _dkbc
         _dkbc += _da2bc
-        #print _dkbc
             
 
     return dkbc
