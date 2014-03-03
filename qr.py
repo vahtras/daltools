@@ -103,6 +103,11 @@ def D2k(*args, **kwargs):
             _dkbc.clear()
             print _dkbc
         _dkbc += _da2bc
+
+    #Symmetrize keys
+        dkbc.update({(lbc[8:] + lbc[:8], wc, wb): _dkbc})
+        
+    
             
 
     return dkbc
