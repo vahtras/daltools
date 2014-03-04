@@ -49,7 +49,7 @@ def read(*args, **kwargs):
 
 
     # now check that all required vectors are saved
-    print 'vecs',vecs.keys()
+    #print 'vecs',vecs.keys()
     for l in args:
         for b in bfreqs:
             for c in cfreqs:
