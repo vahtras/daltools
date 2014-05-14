@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """Linear response module"""
 import os
-from util.timing import timing
-import prop, sirifc, dens, rspvec, one
+from .util.timing import timing
+from . import prop, sirifc, dens, rspvec, one
 def LR(A, B, w=0.0, tmpdir='/tmp'):
     """Calculate the linear response function <<A;B>> from response vector
     on RSPVEC for B, as <[kB,A]>"""

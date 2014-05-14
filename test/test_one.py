@@ -1,7 +1,7 @@
 import os
 import numpy as np
-from daltools import one
-from util import blocked
+from .. import one
+from ..util import blocked
 
 def setup():
     global tmpdir

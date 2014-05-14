@@ -1,6 +1,7 @@
 import os
 import numpy as np
-from daltools import sirifc
+from .. import sirifc
+from ..util import full
 
 def setup():
     global tmpdir
@@ -36,5 +37,4 @@ def test_cmo():
 
 def test_dv():
     dv = np.array([1.97086440, 0, 0.00940855, 0, 0, 0.01972706])
-    from util import full
     assert_(ifc.dv.view(full.matrix), dv)

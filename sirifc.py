@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Module for reading SIRIUS interface file (SIRIFC)"""
 import numpy
-from util import unformatted, blocked, full
+from .util import unformatted, blocked, full
 
 class sirifc(unformatted.FortranBinary):
     """Read data from dalton interface file"""

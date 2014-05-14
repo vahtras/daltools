@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from daltools.lr import LR
+from ..lr import LR
 
 def assert_(this, ref):
     print this

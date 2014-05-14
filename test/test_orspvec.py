@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from daltools import rspvec, sirifc
+from .. import rspvec, sirifc
 
 def setup():
     global tmpdir, RSPVEC, ifc

@@ -3,8 +3,8 @@
 import os
 import math
 import numpy as np
-from util import unformatted, full
-from daltools import one, sirifc, dens, rspvec
+from .util import unformatted, full
+from . import one, sirifc, dens, rspvec
 
 def read(*args, **kwargs):
     """Read property integral"""
