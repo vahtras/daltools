@@ -3,8 +3,8 @@
 Utility routines to generate density matrices
 """
 from math import sqrt
-from daltools import one, sirifc
-from util import full, blocked
+from . import one, sirifc
+from .util import full, blocked
 
 def h1diag(nisht, nasht, filename='AOONEINT'):
     """Generate density from diagonalized one-electron Hamiltonian"""

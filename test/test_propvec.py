@@ -1,7 +1,7 @@
 import os
 import numpy as np
-from util.full import init
-from daltools import prop
+from ..util.full import init
+from .. import prop
 
 def setup():
     global tmpdir

@@ -1,7 +1,7 @@
 import os
 import numpy as np
-from util import full
-from daltools import dens
+from ..util import full
+from .. import dens
 
 def setup():
     global tmpdir

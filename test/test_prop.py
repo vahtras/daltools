@@ -1,6 +1,6 @@
 import os
 import numpy as np
-from daltools import prop, sirifc
+from .. import prop, sirifc
 
 def setup():
     global propfile, nbast

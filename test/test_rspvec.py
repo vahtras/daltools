@@ -1,7 +1,7 @@
 import os
 import numpy as np
 from nose.tools import raises
-from daltools import rspvec, sirifc
+from .. import rspvec, sirifc
 
 def setup():
     global tmpdir, ifc, RSPVEC, E3VEC
