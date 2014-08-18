@@ -1,40 +1,33 @@
+import unittest
 import os
 import numpy as np
 from .. import sirifc
 from ..util import full
 
-def setup():
-    global tmpdir
-    n, e = os.path.splitext(__file__)
-    tmpdir = n + ".d"
-    global ifc
-    ifc = sirifc.sirifc(os.path.join(tmpdir, 'SIRIFC'))
+class TestSirIfc(unittest.TestCase):
 
-def teardown():
-    global ifc
-    del(ifc)
+    def setUp(self):
+        n, _ = os.path.splitext(__file__)
+        tmpdir = n + ".d"
+        self.ifc = sirifc.sirifc(os.path.join(tmpdir, 'SIRIFC'))
 
-def assert_(this, ref):
-    print this, ref
-    assert np.allclose(this, ref)
+    def test_potnuc(self):
+        self.assertAlmostEqual(self.ifc.potnuc, 1.8290382)
 
-def test_potnuc():
-    assert_(ifc.potnuc, 1.829038)
+    def test_emcscf(self):
+        self.assertAlmostEqual(self.ifc.emcscf, -1.2492926)
 
-def test_emcscf():
-    assert_(ifc.emcscf, -1.249293)
+    def test_dimensions(self):
+        this = (self.ifc.nisht, self.ifc.nasht, self.ifc.norbt, self.ifc.nbast, self.ifc.nsym)
+        self.assertTupleEqual(this, (0, 3, 3, 3, 4))
 
-def test_dimensions():
-    assert ifc.nisht == 0
-    assert ifc.nasht == 3
-    assert ifc.norbt == 3
-    assert ifc.nbast == 3
-    assert ifc.nsym == 4
+    def test_cmo(self):
+        cmo1 = np.array([[0.45236534, 1.38834090], [0.36316622, -0.77259529]])
+        np.testing.assert_almost_equal(self.ifc.cmo[0], cmo1)
 
-def test_cmo():
-    cmo1 = np.array([[0.45236534, 1.38834090], [0.36316622, -0.77259529]])
-    assert_(ifc.cmo[0], cmo1)
+    def test_dvself(self):
+        dv = np.array([1.97086440, 0, 0.00940855, 0, 0, 0.01972706])
+        np.testing.assert_almost_equal(self.ifc.dv.view(full.matrix), dv)
 
-def test_dv():
-    dv = np.array([1.97086440, 0, 0.00940855, 0, 0, 0.01972706])
-    assert_(ifc.dv.view(full.matrix), dv)
+if __name__ == "__main__":
+    unittest.main()

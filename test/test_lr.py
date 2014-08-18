@@ -1,41 +1,33 @@
+import unittest
 import os
 import numpy as np
 from ..lr import LR
 
-def assert_(this, ref):
-    print this
-    print ref
-    assert np.allclose(this, ref)
+class TestLR(unittest.TestCase):
 
-def setup():
-    global tmpdir
-    n, e = os.path.splitext(__file__)
-    tmpdir = n + ".d"
+    def setUp(self):
+        n, _ = os.path.splitext(__file__)
+        self.tmpdir = n + ".d"
 
-def test_XX():
-    print tmpdir
-    XX = LR('XDIPLEN', 'XDIPLEN', 0, tmpdir)
-    XXref = -2.461169664950
-    assert_(XX, XXref)
+    def test_XX(self):
+        XX = LR('XDIPLEN', 'XDIPLEN', 0, self.tmpdir)
+        XXref = -2.461169664950
+        self.assertAlmostEqual(XX, XXref)
 
-def test_YY():
-    print tmpdir
-    YY = LR('YDIPLEN', 'YDIPLEN', 0, tmpdir)
-    YYref = -6.184500121159
-    assert_(YY, YYref)
+    def test_YY(self):
+        YY = LR('YDIPLEN', 'YDIPLEN', 0, self.tmpdir)
+        YYref = -6.184500121159
+        self.assertAlmostEqual(YY, YYref)
 
-def test_YZ():
-    print tmpdir
-    YZ = LR('YDIPLEN', 'ZDIPLEN', 0, tmpdir)
-    YZref = 0.016158638023
-    assert_(YZ, YZref)
+    def test_YZ(self):
+        YZ = LR('YDIPLEN', 'ZDIPLEN', 0, self.tmpdir)
+        YZref = 0.016158638023
+        self.assertAlmostEqual(YZ, YZref)
 
-def test_ZZ():
-    print tmpdir
-    ZZ = LR('ZDIPLEN', 'ZDIPLEN', 0, tmpdir)
-    ZZref = -10.308181624834
-    assert_(ZZ, ZZref)
+    def test_ZZ(self):
+        ZZ = LR('ZDIPLEN', 'ZDIPLEN', 0, self.tmpdir)
+        ZZref = -10.308181624834
+        self.assertAlmostEqual(ZZ, ZZref)
 
 if __name__ == "__main__":
-    setup()
-    test_XX()
+    unittest.main()
