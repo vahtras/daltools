@@ -26,33 +26,65 @@ def readhead(filename="AOONEINT"):
     #
     # Buffer should now contains MAXREP data
     #
-    nsym = aooneint.readbuf(1,'i')[0]
-    #print "nsym",nsym
-    naos = aooneint.readbuf(nsym,'i')
-    #print "naos",naos
-    potnuc = aooneint.readbuf(1,'d')[0]
-    #print "naos",naos
+
+    FLOAT = 'd'
+    INT = _get_integer_format(aooneint.rec)
+
+    nsym = aooneint.readbuf(1, INT)[0]
+    naos = aooneint.readbuf(nsym, INT)
+    potnuc = aooneint.readbuf(1, FLOAT)[0]
     unlabeled = {
-        "ttitle":title,
-        "nsym":nsym,
-        "naos":naos,
-        "potnuc":potnuc
+        "ttitle": title,
+        "nsym": nsym,
+        "naos": naos,
+        "potnuc": potnuc,
+        "int_fmt": INT,
+        "float_fmt": FLOAT
         }
     aooneint.close()
     return unlabeled
 
+def _get_integer_format(header_record):
+    """Determine integer format from first record of AOONTINT"""
+    # from herrdn.F:
+    # WRITE (LUONEL) MAXREP+1,(NAOS(I),I=1,MAXREP+1), POTNUC,
+    #&              (0.D0,I=1,2) ! so record is minimum 32 bytes
+    floatsize = 8
+    dimensions = np.array(
+	[[intsize*(nsym+1) + 3*floatsize for intsize in [4, 8]
+	 ] for nsym in [1, 2, 4, 8]]
+	)
+    if header_record.reclen in dimensions[:, 0]:
+       integer_format = 'i'
+    elif header_record.reclen in dimensions[:, 1]:
+       integer_format = 'q'
+    else:
+       raise Exception("Unknown binary format in AOONEINT")
+
+    return integer_format
+	
+
 def readisordk(filename="AOONEINT"):
     """Read data under label ISORDK in AOONEINT"""
+
+    header = readhead(filename)
+    INT = header['int_fmt']
+    FLOAT = header['float_fmt']
+
     aooneint = unformatted.FortranBinary(filename)
     table1 = aooneint.find("ISORDK")
-    aooneint.next() #dummy
     aooneint.next()
-    sizeofi = struct.calcsize('i')
-    sizeofd = struct.calcsize('d')
+    aooneint.next()
+    print 'rlen', aooneint.reclen, len(aooneint.data)
+    sizeofi = struct.calcsize(INT)
+    sizeofd = struct.calcsize(FLOAT)
+    print 'size', sizeofi, sizeofd
     mxcent_ = (len(aooneint.data)-sizeofi)/(4*sizeofd)
-    chrn_ = aooneint.readbuf(mxcent_,'d')
-    nucdep = aooneint.readbuf(1,'i')[0]
-    cooo_ = aooneint.readbuf(3*mxcent_,'d')
+    print 'len-i,.. ', aooneint.reclen-sizeofi, 4*sizeofd
+    print 'mxcent', mxcent_
+    chrn_ = aooneint.readbuf(mxcent_, FLOAT)
+    nucdep = aooneint.readbuf(1, INT)[0]
+    cooo_ = aooneint.readbuf(3*mxcent_, FLOAT)
     isordk_ = {
         "table":table1,
         "chrn":chrn_,
@@ -64,6 +96,11 @@ def readisordk(filename="AOONEINT"):
 
 def readscfinp(filename="AOONEINT"):
     """Read data under labl SCFINP in AOONEINT"""
+
+    header = readhead(filename)
+    INT = header['int_fmt']
+    FLOAT = header['float_fmt']
+
     aooneint = unformatted.FortranBinary(filename)
     table2 = aooneint.find("SCFINP")
     #print table2
@@ -76,30 +113,30 @@ def readscfinp(filename="AOONEINT"):
     else:
         title = aooneint.readbuf(192,'c')
     scfinp_["ttitle"] = title
-    nsym = aooneint.readbuf(1,'i')[0]
+    nsym = aooneint.readbuf(1, INT)[0]
     scfinp_["nsym"] = nsym
-    scfinp_["naos"] = aooneint.readbuf(nsym,'i')
-    scfinp_["potnuc"] = aooneint.readbuf(1,'d')[0]
-    kmax = aooneint.readbuf(1,'i')[0]
+    scfinp_["naos"] = aooneint.readbuf(nsym, INT)
+    scfinp_["potnuc"] = aooneint.readbuf(1, FLOAT)[0]
+    kmax = aooneint.readbuf(1, INT)[0]
     scfinp_["kmax"] = kmax
-    scfinp_["ncent"] = aooneint.readbuf(kmax,'i')
-    nbasis = aooneint.readbuf(1,'i')[0]
+    scfinp_["ncent"] = aooneint.readbuf(kmax,INT)
+    nbasis = aooneint.readbuf(1,INT)[0]
     scfinp_["nbasis"] = nbasis
-    scfinp_["jtran"] = aooneint.readbuf(nbasis,'i')
-    scfinp_["itran"] = aooneint.readbuf(8*nbasis,'i')
-    scfinp_["ctran"] = aooneint.readbuf(8*nbasis,'d')
-    scfinp_["nbasis"] = aooneint.readbuf(1,'i')[0]
-    scfinp_["inamn"] = aooneint.readbuf(nbasis,'i')
-    scfinp_["iptyp"] = aooneint.readbuf(nbasis,'i')
-    scfinp_["dpnuc"] = aooneint.readbuf(3,'d')
-    nucdep = aooneint.readbuf(1,'i')[0]
+    scfinp_["jtran"] = aooneint.readbuf(nbasis,INT)
+    scfinp_["itran"] = aooneint.readbuf(8*nbasis,INT)
+    scfinp_["ctran"] = aooneint.readbuf(8*nbasis,FLOAT)
+    scfinp_["nbasis"] = aooneint.readbuf(1,INT)[0]
+    scfinp_["inamn"] = aooneint.readbuf(nbasis,INT)
+    scfinp_["iptyp"] = aooneint.readbuf(nbasis,INT)
+    scfinp_["dpnuc"] = aooneint.readbuf(3,FLOAT)
+    nucdep = aooneint.readbuf(1,INT)[0]
     scfinp_["nucdep"] = nucdep
-    scfinp_["cooo"] = aooneint.readbuf(3*nucdep,'d')
-    scfinp_["ifxyz"] = aooneint.readbuf(3,'i')
-    scfinp_["dummy"] = aooneint.readbuf(1,'d')[0]
-    scfinp_["qpol"] = aooneint.readbuf(6,'d')
-    scfinp_["qq"] = aooneint.readbuf(3,'d')
-    scfinp_["jfxyz"] = aooneint.readbuf(3,'i')
+    scfinp_["cooo"] = aooneint.readbuf(3*nucdep,FLOAT)
+    scfinp_["ifxyz"] = aooneint.readbuf(3,INT)
+    scfinp_["dummy"] = aooneint.readbuf(1,FLOAT)[0]
+    scfinp_["qpol"] = aooneint.readbuf(6,FLOAT)
+    scfinp_["qq"] = aooneint.readbuf(3,FLOAT)
+    scfinp_["jfxyz"] = aooneint.readbuf(3,INT)
     #print "scfinp_",scfinp; sys.exit(0)
     aooneint.close()
     return scfinp_
@@ -113,6 +150,8 @@ def read(label="OVERLAP", filename="AOONEINT"):
     unlabeled = readhead(filename)
     nsym = unlabeled["nsym"]
     nbas = unlabeled["naos"]
+    INT = unlabeled["int_fmt"]
+    FLOAT = unlabeled["float_fmt"]
     nnbast = 0
     for nbasi in nbas:
         nnbast += nbasi*(nbasi+1)/2
@@ -127,9 +166,9 @@ def read(label="OVERLAP", filename="AOONEINT"):
     #
 
     for rec in aooneint:
-       buf = rec.read(lbuf, 'd')
-       ibuf = rec.read(lbuf, 'i')
-       length, = rec.read(1, 'i')
+       buf = rec.read(lbuf, FLOAT)
+       ibuf = rec.read(lbuf, INT)
+       length, = rec.read(1, INT)
        if length < 0: break
        for i, b in zip(ibuf[:length], buf[:length]):
            s[i-1] = b

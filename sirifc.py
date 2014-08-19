@@ -19,30 +19,39 @@ class sirifc(unformatted.FortranBinary):
         self.find(sirifc.ifclabel)
 
         self.next()
-        self.potnuc, self.emy, self.eactive, self.emcscf = self.readbuf(4,'d')
-        self.istate, self.ispin, self.nactel, self.lsym  = self.readbuf(4,'i')
+        if self.reclen == 64:
+           self.INT = 'q'
+        elif self.reclen == 48:
+           self.INT = 'i'
+	else:
+           raise Exception('Unconsistent first record in SIRIFC')
+
+	self.FLOAT = 'd'
+
+        self.potnuc, self.emy, self.eactive, self.emcscf = self.readbuf(4, self.FLOAT)
+        self.istate, self.ispin, self.nactel, self.lsym  = self.readbuf(4, self.INT)
 
         self.next()
         self.nisht, self.nasht, self.nocct, self.norbt, self.nbast, \
         self.nconf, self.nwopt, self.nwoph, self.ncdets, self.ncmot, \
         self.nnashx, self.nnashy, self.nnorbt, self.n2orbt, self.nsym, \
-        = self.readbuf(15,'i')
+        = self.readbuf(15, self.INT)
 
-        self.muld2h = numpy.array(self.readbuf(64, 'i')).reshape((8, 8))
+        self.muld2h = numpy.array(self.readbuf(64, self.INT)).reshape((8, 8))
 
-        self.nrhf = numpy.array(self.readbuf(8, 'i'))
-        self.nfro = numpy.array(self.readbuf(8, 'i'))
-        self.nish = numpy.array(self.readbuf(8, 'i'))
-        self.nash = numpy.array(self.readbuf(8, 'i'))
-        self.norb = numpy.array(self.readbuf(8, 'i'))
-        self.nbas = numpy.array(self.readbuf(8, 'i'))
+        self.nrhf = numpy.array(self.readbuf(8, self.INT))
+        self.nfro = numpy.array(self.readbuf(8, self.INT))
+        self.nish = numpy.array(self.readbuf(8, self.INT))
+        self.nash = numpy.array(self.readbuf(8, self.INT))
+        self.norb = numpy.array(self.readbuf(8, self.INT))
+        self.nbas = numpy.array(self.readbuf(8, self.INT))
 
         self.nelmn1, self.nelmx1, self.nelmn3, self.nelmx3, self.mctype \
-        = self.readbuf(5, 'i')
+        = self.readbuf(5, self.INT)
 
-        self.nas1 = numpy.array(self.readbuf(8, 'i'))
-        self.nas2 = numpy.array(self.readbuf(8, 'i'))
-        self.nas3 = numpy.array(self.readbuf(8, 'i'))
+        self.nas1 = numpy.array(self.readbuf(8, self.INT))
+        self.nas2 = numpy.array(self.readbuf(8, self.INT))
+        self.nas3 = numpy.array(self.readbuf(8, self.INT))
 
         self.file.close()
         return
@@ -57,7 +66,7 @@ class sirifc(unformatted.FortranBinary):
             for i in range(3): self.next()
             self.file.close()
             ncmot4 = max(self.ncmot, 4)
-            dbl = self.readbuf(ncmot4,'d')
+            dbl = self.readbuf(ncmot4, self.FLOAT)
             n = 0
             self._cmo = blocked.matrix(self.nbas, self.norb)
             for isym in range(8):
@@ -77,7 +86,7 @@ class sirifc(unformatted.FortranBinary):
             for i in range(5): 
                 self.next()
             mmashx = max(self.nnashx, 4)
-            dbl = self.readbuf(self.nnashx, 'd')
+            dbl = self.readbuf(self.nnashx, self.FLOAT)
             self._dv = full.triangular.init(dbl)
         return self._dv
 
@@ -90,7 +99,7 @@ class sirifc(unformatted.FortranBinary):
             for i in range(7): self.next()
             self.file.close()
             m2ashy = max(self.nnashx**2, 4)
-            dbl = self.readbuf(m2ashy, 'd')
+            dbl = self.readbuf(m2ashy, self.FLOAT)
             self._pv = full.matrix((self.nnashx, self.nnashx))
             n = 0
             for i in range(self.nnashx):
@@ -109,7 +118,7 @@ class sirifc(unformatted.FortranBinary):
             for i in range(6): self.next()
             self.file.close()
             m2orbt = max(self.n2orbt, 4)
-            dbl = self.readbuf(m2orbt, 'd')
+            dbl = self.readbuf(m2orbt, self.FLOAT)
             self._fock = blocked.matrix(self.norb, self.norb)
             n = 0
             for isym in range(8):
@@ -128,7 +137,7 @@ class sirifc(unformatted.FortranBinary):
             self.find(self.ifclabel)
             for i in range(8): self.next()
             mmorbt = max(self.nnorbt, 4)
-            dbl = self.readbuf(mmorbt, 'd')
+            dbl = self.readbuf(mmorbt, self.FLOAT)
             self._fc = blocked.triangular(self.norb)
             #print self.fc
             n = 0
@@ -151,7 +160,7 @@ class sirifc(unformatted.FortranBinary):
             self.find(self.ifclabel)
             for i in range(9): self.next()
             mmorbt = max(self.nnorbt, 4)
-            dbl = self.readbuf(mmorbt, 'd')
+            dbl = self.readbuf(mmorbt, self.FLOAT)
             self._fv = blocked.triangular(self.norb)
             #print self.fc
             n = 0
@@ -237,9 +246,11 @@ if __name__ == "__main__":
     import sys
     try:
         filename = sys.argv[1]
-        ifc = sirifc(name=filename)
-        print ifc
-    except(IndexError):
+    except IndexError as e:
+	print "IndexError", e
         print "Usage: %s [path]/SIRIFC" % sys.argv[0]
         sys.exit(1)
+
+    ifc = sirifc(name=filename)
+    print ifc
         

@@ -11,11 +11,12 @@ class TestDens(unittest.TestCase):
         self.tmpdir = n + ".d"
 
     def test_h1diag(self):
-        diref = full.init(
-                [[ 0.53709620, 0.33768834, 0.],
-                 [ 0.33768834, 0.21231469, 0.],
-                 [ 0.        ,  0.       , 0.]]
-                )
+        diref = full.init([
+        [0.5370962 ,  0.33768834,  0.        ],
+        [ 0.33768834,  0.21231469,  0.        ],
+        [ 0.        ,  0.        ,  0.        ]
+	])
+
 
         di, da = dens.h1diag(1, 1, filename=os.path.join(self.tmpdir, "AOONEINT"))
         np.testing.assert_almost_equal(di, diref)
