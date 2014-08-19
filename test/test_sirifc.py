@@ -14,12 +14,44 @@ class TestSirIfc(unittest.TestCase):
     def test_potnuc(self):
         self.assertAlmostEqual(self.ifc.potnuc, 31.249215315972)
 
+    def test_emy(self):
+        self.assertAlmostEqual(self.ifc.emy, -143.60291282551114)
+
+    def test_eactive(self):
+        self.assertAlmostEqual(self.ifc.eactive, 0.0)
+
     def test_emcscf(self):
         self.assertAlmostEqual(self.ifc.emcscf, -112.353697509539)
 
-    def test_dimensions(self):
-        this = (self.ifc.nisht, self.ifc.nasht, self.ifc.norbt, self.ifc.nbast, self.ifc.nsym)
-        self.assertTupleEqual(this, (8, 0, 12, 12, 1))
+    def test_istate(self):
+        self.assertEqual(self.ifc.istate, 1)
+
+    def test_ispin(self):
+        self.assertEqual(self.ifc.ispin, 1)
+
+    def test_nactel(self):
+        self.assertEqual(self.ifc.nactel, 0)
+
+    def test_lsym(self):
+        self.assertEqual(self.ifc.lsym, 1)
+
+    def test_nisht(self):
+        self.assertEqual(self.ifc.nisht, 8)
+
+    def test_nasht(self):
+        self.assertEqual(self.ifc.nasht, 0)
+
+    def test_nocct(self):
+        self.assertEqual(self.ifc.nocct, 8)
+
+    def test_norbt(self):
+        self.assertEqual(self.ifc.norbt, 12)
+
+    def test_nbast(self):
+        self.assertEqual(self.ifc.nbast, 12)
+
+    def test_nsym(self):
+        self.assertEqual(self.ifc.nsym, 1)
 
     def test_cmo(self):
         ref_cmo = [
