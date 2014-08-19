@@ -10,22 +10,38 @@ class TestOne(unittest.TestCase):
         n, _ = os.path.splitext(__file__)
         self.tmpdir = n + ".d"
         self.aooneint = os.path.join(self.tmpdir, 'AOONEINT')
+        self.header = one.readhead(self.aooneint)
 
-    def test_header(self):
-        head = one.readhead(self.aooneint)
-        self.assertIn("CH2O", head["ttitle"])
-        self.assertTupleEqual(head["naos"], (12,))
-        self.assertEqual(head["nsym"], 1)
-        self.assertAlmostEqual(head["potnuc"], 31.249215316217)
+    def test_header_title(self):
+        self.assertIn("CH2O", self.header["ttitle"])
+
+    def test_header_naos(self):
+        self.assertTupleEqual(self.header["naos"], (12,))
+
+    def test_header_nsym(self):
+        self.assertEqual(self.header["nsym"], 1)
+
+    def test_header_potnuc(self):
+        self.assertAlmostEqual(self.header["potnuc"], 31.249215316217)
 
     def test_isordk_nucdep(self):
         isordk = one.readisordk(self.aooneint)
         self.assertEqual(isordk["nucdep"], 4)
-        #assert isordk["mxcent"] == 120
-        #self.assertTupleEqual(isordk["chrn"][:3], (6., 8., 1.))
-        #np.testing.assert_almost_equal(isordk["cooo"][0::120], (0,0,0))
-        #np.testing.assert_almost_equal(isordk["cooo"][1::120], (1, 0.8996236, 0))
-        #np.testing.assert_almost_equal(isordk["cooo"][2::120], (-1, 0.8996236, 0))
+    
+    def test_isordk_chrn(self):
+        isordk = one.readisordk(self.aooneint)
+        self.assertTupleEqual(isordk["chrn"][:3], (6., 8., 1.))
+
+    def test_isordk_cooo(self):
+        isordk = one.readisordk(self.aooneint)
+        C = [-3.0015786160, -1.4563174382, 0.0550080378]
+	O = [-3.1314330364, 0.8240509816, -0.0184248297]
+	H1 = [-1.1728925345, -2.4468589606, 0.1025195320]
+	H2 = [-4.7395143797, -2.6116033945, 0.0761219478]
+        np.testing.assert_almost_equal(isordk["cooo"][0::120], C)
+        np.testing.assert_almost_equal(isordk["cooo"][1::120], O)
+        np.testing.assert_almost_equal(isordk["cooo"][2::120], H1)
+        np.testing.assert_almost_equal(isordk["cooo"][3::120], H2)
 
     def test_scfinp(self):
         scfinp = one.readscfinp(self.aooneint)
