@@ -2,7 +2,7 @@
 import os
 import pdb
 import numpy as np
-from daltools.qr import QR
+from ..qr import QR
 
 def assert_(this, ref):
     print this
