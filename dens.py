@@ -77,7 +77,7 @@ def ifc(filename='SIRIFC', ifc_=None):
     """
     if ifc_ is None: 
         ifc_ = sirifc.sirifc(filename)
-    Di = blocked.matrix(ifc_.nbas, ifc_.nbas)
+    Di = blocked.BlockDiagonalMatrix(ifc_.nbas, ifc_.nbas)
     for  isym in range(ifc_.nsym):
         if ifc_.nish[isym]:
             Ci = ifc_.cmo.subblock[isym]
@@ -85,7 +85,7 @@ def ifc(filename='SIRIFC', ifc_=None):
             Di.subblock[isym] = 2*Cocci*Cocci.T
     Di = Di.unblock()
     if ifc_.nasht:
-        cmoa = blocked.matrix(ifc_.nbas, ifc_.nash)
+        cmoa = blocked.BlockDiagonalMatrix(ifc_.nbas, ifc_.nash)
         for isym in range(ifc_.nsym):
             if ifc_.nash[isym]:
                 nishi = ifc_.nish[isym]

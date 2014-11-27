@@ -68,7 +68,7 @@ class sirifc(unformatted.FortranBinary):
             ncmot4 = max(self.ncmot, 4)
             dbl = self.readbuf(ncmot4, self.FLOAT)
             n = 0
-            self._cmo = blocked.matrix(self.nbas, self.norb)
+            self._cmo = blocked.BlockDiagonalMatrix(self.nbas, self.norb)
             for isym in range(8):
                 for mo in range(self.norb[isym]):
                     for ao in range(self.nbas[isym]):
