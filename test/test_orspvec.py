@@ -13,13 +13,13 @@ class TestOpenRspVec(unittest.TestCase):
         self.ifc = sirifc.sirifc(name=self.SIRIFC)
 
     def test_read(self):
-        Nx = rspvec.read("XDIPLEN", propfile=self.RSPVEC)[0][0]
+        Nx = rspvec.read("XDIPLEN", propfile=self.RSPVEC)["XDIPLEN"]
         this = Nx[5]
         ref = -2.34009730
         self.assertAlmostEqual(this, ref)
 
     def test_tomat(self):
-        Nx = rspvec.read("XDIPLEN", propfile=self.RSPVEC)[0][0]
+        Nx = rspvec.read("XDIPLEN", propfile=self.RSPVEC)["XDIPLEN"]
         kx = rspvec.tomat(Nx, self.ifc, tmpdir=self.tmpdir)
         this = kx[5, 7]
         ref = -2.34009730
@@ -27,7 +27,7 @@ class TestOpenRspVec(unittest.TestCase):
 
 
     def test_tovec(self):
-        ref = rspvec.read("XDIPLEN", propfile=self.RSPVEC)[0][0]
+        ref = rspvec.read("XDIPLEN", propfile=self.RSPVEC)["XDIPLEN"]
         kx = rspvec.tomat(ref, self.ifc, tmpdir=self.tmpdir)
         this = rspvec.tovec(kx, self.ifc, tmpdir=self.tmpdir)
         np.testing.assert_almost_equal(this, ref)
