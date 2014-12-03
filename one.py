@@ -75,13 +75,9 @@ def readisordk(filename="AOONEINT"):
     table1 = aooneint.find("ISORDK")
     aooneint.next()
     aooneint.next()
-    print 'rlen', aooneint.reclen, len(aooneint.data)
     sizeofi = struct.calcsize(INT)
     sizeofd = struct.calcsize(FLOAT)
-    print 'size', sizeofi, sizeofd
     mxcent_ = (len(aooneint.data)-sizeofi)/(4*sizeofd)
-    print 'len-i,.. ', aooneint.reclen-sizeofi, 4*sizeofd
-    print 'mxcent', mxcent_
     chrn_ = aooneint.readbuf(mxcent_, FLOAT)
     nucdep = aooneint.readbuf(1, INT)[0]
     cooo_ = aooneint.readbuf(3*mxcent_, FLOAT)

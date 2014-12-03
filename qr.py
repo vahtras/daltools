@@ -62,7 +62,6 @@ def D2k(*args, **kwargs):
         *blabs, freqs=bfreqs,
         propfile=RSPVEC
         )
-    print NB.keys()
     NC = rspvec.read(
         *clabs, freqs=cfreqs,
         propfile=RSPVEC
@@ -86,7 +85,6 @@ def D2k(*args, **kwargs):
 
     for lbc, wb, wc in bckeys:
         lb, lc = lbc[:8], lbc[8:]
-        print "lb=%s lc=%s" % (lb, lc)
         _dkbc = dkbc[(lbc, wb, wc)]
         _dkb = dkb[(lb, wb)]
         _dkc = dkc[(lc, wc)]
