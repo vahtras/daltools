@@ -174,6 +174,7 @@ def read(label="OVERLAP", filename="AOONEINT"):
     for isym in range(nsym):
         nbasi = nbas[isym]*(nbas[isym]+1)/2
         _S.subblock[isym] = np.array(s[off:off+nbasi]).view(full.triangular)
+        off += nbasi
     #aooneint.close()
     return _S
 
