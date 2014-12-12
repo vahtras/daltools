@@ -26,7 +26,6 @@ def read(*args, **kwargs):
 
     
     for rec in rspvec:
-        #pdb.set_trace()
         for lab in args:
             lab1 = lab.ljust(16)
             #alternative label with permuted labels
@@ -134,5 +133,4 @@ if __name__ == "__main__":
     parser.add_argument('--w', type=float, default=0., help='Frequency')
     args = parser.parse_args()
     rvec = read(args.prop, propfile=args.filename, freqs=(args.w,))
-    print args.prop, args.w, args.filename
-    print rvec[(args.prop, args.w, args.w)]
+    print rvec.keys()
