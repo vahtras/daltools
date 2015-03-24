@@ -23,6 +23,8 @@ class sirifc(unformatted.FortranBinary):
            self.INT = 'q'
         elif self.reclen == 48:
            self.INT = 'i'
+        elif self.reclen == 52:
+           self.INT = 'i'
 	else:
            raise Exception('Unconsistent first record in SIRIFC')
 
