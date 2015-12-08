@@ -20,6 +20,6 @@ install:
   - conda install --yes python=$TRAVIS_PYTHON_VERSION pip numpy scipy nose
   - pip install pep8 python-coveralls
 script:
-  - nosetests
+  - nosetests --with-coverage
 after_success:
   - coveralls
