@@ -13,7 +13,7 @@ class TestOne(unittest.TestCase):
         self.header = one.readhead(self.aooneint)
 
     def test_header_title(self):
-        self.assertIn("CH2O", self.header["ttitle"])
+        self.assertIn(b"CH2O", self.header["ttitle"])
 
     def test_header_naos(self):
         self.assertTupleEqual(self.header["naos"], (12,))

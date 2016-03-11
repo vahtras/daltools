@@ -3,7 +3,7 @@
 import sys 
 import struct
 import numpy as np
-from util import unformatted, full, blocked
+from .util import unformatted, full, blocked
 
 def readhead(filename="AOONEINT"):
     """Read data in header of AOONEINT"""
@@ -51,9 +51,9 @@ def _get_integer_format(header_record):
     #&              (0.D0,I=1,2) ! so record is minimum 32 bytes
     floatsize = 8
     dimensions = np.array(
-	[[intsize*(nsym+1) + 3*floatsize for intsize in [4, 8]
-	 ] for nsym in [1, 2, 4, 8]]
-	)
+        [[intsize*(nsym+1) + 3*floatsize for intsize in [4, 8]
+         ] for nsym in [1, 2, 4, 8]]
+        )
     if header_record.reclen in dimensions[:, 0]:
        integer_format = 'i'
     elif header_record.reclen in dimensions[:, 1]:
@@ -62,7 +62,7 @@ def _get_integer_format(header_record):
        raise Exception("Unknown binary format in AOONEINT")
 
     return integer_format
-	
+
 
 def readisordk(filename="AOONEINT"):
     """Read data under label ISORDK in AOONEINT"""
@@ -77,7 +77,7 @@ def readisordk(filename="AOONEINT"):
     aooneint.next()
     sizeofi = struct.calcsize(INT)
     sizeofd = struct.calcsize(FLOAT)
-    mxcent_ = (len(aooneint.data)-sizeofi)/(4*sizeofd)
+    mxcent_ = (len(aooneint.data)-sizeofi)//(4*sizeofd)
     chrn_ = aooneint.readbuf(mxcent_, FLOAT)
     nucdep = aooneint.readbuf(1, INT)[0]
     cooo_ = aooneint.readbuf(3*mxcent_, FLOAT)
@@ -148,7 +148,7 @@ def read(label="OVERLAP", filename="AOONEINT"):
     FLOAT = unlabeled["float_fmt"]
     nnbast = 0
     for nbasi in nbas:
-        nnbast += nbasi*(nbasi+1)/2
+        nnbast += nbasi*(nbasi+1)//2
     s = full.matrix((nnbast,))
     #
     # Open file, locate label
@@ -170,7 +170,7 @@ def read(label="OVERLAP", filename="AOONEINT"):
     _S = blocked.triangular(nbas)
     off = 0
     for isym in range(nsym):
-        nbasi = nbas[isym]*(nbas[isym]+1)/2
+        nbasi = nbas[isym]*(nbas[isym]+1)//2
         _S.subblock[isym] = np.array(s[off:off+nbasi]).view(full.triangular)
         off += nbasi
     #aooneint.close()

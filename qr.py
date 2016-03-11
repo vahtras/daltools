@@ -3,10 +3,11 @@
 
 import os
 from .sirifc import sirifc
-import dens
-import prop
-import rspvec
-import one
+from .dens import ifc as dens_ifc
+from .prop import read as prop_read
+from .rspvec import read as rspvec_read
+from .rspvec import tomat as rspvec_tomat
+from .one import read as one_read
 
 def QR(A, B, C, wb=0.0, wc=0.0, tmpdir='/tmp', **kwargs):
     """Calculate the linear response function <<A;B>> from response vector
@@ -15,7 +16,7 @@ def QR(A, B, C, wb=0.0, wc=0.0, tmpdir='/tmp', **kwargs):
     ifcfile = os.path.join(tmpdir, 'SIRIFC')
     propfile = os.path.join(tmpdir, 'AOPROPER')
     ifc = sirifc(ifcfile)
-    a, = prop.read(A, filename=propfile, unpack=True)
+    a, = prop_read(A, filename=propfile, unpack=True)
     BC = B.ljust(8) + C.ljust(8)
     #pdb.set_trace()
     dBC =  D2k(BC, bcfreqs=((wb,wc),), ifc=ifc, tmpdir=tmpdir, **kwargs)
@@ -42,7 +43,7 @@ def D2k(*args, **kwargs):
     #
     # Get densities in AO basis
     #
-    dc, do = dens.ifc(SIRIFC, ifc)
+    dc, do = dens_ifc(SIRIFC, ifc)
     d = dc+do
     #
     # Get linear response vector (no symmetry)
@@ -58,26 +59,26 @@ def D2k(*args, **kwargs):
     bckeys = [(l,wb,wc) for l in bclabs for wb in bfreqs for wc in cfreqs]
 
 
-    NB = rspvec.read(
+    NB = rspvec_read(
         *blabs, freqs=bfreqs,
         propfile=RSPVEC
         )
-    NC = rspvec.read(
+    NC = rspvec_read(
         *clabs, freqs=cfreqs,
         propfile=RSPVEC
         )
-    NBC = rspvec.read(
+    NBC = rspvec_read(
         *bclabs, bfreqs=bfreqs, cfreqs=cfreqs,
         propfile=RSPVEC
         )
     # transform density over unique pairs
     cmo = ifc.cmo.unblock()
-    kb = { lw:cmo*rspvec.tomat(NB[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in bkeys }
-    kc = { lw:cmo*rspvec.tomat(NC[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in ckeys }
+    kb = { lw:cmo*rspvec_tomat(NB[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in bkeys }
+    kc = { lw:cmo*rspvec_tomat(NC[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in ckeys }
 
-    kbc = { lw:cmo*rspvec.tomat(NBC[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in bckeys }
+    kbc = { lw:cmo*rspvec_tomat(NBC[lw], ifc, tmpdir=tmpdir).T*cmo.T  for lw in bckeys }
 
-    S = one.read(filename=AOONEINT).unpack().unblock()
+    S = one_read(filename=AOONEINT).unpack().unblock()
     Sd = S*d
     dkb = { lw: kb[lw]*Sd - Sd.T*kb[lw] for lw in bkeys }
     dkc = { lw: kc[lw]*Sd - Sd.T*kc[lw] for lw in ckeys }

@@ -6,7 +6,7 @@ THRESHOLD = 1e-5
 import pdb
 import numpy as np
 import time
-from util import full, unformatted
+from .util import full, unformatted
 
 class RspVecError(Exception): pass
 
@@ -27,7 +27,10 @@ def read(*args, **kwargs):
     
     for rec in rspvec:
         for lab in args:
-            lab1 = lab.ljust(16)
+            try:
+                lab1 = bytes(lab.ljust(16), 'utf-8')
+            except TypeError:
+                lab1 = bytes(lab.ljust(16))
             #alternative label with permuted labels
             lab2 = lab1[8:] + lab1[:8]
             if lab1 in rec or lab2 in rec:
@@ -39,7 +42,7 @@ def read(*args, **kwargs):
                     cfreq, bfreq = rec.read(2, 'd')
                 if bfreq in bfreqs and cfreq in cfreqs:
                     rspvec.next()
-                    kzyvar = rspvec.reclen / 8
+                    kzyvar = rspvec.reclen // 8
                     buffer_ = rspvec.readbuf(kzyvar,'d')
                     vecs[(lab, bfreq, cfreq)] = \
                        np.array(buffer_).view(full.matrix)
@@ -68,16 +71,14 @@ def read(*args, **kwargs):
 def readall(property_label, propfile="RSPVEC"):
     """Read response all vectors given property"""
     import time, numpy
-    from util import full, unformatted
-    rspvec = unformatted.FortranBinary(propfile)
+    _rspvec = unformatted.FortranBinary(propfile)
     found=[]
-    while rspvec.find(property_label) is not None:
-        # rspvec.rec contains matching record
-        veclabs = rspvec.rec.read(16,'c')
-        vfreq = rspvec.rec.read(1, 'd')[0]
-        rspvec.next()
-        kzyvar = rspvec.reclen / 8
-        buffer_ = rspvec.readbuf(kzyvar,'d')
+    while _rspvec.find(property_label) is not None:
+        veclabs = _rspvec.rec.read(16,'c')
+        vfreq = _rspvec.rec.read(1, 'd')[0]
+        _rspvec.next()
+        kzyvar = _rspvec.reclen // 8
+        buffer_ = _rspvec.readbuf(kzyvar,'d')
         mat = numpy.array(buffer_).view(full.matrix)
         found.append((mat, vfreq))
     return found
@@ -85,7 +86,6 @@ def readall(property_label, propfile="RSPVEC"):
 def tomat(N, ifc, tmpdir='/tmp'):
     """Vector to matrix"""
     import os
-    from util import full
     norbt = ifc.norbt
     new = full.matrix((norbt, norbt))
     lwop = len(N)/2
@@ -99,7 +99,6 @@ def tomat(N, ifc, tmpdir='/tmp'):
 def tovec(mat, ifc, tmpdir='/tmp'):
     """Vector to matrix"""
     import os
-    from util import full
     lwop = ifc.nisht*ifc.nasht + ifc.nocct*(ifc.norbt-ifc.nocct)
     N = full.matrix((2*lwop,))
     ij = 0

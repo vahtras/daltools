@@ -21,21 +21,22 @@ def read(*args, **kwargs):
         #stars, data, symtype, label = (
         #      buf[:8], buf[8:16], buf[16:24], buf[24:32]
         #      )
-        stars = "".join(buf[:8])
-        symtype = "".join(buf[16:24])
-        label = "".join(buf[24:32]).strip()
-        if stars == "********":
-            pass
-        if label.strip() in args:
+        stars = b"".join(buf[:8])
+        symtype = b"".join(buf[16:24])
+        blabel = b"".join(buf[24:32]).strip()
+
+        bargs = (s.encode() for s in args)
+        if blabel.strip() in bargs:
+            label = blabel.decode()
             rec = next(AOPROPER)
-            buffer_ = rec.read(rec.reclen/8, 'd')
-            if symtype == "SQUARE  ":
+            buffer_ = rec.read(rec.reclen//8, 'd')
+            if symtype == b"SQUARE  ":
                 n = int(round(math.sqrt(matsize)))
                 assert n*n == matsize
                 mat[label] = full.init(buffer_).reshape((n, n))
             else:
                 mat[label] = np.array(buffer_).view(full.triangular)
-                mat[label].anti = (symtype == "ANTISYMM")
+                mat[label].anti = (symtype == b"ANTISYMM")
     if unpack:
         return tuple([mat[lab].unpack() for lab in args])
     else:
