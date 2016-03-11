@@ -18,11 +18,11 @@ class TestALR(unittest.TestCase):
         np.testing.assert_allclose(
             vecs[('XDIPLEN', 0.4425, 0.0)][:10],
             [
-             0.002520494065626863,    0.005717264921524636,
-           3.8637208682448187e-11,  -1.003278319247039e-08,
-             -0.08647573654795868,     -0.1961522566144851,
-           -1.120999714728522e-09,  1.6920107171040828e-07,
-               0.9497764738826885,      1.2962042579404978,
+           -1.7563977677089527e-09,    0.0015755554234863397,
+           -5.504742822192291e-10,     0.002779217059896619,
+           -0.0034886672773900523,    7.051844231481651e-10,
+           -0.005062366558336546,    -0.006285259584578197,
+           -0.008674385885382397,   -7.986196390011771e-11
             ])
 
     def test_first_yvec(self):
@@ -30,11 +30,11 @@ class TestALR(unittest.TestCase):
         np.testing.assert_allclose(
             vecs[('YDIPLEN', 0.4425, 0.0)][:10],
             [
-             0.005717270062672075,  -0.0025204990937031293,
-          -2.0506203046993165e-07,  1.1264726491134807e-07,
-              -0.1961521205392148,     0.08647607337762692,
-            4.930847097955585e-06, -4.7055564716285557e-07,
-              -1.0263058257613134,      0.8307850928096588,
+          -3.062472422126098e-08,    0.0027792414636958196,
+          -1.1898942484099601e-07,   -0.0015755667065659468,
+          -0.005062426714257009,  1.0479887117851179e-07,
+           0.00348869833460343,    -0.008674366708527649,
+           0.006285236842617945,    2.145201913436897e-07
             ])
 
     def test_number_vecs(self):
@@ -47,22 +47,22 @@ class TestALR(unittest.TestCase):
     def test_real_alpha_xx(self):
         w = 0.4425
         re_alpha, _ = LR('XDIPLEN', 'XDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 7.096440, delta=1e-6)
+        self.assertAlmostEqual(-re_alpha, 30.854533, delta=1e-6)
 
     def test_real_alpha_yy(self):
         w = 0.4450
         re_alpha, _ = LR('YDIPLEN', 'YDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 7.121799, delta=1e-6)
+        self.assertAlmostEqual(-re_alpha, 31.544221, delta=1e-6)
 
     def test_real_alpha_zz(self):
         w = 0.4475
         re_alpha, _ = LR('ZDIPLEN', 'ZDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 7.147505, delta=1e-6)
+        self.assertAlmostEqual(-re_alpha, 32.275296, delta=1e-6)
 
     def test_real_alpha_xy(self):
         w = 0.4425
         re_alpha, _ = LR('XDIPLEN', 'YDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 0.000000, delta=1e-6)
+        self.assertAlmostEqual(-re_alpha, -0.000004, delta=1e-6)
 
     def test_real_alpha_xz(self):
         w = 0.4425
@@ -79,7 +79,7 @@ class TestALR(unittest.TestCase):
     def test_real_im(self):
         w = 0.4425
         _, im_alpha = LR('XDIPLEN', 'XDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-im_alpha, 0.045945, delta=1e-6)
+        self.assertAlmostEqual(-im_alpha, 1.228334, delta=1e-6)
 
             
 if __name__ == "__main__":
