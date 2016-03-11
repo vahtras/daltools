@@ -5,8 +5,8 @@ import numpy as np
 from ..qr import QR
 
 def assert_(this, ref):
-    print this
-    print ref
+    print(this)
+    print(ref)
     assert np.allclose(this, ref)
 
 

@@ -85,7 +85,7 @@ if __name__ == "__main__":
         Aop, Bop = arg
         tmpdir = opt.tmpdir
     except (IndexError, ValueError):
-        print "Usage: %s A B" % sys.argv[0]
+        print("Usage: %s A B" % sys.argv[0])
         sys.exit(1)
 
-    print LR(Aop, Bop, tmpdir)
+    print(LR(Aop, Bop, tmpdir))

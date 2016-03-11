@@ -11,7 +11,7 @@ import one
 def QR(A, B, C, wb=0.0, wc=0.0, tmpdir='/tmp', **kwargs):
     """Calculate the linear response function <<A;B>> from response vector
     on RSPVEC for B, as <[kB,A]>"""
-    print "QR:kwargs",kwargs
+    print("QR:kwargs",kwargs)
     ifcfile = os.path.join(tmpdir, 'SIRIFC')
     propfile = os.path.join(tmpdir, 'AOPROPER')
     ifc = sirifc(ifcfile)
@@ -97,9 +97,9 @@ def D2k(*args, **kwargs):
             )
 
         if 'a2test' in kwargs:
-            print _dkbc
+            print(_dkbc)
             _dkbc.clear()
-            print _dkbc
+            print(_dkbc)
         _dkbc += _da2bc
 
     #Symmetrize keys
@@ -128,7 +128,7 @@ if __name__ == "__main__":
         Aop, Bop, Cop = arg
         tmpdir = opt.tmpdir
     except (IndexError, ValueError):
-        print "Usage: %s A B C" % sys.argv[0]
+        print("Usage: %s A B C" % sys.argv[0])
         sys.exit(1)
 
-    print QR(Aop, Bop, Cop, tmpdir=tmpdir)
+    print(QR(Aop, Bop, Cop, tmpdir=tmpdir))

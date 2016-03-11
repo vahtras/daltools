@@ -45,7 +45,6 @@ def readin(inputfile):
         atom['charge'] = float(atfield[0])
         unique = int(atfield[1])
         maxl = int(atfield[2])
-        #print 'maxl',maxl
         atom['label'] = []
         atom['center'] = []
         atom['basis'] = []
@@ -75,7 +74,6 @@ def readin(inputfile):
                 field = line.split()
                 npr = int(field[1])
                 nco = int(field[2])
-                #print npr,nco
                 for prim in range(npr):
                     line = lines.pop(4)
                     if nco > 3:
@@ -96,16 +94,16 @@ def printbasis(molecule):
     i = 0
     for atom in molecule:
         i += 1
-        print "Atom type %d charge %f" % (i, atom['charge'])
+        print("Atom type %d charge %f" % (i, atom['charge']))
         for at in range(len(atom['label'])):
-            print "center", at+1, atom['center'][at]
+            print("center", at+1, atom['center'][at])
         for l in range(len(atom['basis'])):
-            print "%s-functions" % ll[l]
+            print("%s-functions" % ll[l])
             for block in range(len(atom['basis'][l])):
                 prim = atom['basis'][l][block]['prim']
                 cont = atom['basis'][l][block]['cont']
                 for ip in range(len(prim)):
-                    print "   ", prim[ip], cont[ip][:]
+                    print("   ", prim[ip], cont[ip][:])
 
 
 #Test nuclear repulsion
@@ -164,7 +162,6 @@ def occupied_per_atom(molecule):
         Z = int(atom["charge"]+0.5)
         nocclist.append([])
         for l in range(len(cpal[a])):
-            #print "Z a l",Z,a,ll[l]
             if Z <= 1:
                 if l == 0:
                     nocclist[a].append(offset)
@@ -220,7 +217,7 @@ if __name__ == "__main__":
     #mo=readin("MOLECULE.INP")
     def header(title):
         """Fancy header"""
-        print "\n%s\n%s\n" % (title, "_"*len(title))
+        print("\n%s\n%s\n" % (title, "_"*len(title)))
 
     mo = readin("DALTON.BAS")
 
@@ -229,18 +226,18 @@ if __name__ == "__main__":
         printbasis(mo)
     if 1:
         header("atoms_in")
-        print atoms_in(mo)
+        print(atoms_in(mo))
     if 1:
         header("contracted_per_atom")
-        print contracted_per_atom(mo)
+        print(contracted_per_atom(mo))
         header("contracted_per_atom_l")
-        print contracted_per_atom_l(mo)
+        print(contracted_per_atom_l(mo))
     if 2:
         header("occupied_per_atom")
-        print occupied_per_atom(mo)
+        print(occupied_per_atom(mo))
     if 1:
         header("nuc")
-        print nuc(mo)
+        print(nuc(mo))
     if 1:
         header("dist")
-        print dist(mo[0]["center"][0], mo[1]["center"][0])
+        print(dist(mo[0]["center"][0], mo[1]["center"][0]))

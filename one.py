@@ -99,7 +99,6 @@ def readscfinp(filename="AOONEINT"):
 
     aooneint = unformatted.FortranBinary(filename)
     table2 = aooneint.find("SCFINP")
-    #print table2
     scfinp_ = {}
     scfinp_["table"] = table2
     aooneint.next()
@@ -133,7 +132,6 @@ def readscfinp(filename="AOONEINT"):
     scfinp_["qpol"] = aooneint.readbuf(6,FLOAT)
     scfinp_["qq"] = aooneint.readbuf(3,FLOAT)
     scfinp_["jfxyz"] = aooneint.readbuf(3,INT)
-    #print "scfinp_",scfinp; sys.exit(0)
     aooneint.close()
     return scfinp_
 
@@ -198,43 +196,43 @@ if __name__ == "__main__":
     if args.head: 
         t = timing('head')
         head = readhead(args.aooneint)
-        print "Header on AOONEINT"
+        print("Header on AOONEINT")
         for k in head:
-            print k, head[k]
-        print t
+            print(k, head[k])
+        print(t)
 
     if args.isordk:
         t = timing('getisrordk')
         isordk = readisordk(args.aooneint)
-        print "isordk table", isordk["table"]
+        print("isordk table", isordk["table"])
         n = isordk["nucdep"]
         chrn = isordk["chrn"]
         cooo = isordk["cooo"]
         mxcent = len(chrn)
-        print "nucdep=%i" % n, "mxcent=%i" % mxcent
-        print full.init(chrn)[:n]
-        print full.init(cooo).reshape((3, mxcent))[:, :n]
-        print t
+        print("nucdep=%i" % n, "mxcent=%i" % mxcent)
+        print(full.init(chrn)[:n])
+        print(full.init(cooo).reshape((3, mxcent))[:, :n])
+        print(t)
 
     if args.scfinp:
         t = timing('scfinp')
         scfinp = readscfinp(args.aooneint)
         for k in scfinp:
-            print k, scfinp[k]
-        print t
+            print(k, scfinp[k])
+        print(t)
 
     if args.label is not None:
         tread = timing("read")
         s1 = read(label=args.label, filename=args.aooneint)
-        print tread
+        print(tread)
         if args.unpack:
             t = timing("unpack")
             s2 = s1.unpack()
-            print t
+            print(t)
             t = timing("unblock")
             S = s2.unblock()
-            print t
+            print(t)
         else:
             S = s1
         if args.verbose:
-            print args.label, S
+            print(args.label, S)

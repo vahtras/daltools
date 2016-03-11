@@ -25,7 +25,7 @@ def read(*args, **kwargs):
         symtype = "".join(buf[16:24])
         label = "".join(buf[24:32]).strip()
         if stars == "********":
-            pass #print label, label in args
+            pass
         if label.strip() in args:
             rec = next(AOPROPER)
             buffer_ = rec.read(rec.reclen/8, 'd')
@@ -42,7 +42,6 @@ def read(*args, **kwargs):
         return tuple([mat[lab] for lab in args])
 
 def grad(*args, **kwargs):
-    print args, kwargs
     tmpdir = kwargs.get('tmpdir', '/tmp')
 
     propmat = read(*args, **kwargs)
@@ -85,19 +84,19 @@ if __name__ == "__main__":
                 tmpdir = v
         proplabel = arg[0]
     except IndexError:
-        print "Usage: %s property" % sys.argv[0]
+        print("Usage: %s property" % sys.argv[0])
         sys.exit(1)
     t_read = timing("prop.read")
     aoproper = os.path.join(tmpdir, 'AOPROPER')
     propint = read(prop=proplabel, propfile=aoproper)
-    print t_read
+    print(t_read)
     if unpack:
         t_unpack = timing("unpack")
         propsq = propint.unpack()
-        print t_unpack
+        print(t_unpack)
     if verbose:
         if unpack:
-            print propsq
+            print(propsq)
         else:
-            print propint
-    print t_all
+            print(propint)
+    print(t_all)

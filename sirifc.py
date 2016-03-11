@@ -141,9 +141,7 @@ class sirifc(unformatted.FortranBinary):
             mmorbt = max(self.nnorbt, 4)
             dbl = self.readbuf(mmorbt, self.FLOAT)
             self._fc = blocked.triangular(self.norb)
-            #print self.fc
             n = 0
-            #print "self.norb",self.norb
             for isym in range(8):
                 ij = 0
                 for i in range(self.norb[isym]):
@@ -164,9 +162,7 @@ class sirifc(unformatted.FortranBinary):
             mmorbt = max(self.nnorbt, 4)
             dbl = self.readbuf(mmorbt, self.FLOAT)
             self._fv = blocked.triangular(self.norb)
-            #print self.fc
             n = 0
-            #print "self.norb",self.norb
             for isym in range(8):
                 ij = 0
                 for i in range(self.norb[isym]):
@@ -249,10 +245,10 @@ if __name__ == "__main__":
     try:
         filename = sys.argv[1]
     except IndexError as e:
-	print "IndexError", e
-        print "Usage: %s [path]/SIRIFC" % sys.argv[0]
+        print("IndexError", e)
+        print("Usage: %s [path]/SIRIFC" % sys.argv[0])
         sys.exit(1)
 
     ifc = sirifc(name=filename)
-    print ifc
+    print(ifc)
         

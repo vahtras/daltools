@@ -48,7 +48,6 @@ def read(*args, **kwargs):
 
 
     # now check that all required vectors are saved
-    #print 'vecs',vecs.keys()
     for l in args:
         for b in bfreqs:
             for c in cfreqs:
@@ -133,4 +132,4 @@ if __name__ == "__main__":
     parser.add_argument('--w', type=float, default=0., help='Frequency')
     args = parser.parse_args()
     rvec = read(args.prop, propfile=args.filename, freqs=(args.w,))
-    print rvec.keys()
+    print(rvec.keys())

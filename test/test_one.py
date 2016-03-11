@@ -35,9 +35,9 @@ class TestOne(unittest.TestCase):
     def test_isordk_cooo(self):
         isordk = one.readisordk(self.aooneint)
         C = [-3.0015786160, -1.4563174382, 0.0550080378]
-	O = [-3.1314330364, 0.8240509816, -0.0184248297]
-	H1 = [-1.1728925345, -2.4468589606, 0.1025195320]
-	H2 = [-4.7395143797, -2.6116033945, 0.0761219478]
+        O = [-3.1314330364, 0.8240509816, -0.0184248297]
+        H1 = [-1.1728925345, -2.4468589606, 0.1025195320]
+        H2 = [-4.7395143797, -2.6116033945, 0.0761219478]
         np.testing.assert_almost_equal(isordk["cooo"][0::120], C)
         np.testing.assert_almost_equal(isordk["cooo"][1::120], O)
         np.testing.assert_almost_equal(isordk["cooo"][2::120], H1)
@@ -70,7 +70,7 @@ class TestOne(unittest.TestCase):
 
 
         S = one.read("OVERLAP", self.aooneint)
-        print S.subblock[0], Sref
+        print(S.subblock[0], Sref)
         np.testing.assert_almost_equal(S.subblock[0], Sref)
 
 if __name__ == "__main__":
