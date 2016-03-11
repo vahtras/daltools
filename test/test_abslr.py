@@ -42,8 +42,6 @@ class TestALR(unittest.TestCase):
             'XDIPLEN', 'YDIPLEN', 'ZDIPLEN', freqs=(0.4425, 0.49), propfile=self.tmp('ABSVECS'),
             lr_vecs=True
             )
-        for k in vecs:
-            print k, vecs[k]
         self.assertEqual(len(vecs), 6)
 
     def test_real_alpha(self):
