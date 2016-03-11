@@ -12,7 +12,6 @@ from .one import read as one_read
 def QR(A, B, C, wb=0.0, wc=0.0, tmpdir='/tmp', **kwargs):
     """Calculate the linear response function <<A;B>> from response vector
     on RSPVEC for B, as <[kB,A]>"""
-    print("QR:kwargs",kwargs)
     ifcfile = os.path.join(tmpdir, 'SIRIFC')
     propfile = os.path.join(tmpdir, 'AOPROPER')
     ifc = sirifc(ifcfile)
@@ -98,9 +97,7 @@ def D2k(*args, **kwargs):
             )
 
         if 'a2test' in kwargs:
-            print(_dkbc)
             _dkbc.clear()
-            print(_dkbc)
         _dkbc += _da2bc
 
     #Symmetrize keys

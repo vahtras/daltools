@@ -20,6 +20,7 @@ def read(*args, **kwargs):
         bfreqs = kwargs.get('bfreqs', (0.0,))
     cfreqs = kwargs.get('cfreqs', (0.0,))
     propfile = kwargs.get('propfile', 'RSPVEC')
+    lr_vecs = kwargs.get('lr_vecs', False)
 
     rspvec = unformatted.FortranBinary(propfile)
     vecs = {}
@@ -65,7 +66,11 @@ def read(*args, **kwargs):
         vecs.update({(l,b):vecs[(l,b,0.0)]  for l in args for b in bfreqs})
         if bfreqs == (0.0,):
             vecs.update({l:vecs[(l,0.0,0.0)]  for l in args})
-    return vecs
+    if lr_vecs:
+        keys = ((a, w) for a in args for w in bfreqs)
+        return {k: vecs[k] for k in keys}
+    else:
+        return vecs
     #return [[vecs[(l, b, c)] for l in args] for b in bfreqs for c in cfreqs]
 
 def readall(property_label, propfile="RSPVEC"):
