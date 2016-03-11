@@ -25,10 +25,10 @@ class sirifc(unformatted.FortranBinary):
            self.INT = 'i'
         elif self.reclen == 52:
            self.INT = 'i'
-	else:
+        else:
            raise Exception('Unconsistent first record in SIRIFC')
 
-	self.FLOAT = 'd'
+        self.FLOAT = 'd'
 
         self.potnuc, self.emy, self.eactive, self.emcscf = self.readbuf(4, self.FLOAT)
         self.istate, self.ispin, self.nactel, self.lsym  = self.readbuf(4, self.INT)
