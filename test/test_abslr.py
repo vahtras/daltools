@@ -44,10 +44,37 @@ class TestALR(unittest.TestCase):
             )
         self.assertEqual(len(vecs), 6)
 
-    def test_real_alpha(self):
+    def test_real_alpha_xx(self):
         w = 0.4425
         re_alpha, _ = LR('XDIPLEN', 'XDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
         self.assertAlmostEqual(-re_alpha, 7.096440, delta=1e-6)
+
+    def test_real_alpha_yy(self):
+        w = 0.4450
+        re_alpha, _ = LR('YDIPLEN', 'YDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
+        self.assertAlmostEqual(-re_alpha, 7.121799, delta=1e-6)
+
+    def test_real_alpha_zz(self):
+        w = 0.4475
+        re_alpha, _ = LR('ZDIPLEN', 'ZDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
+        self.assertAlmostEqual(-re_alpha, 7.147505, delta=1e-6)
+
+    def test_real_alpha_xy(self):
+        w = 0.4425
+        re_alpha, _ = LR('XDIPLEN', 'YDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
+        self.assertAlmostEqual(-re_alpha, 0.000000, delta=1e-6)
+
+    def test_real_alpha_xz(self):
+        w = 0.4425
+        re_alpha, _ = LR('XDIPLEN', 'ZDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
+        self.assertAlmostEqual(-re_alpha, 0.000000, delta=1e-6)
+
+
+    def test_real_alpha_yz(self):
+        w = 0.4425
+        re_alpha, _ = LR('XDIPLEN', 'ZDIPLEN', w, tmpdir=self.tmpdir, absorption=True)
+        self.assertAlmostEqual(-re_alpha, 0.000000, delta=1e-6)
+
 
     def test_real_im(self):
         w = 0.4425
