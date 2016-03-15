@@ -214,30 +214,5 @@ def dist(A, B):
     return sqrt((A[0]-B[0])**2 + (A[1]-B[1])**2 + (A[2]-B[2])**2)
 
 if __name__ == "__main__":
-    #mo=readin("MOLECULE.INP")
-    def header(title):
-        """Fancy header"""
-        print("\n%s\n%s\n" % (title, "_"*len(title)))
-
     mo = readin("DALTON.BAS")
-
-    if 1:
-        header("printbasis")
-        printbasis(mo)
-    if 1:
-        header("atoms_in")
-        print(atoms_in(mo))
-    if 1:
-        header("contracted_per_atom")
-        print(contracted_per_atom(mo))
-        header("contracted_per_atom_l")
-        print(contracted_per_atom_l(mo))
-    if 2:
-        header("occupied_per_atom")
-        print(occupied_per_atom(mo))
-    if 1:
-        header("nuc")
-        print(nuc(mo))
-    if 1:
-        header("dist")
-        print(dist(mo[0]["center"][0], mo[1]["center"][0]))
+    printbasis(mo)
