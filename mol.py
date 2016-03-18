@@ -96,14 +96,14 @@ def printbasis(molecule):
         i += 1
         print("Atom type %d charge %f" % (i, atom['charge']))
         for at in range(len(atom['label'])):
-            print("center", at+1, atom['center'][at])
+            print("center" + " %d "%(at+1) + str(atom['center'][at]))
         for l in range(len(atom['basis'])):
             print("%s-functions" % ll[l])
             for block in range(len(atom['basis'][l])):
                 prim = atom['basis'][l][block]['prim']
                 cont = atom['basis'][l][block]['cont']
                 for ip in range(len(prim)):
-                    print("   ", prim[ip], cont[ip][:])
+                    print("    %s %s"%(prim[ip], cont[ip][:]))
 
 
 #Test nuclear repulsion
