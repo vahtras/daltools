@@ -125,7 +125,7 @@ def jwop(ifc):
         for j in range(ifc.nocct, ifc.norbt):
             yield (i, j)
 
-def main():
+def main():#pragma: no cover
     import sys
     import argparse
 

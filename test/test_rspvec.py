@@ -71,14 +71,6 @@ class TestRspVec(unittest.TestCase):
         ref = [ (i, j) for i in range(8) for j in range(8, 12)]
         self.assertListEqual(this, ref)
 
-    def test_main(self):
-        sys.argv = ['main', 'XDIPLEN', self.RSPVEC]
-        rspvec.main()
-        print_output = sys.stdout.getvalue().strip()
-        ref_output = """\
-[('XDIPLEN', 0.0), ('XDIPLEN', 0.0, 0.0), ('        XDIPLEN ', 0.0, 0.0), 'XDIPLEN', ('XDIPLEN         ', 0.0, 0.0)]"""
-        self.assertEqual(print_output, ref_output)
-
 
 if __name__ == "__main__":#pragma: no cover
     unittest.main()
