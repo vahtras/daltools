@@ -3,7 +3,7 @@
 
 THRESHOLD = 1e-5
 
-import pdb
+import sys
 import numpy as np
 import time
 from .util import full, unformatted
@@ -125,8 +125,7 @@ def jwop(ifc):
         for j in range(ifc.nocct, ifc.norbt):
             yield (i, j)
 
-
-if __name__ == "__main__":
+def main():
     import sys
     import argparse
 
@@ -137,3 +136,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     rvec = read(args.prop, propfile=args.filename, freqs=(args.w,))
     print(rvec.keys())
+
+if __name__ == "__main__":#pragma: no cover
+    sys.exit(main())
