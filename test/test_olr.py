@@ -29,5 +29,5 @@ class TestOpenLR(unittest.TestCase):
         ZZref = -3.124432068117
         self.assertAlmostEqual(ZZ, ZZref)
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma no cover
     unittest.main()

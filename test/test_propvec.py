@@ -80,5 +80,5 @@ class TestPropVec(unittest.TestCase):
         this,  = prop.grad('XDIPLEN', tmpdir=self.tmpdir)
         np.testing.assert_almost_equal(this, ref)
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma no cover
     unittest.main()

@@ -29,7 +29,7 @@ class TestProp(unittest.TestCase):
         z, = prop.read('ZDIPLEN', filename=self.propfile, unpack=False)
         np.testing.assert_almost_equal(z, zdip_ref)
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma no cover
     unittest.main()
 
 

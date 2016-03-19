@@ -72,5 +72,5 @@ class TestOne(unittest.TestCase):
         S = one.read("OVERLAP", self.aooneint)
         np.testing.assert_almost_equal(S.subblock[0], Sref)
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma: nocover
     unittest.main()

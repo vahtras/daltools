@@ -35,8 +35,7 @@ def cmo(F, S, filename='AOONEINT'):
             if abs(C[j, i]) > Cmx:
                 Cmx = abs(C[j, i])
                 rephase = (C[j, i] < 0)
-        if rephase:
-            C[:, i] *= -1
+        if rephase: C[:, i] *= -1
                 
     #
     # Finish off with Gram Schmidt because degenerate orbitals are not

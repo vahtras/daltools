@@ -39,5 +39,5 @@ class TestOpenRspVec(unittest.TestCase):
               [ (i, j) for i in range(7,8) for j in range(8, 11)]
         np.testing.assert_almost_equal(this, ref)
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma no cover
     unittest.main()

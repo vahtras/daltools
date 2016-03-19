@@ -70,5 +70,5 @@ class TestRspVec(unittest.TestCase):
         ref = [ (i, j) for i in range(8) for j in range(8, 12)]
         self.assertListEqual(this, ref)
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma: no cover
     unittest.main()

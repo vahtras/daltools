@@ -82,5 +82,5 @@ class TestALR(unittest.TestCase):
         self.assertAlmostEqual(-im_alpha, 1.228334, delta=1e-6)
 
             
-if __name__ == "__main__":
+if __name__ == "__main__": #pragma: no cover
     unittest.main()

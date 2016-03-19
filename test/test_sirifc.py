@@ -95,7 +95,7 @@ class TestSirIfc(unittest.TestCase):
         np.testing.assert_almost_equal(self.ifc.cmo[0], ref_cmo)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma no cover
     unittest.main()
 
 

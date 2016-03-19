@@ -9,6 +9,7 @@ class TestDens(unittest.TestCase):
     def setUp(self):
         n, _ = os.path.splitext(__file__)
         self.tmpdir = n + ".d"
+        np.random.seed = 0
 
     def test_h1diag(self):
         diref = full.init([
@@ -37,7 +38,15 @@ class TestDens(unittest.TestCase):
             )
         np.testing.assert_almost_equal(da, daref)
         np.testing.assert_almost_equal(db, dbref)
-    
 
-if __name__ == "__main__":
+    def test_c1d(self):
+        C = full.matrix((3,2)).random()
+        np.testing.assert_allclose(dens.C1D(C, 1), [
+           [0.29689768,   0.35193684,   0.48591211],
+           [0.35193684,   0.41717921,   0.57599093],
+           [0.48591211,   0.57599093,   0.79525908]
+           ])
+
+
+if __name__ == "__main__":#pragma no cover
     unittest.main()

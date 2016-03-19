@@ -78,5 +78,5 @@ class TestOne(unittest.TestCase):
         np.testing.assert_almost_equal(S.subblock[1], Sref.subblock[1])
         np.testing.assert_almost_equal(S.subblock[2], Sref.subblock[2])
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma no cover
     unittest.main()
