@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """Linear response module"""
 import os
+import os
 from .util.timing import timing
 from . import prop, sirifc, dens, rspvec, one
 def LR(A, B, w=0.0, tmpdir='/tmp', absorption=False):
@@ -71,21 +72,20 @@ def Dk(*args, **kwargs):
         dkb = { lw: dS*kb[lw]-kb[lw]*dS.T for lw in kb }
     return dkb
 
-if __name__ == "__main__":
-    import sys
-    from optparse import OptionParser
-    op = OptionParser()
-    op.add_option(
+    
+def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('A')
+    parser.add_argument('B')
+    parser.add_argument(
           '-t','--tmpdir',
           dest='tmpdir', default='/tmp',
           help='scratch directory [/tmp]'
           )
-    try:
-        opt, arg = op.parse_args(sys.argv[1:])
-        Aop, Bop = arg
-        tmpdir = opt.tmpdir
-    except (IndexError, ValueError):
-        print("Usage: %s A B" % sys.argv[0])
-        sys.exit(1)
+    args = parser.parse_args()
 
-    print(LR(Aop, Bop, tmpdir))
+    print(LR(args.A, args.B, tmpdir=args.tmpdir))
+
+if __name__ == "__main__":#pragma no cover
+    sys.exit(main())

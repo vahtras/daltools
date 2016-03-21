@@ -1,7 +1,7 @@
 import unittest
 import os
 import numpy as np
-from ..lr import LR
+from ..lr import LR, main
 
 class TestLR(unittest.TestCase):
 
@@ -28,6 +28,13 @@ class TestLR(unittest.TestCase):
         ZZ = LR('ZDIPLEN', 'ZDIPLEN', 0, self.tmpdir)
         ZZref = -10.308181624834
         self.assertAlmostEqual(ZZ, ZZref)
+
+    def test_main_ZZ(self):
+        import sys
+        sys.argv[1:] = ['XDIPLEN', 'XDIPLEN', '-t', self.tmpdir]
+        main()
+        print_output = sys.stdout.getvalue().strip()
+        self.assertEqual(print_output, '-2.46116966495')
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()
