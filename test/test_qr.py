@@ -1,8 +1,9 @@
 import unittest
 import os
+import sys
 import pdb
 import numpy as np
-from ..qr import QR
+from ..qr import QR, main
 
 class NewTest(unittest.TestCase):
 
@@ -13,20 +14,20 @@ class NewTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def assert_(self, this, ref):
-        assert np.allclose(this, ref)
+    def assert_(self, this, ref, **kwargs):
+        np.testing.assert_allclose(this, ref, **kwargs)
 
     def test_XXX_A2(self):
         XXX = QR('XDIPLEN', 'XDIPLEN', 'XDIPLEN', tmpdir=self.tmpdir, a2test=True)
         XXXref = 9.652e-05
-        self.assert_(XXX, XXXref)
+        self.assert_(XXX, XXXref, rtol=1e-4)
 
 
 
     def test_XXX(self):
         XXX = QR('XDIPLEN', 'XDIPLEN', 'XDIPLEN', tmpdir=self.tmpdir)
         XXXref = 0.00013323
-        self.assert_(XXX, XXXref)
+        self.assert_(XXX, XXXref, rtol=1e-5)
 
     def test_ZXX(self):
         ZXX = QR('ZDIPLEN', 'XDIPLEN', 'XDIPLEN', tmpdir=self.tmpdir)
@@ -43,6 +44,11 @@ class NewTest(unittest.TestCase):
         XXZref = -1.68075251
         self.assert_(XXZ, XXZref)
 
+    def test_mainXXX(self):
+        sys.argv[1:] = ['XDIPLEN', 'XDIPLEN', 'XDIPLEN', '-t', self.tmpdir]
+        main()
+        print_output = sys.stdout.getvalue().strip()
+        self.assertEqual(print_output, "0.000133228776144")
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()

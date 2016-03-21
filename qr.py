@@ -2,6 +2,7 @@
 """Quadratic response module"""
 
 import os
+import sys
 from .sirifc import sirifc
 from .dens import ifc as dens_ifc
 from .prop import read as prop_read
@@ -14,11 +15,9 @@ def QR(A, B, C, wb=0.0, wc=0.0, tmpdir='/tmp', **kwargs):
     on RSPVEC for B, as <[kB,A]>"""
     ifcfile = os.path.join(tmpdir, 'SIRIFC')
     propfile = os.path.join(tmpdir, 'AOPROPER')
-    ifc = sirifc(ifcfile)
     a, = prop_read(A, filename=propfile, unpack=True)
     BC = B.ljust(8) + C.ljust(8)
-    #pdb.set_trace()
-    dBC =  D2k(BC, bcfreqs=((wb,wc),), ifc=ifc, tmpdir=tmpdir, **kwargs)
+    dBC =  D2k(BC, bcfreqs=((wb,wc),), tmpdir=tmpdir, **kwargs)
     return a&dBC[BC,wb, wc]
 
 def D2k(*args, **kwargs):
@@ -108,25 +107,21 @@ def D2k(*args, **kwargs):
 
     return dkbc
     
+def main():
     
-    
-    
-
-if __name__ == "__main__":
-    import sys
-    from optparse import OptionParser
-    op = OptionParser()
-    op.add_option(
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('A')
+    parser.add_argument('B')
+    parser.add_argument('C')
+    parser.add_argument(
           '-t','--tmpdir',
           dest='tmpdir', default='/tmp',
           help='scratch directory [/tmp]'
           )
-    try:
-        opt, arg = op.parse_args(sys.argv[1:])
-        Aop, Bop, Cop = arg
-        tmpdir = opt.tmpdir
-    except (IndexError, ValueError):
-        print("Usage: %s A B C" % sys.argv[0])
-        sys.exit(1)
+    args = parser.parse_args()
 
-    print(QR(Aop, Bop, Cop, tmpdir=tmpdir))
+    print(QR(args.A, args.B, args.C, tmpdir=args.tmpdir))
+
+if __name__ == "__main__":#pragma: no cover
+    sys.exit(main())
