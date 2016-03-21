@@ -11,6 +11,7 @@ class TestOne(unittest.TestCase):
         n, _ = os.path.splitext(__file__)
         self.tmpdir = n + ".d"
         self.aooneint = os.path.join(self.tmpdir, 'AOONEINT')
+        self.aoproper = os.path.join(self.tmpdir, 'AOPROPER')
         self.header = one.readhead(self.aooneint)
         self.maxDiff = None
 
@@ -224,6 +225,11 @@ OVERLAP
       10      0.00257806    0.00206544
       11      1.00000000    0.14255017
       12      0.14255017    1.00000000"""
+
+
+    def test_read_wrong_file(self):
+        with self.assertRaises(RuntimeError):
+            one.readhead(self.aoproper)
 
 if __name__ == "__main__":#pragma: no cover
     unittest.main()

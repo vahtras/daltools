@@ -20,9 +20,9 @@ def readhead(filename="AOONEINT"):
         aooneint.next()
     else:
         #
-        # Older versions: title ans MAXREP in same record
+        # Older versions: not supported
         #
-        title = "".join(aooneint.readbuf(192,'c'))
+        raise RuntimeError
     #
     # Buffer should now contains MAXREP data
     #
