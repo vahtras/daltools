@@ -8,12 +8,12 @@ from .util import unformatted, full, blocked
 def readhead(filename="AOONEINT"):
     """Read data in header of AOONEINT"""
     aooneint = unformatted.FortranBinary(filename)
-    aooneint.next()
+    rec = aooneint.next()
     if len(aooneint.data) == 144:
         #
         # Newer versions: title in own record
         #
-        title = aooneint.data
+        title = aooneint.data.decode()
         #
         # Next record contains MAXREP...
         #
@@ -33,14 +33,15 @@ def readhead(filename="AOONEINT"):
     nsym = aooneint.readbuf(1, INT)[0]
     naos = aooneint.readbuf(nsym, INT)
     potnuc = aooneint.readbuf(1, FLOAT)[0]
-    unlabeled = {
-        "ttitle": title,
-        "nsym": nsym,
-        "naos": naos,
-        "potnuc": potnuc,
-        "int_fmt": INT,
-        "float_fmt": FLOAT
-        }
+    import collections
+    unlabeled = collections.OrderedDict([
+        ("ttitle", title),
+        ("nsym", nsym),
+        ("naos", naos),
+        ("potnuc", potnuc),
+        ("int_fmt", INT),
+        ("float_fmt", FLOAT)
+        ])
     aooneint.close()
     return unlabeled
 
@@ -82,7 +83,7 @@ def readisordk(filename="AOONEINT"):
     nucdep = aooneint.readbuf(1, INT)[0]
     cooo_ = aooneint.readbuf(3*mxcent_, FLOAT)
     isordk_ = {
-        "table":table1,
+        #"table":table1,
         "chrn":chrn_,
         "nucdep":nucdep,
         "cooo":cooo_,
@@ -99,11 +100,11 @@ def readscfinp(filename="AOONEINT"):
 
     aooneint = unformatted.FortranBinary(filename)
     table2 = aooneint.find("SCFINP")
-    scfinp_ = {}
-    scfinp_["table"] = table2
+    import collections
+    scfinp_ = collections.OrderedDict()
     aooneint.next()
     if len(aooneint.data) == 144:
-        title = aooneint.data
+        title = aooneint.data.decode()
         aooneint.next()
     else:
         title = aooneint.readbuf(192,'c')
@@ -177,7 +178,7 @@ def read(label="OVERLAP", filename="AOONEINT"):
     return _S
 
 
-if __name__ == "__main__":
+def main():
     import argparse
     from util.timing import timing
 
@@ -198,18 +199,20 @@ if __name__ == "__main__":
         head = readhead(args.aooneint)
         print("Header on AOONEINT")
         for k in head:
-            print(k, head[k])
+            if type(head[k]) is float:
+                print("%s %10.5f" % (k, head[k]))
+            else:
+                print("%s %s" % (k, head[k]))
         print(t)
 
     if args.isordk:
         t = timing('getisrordk')
         isordk = readisordk(args.aooneint)
-        print("isordk table", isordk["table"])
         n = isordk["nucdep"]
         chrn = isordk["chrn"]
         cooo = isordk["cooo"]
         mxcent = len(chrn)
-        print("nucdep=%i" % n, "mxcent=%i" % mxcent)
+        print("nucdep=%i" % n + " mxcent=%i" % mxcent)
         print(full.init(chrn)[:n])
         print(full.init(cooo).reshape((3, mxcent))[:, :n])
         print(t)
@@ -218,7 +221,10 @@ if __name__ == "__main__":
         t = timing('scfinp')
         scfinp = readscfinp(args.aooneint)
         for k in scfinp:
-            print(k, scfinp[k])
+            if type(scfinp[k]) is float and k != 'dummy':
+                print("%s%10.6f" % (k, scfinp[k]))
+            else:
+                print(k + " " + str(scfinp[k]))
         print(t)
 
     if args.label is not None:
@@ -235,4 +241,7 @@ if __name__ == "__main__":
         else:
             S = s1
         if args.verbose:
-            print(args.label, S)
+            print("%s %s" % (args.label, str(S)))
+
+if __name__ == "__main__":#pragma no cover
+    main()
