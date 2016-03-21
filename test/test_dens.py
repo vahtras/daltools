@@ -9,7 +9,7 @@ class TestDens(unittest.TestCase):
     def setUp(self):
         n, _ = os.path.splitext(__file__)
         self.tmpdir = n + ".d"
-        np.random.seed = 0
+        np.random.seed(0)
 
     def test_h1diag(self):
         diref = full.init([
@@ -42,10 +42,10 @@ class TestDens(unittest.TestCase):
     def test_c1d(self):
         C = full.matrix((3,2)).random()
         np.testing.assert_allclose(dens.C1D(C, 1), [
-           [0.29689768,   0.35193684,   0.48591211],
-           [0.35193684,   0.41717921,   0.57599093],
-           [0.48591211,   0.57599093,   0.79525908]
-           ])
+           [0.301196,  0.330805,  0.232507],
+           [0.330805,  0.363324,  0.255364],
+           [0.232507,  0.255364,  0.179483]
+           ], atol=1e-6)
 
 
 if __name__ == "__main__":#pragma no cover
