@@ -46,7 +46,7 @@ def readhead(filename="AOONEINT"):
     return unlabeled
 
 def _get_integer_format(header_record):
-    """Determine integer format from first record of AOONTINT"""
+    """Determine integer format from first record of AOONEINT"""
     # from herrdn.F:
     # WRITE (LUONEL) MAXREP+1,(NAOS(I),I=1,MAXREP+1), POTNUC,
     #&              (0.D0,I=1,2) ! so record is minimum 32 bytes
