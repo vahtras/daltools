@@ -190,7 +190,7 @@ def occupied_per_atom(molecule):
                     nocclist[a].append(offset+4)
                     nocclist[a].append(offset+5)
             else:
-                raise Exception( "occupied_per_atom:not implemented")
+                raise NotImplementedError
             offset += cpal[a][l]
     return nocclist
 
@@ -213,6 +213,6 @@ def dist(A, B):
     from math import sqrt
     return sqrt((A[0]-B[0])**2 + (A[1]-B[1])**2 + (A[2]-B[2])**2)
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma: nocover
     mo = readin("DALTON.BAS")
     printbasis(mo)
