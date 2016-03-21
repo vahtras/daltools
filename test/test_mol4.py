@@ -8,7 +8,7 @@ class MolTest(unittest.TestCase):
 
     def setUp(self):
         pwd = os.path.dirname(__file__)
-        dalton_bas = os.path.join(pwd, 'test_mol.d', 'DALTON.BAS')
+        dalton_bas = os.path.join(pwd, 'test_mol4.d', 'DALTON.BAS')
         self.bas = mol.readin(dalton_bas)
         self.maxDiff = None
 
@@ -25,30 +25,30 @@ class MolTest(unittest.TestCase):
             )
 
     def test_num(self):
-        self.assertAlmostEqual(mol.nuc(self.bas), 31.2492153162)
+        self.assertAlmostEqual(mol.nuc(self.bas), 62.46624333537319)
 
     def test_opa(self):
         self.assertListEqual(
             mol.occupied_per_atom(self.bas),
-            [[0, 1, 2, 3, 4], [0, 1, 2, 3,4], [0], [0]]
+            [[0, 1, 2, 3, 4], [0, 1, 2, 3,4, 5, 6, 7, 8], [0, 1]]
             )
 
     def test_cpa(self):
         self.assertListEqual(
             mol.contracted_per_atom(self.bas),
-            [5, 5, 1, 1]
+            [5, 9, 1]
             )
 
     def test_cpal(self):
         self.assertListEqual(
             mol.contracted_per_atom_l(self.bas),
-            [[2, 3], [2, 3], [1], [1]]
+            [[2, 3], [3, 6], [1]]
             )
 
     def test_print_atoms(self):
         output = """\
 Atom type 1 charge 6.000000
-center 1 [1.74063211e-05, 0.0010502765856, -1.1458244562083]
+center 1 [0.0, -0.5155927197089, -1.4709704593027]
 s-functions
     71.616837 [0.15432897, 0.0]
     13.045096 [0.53532814, 0.0]
@@ -60,26 +60,32 @@ p-functions
     2.9412494 [0.15591627]
     0.6834831 [0.60768372]
     0.2222899 [0.39195739]
-Atom type 2 charge 8.000000
-center 1 [0.0, 0.0010582718101, 1.1394183506149]
+Atom type 2 charge 18.000000
+center 1 [0.0, 0.0627329390583, 0.7398832489011]
 s-functions
-    130.70932 [0.15432897, 0.0]
-    23.808861 [0.53532814, 0.0]
-    6.4436083 [0.44463454, 0.0]
-    5.0331513 [0.0, -0.09996723]
-    1.1695961 [0.0, 0.39951283]
-    0.380389 [0.0, 0.70011547]
+    674.4463 [0.154329, 0.0, 0.0]
+    122.8512 [0.535328, 0.0, 0.0]
+    33.2485 [0.444635, 0.0, 0.0]
+    45.16425 [0.0, -0.099967, 0.0]
+    10.49518 [0.0, 0.399513, 0.0]
+    3.413366 [0.0, 0.700115, 0.0]
+    2.621366 [0.0, 0.0, -0.21962]
+    0.731354 [0.0, 0.0, 0.225595]
+    0.286247 [0.0, 0.0, 0.900398]
 p-functions
-    5.0331513 [0.15591627]
-    1.1695961 [0.60768372]
-    0.380389 [0.39195739]
-Atom type 3 charge 1.000000
-center 1 [-7.11056897e-05, 1.7705033753955, -2.2396975555016]
-center 2 [-6.98661118e-05, -1.7998043816988, -2.2005635940297]
+    45.16425 [0.155916, 0.0]
+    10.49518 [0.607684, 0.0]
+    3.413366 [0.391957, 0.0]
+    2.621366 [0.0, 0.010588]
+    0.731354 [0.0, 0.595167]
+    0.286247 [0.0, 0.462001]
+Atom type 3 charge 2.000000
+center 1 [0.0, 0.9194403989461, -2.9770257645433]
 s-functions
-    3.4252509 [0.15432897]
-    0.6239137 [0.53532814]
-    0.1688554 [0.44463454]"""
+    6.3624214 [0.15432897]
+    1.158923 [0.53532814]
+    0.3136498 [0.44463454]"""
+
         mol.printbasis(self.bas)
         if not hasattr(sys.stdout, "getvalue"):#pragma no cover
             self.fail("need to run in buffered mode")
