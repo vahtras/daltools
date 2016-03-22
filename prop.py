@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """Module for reading data fro property integral file AOPROPER"""
 import os
+import sys
 import math
 import numpy as np
 from .util import unformatted, full
@@ -64,39 +65,21 @@ def grad(*args, **kwargs):
 
     return tuple(G)
 
-if __name__ == "__main__":
-    import sys, getopt
-    from util.timing import timing
-    t_all = timing("main")
-    unpack = False
-    verbose = False
-    tmpdir = '.'
-    try:
-        opt, arg = getopt.getopt(
-            sys.argv[1:],'t:uv',['tmpdir', 'unpack','verbose']
-            )
-        for o, v in opt:
-            if o in ('-u','--unpack'):
-                unpack = True
-            if o in ('-v','--verbose'):
-                verbose = True
-            if o in ('-t','--tmpdir'):
-                tmpdir = v
-        proplabel = arg[0]
-    except IndexError:
-        print("Usage: %s property" % sys.argv[0])
-        sys.exit(1)
-    t_read = timing("prop.read")
-    aoproper = os.path.join(tmpdir, 'AOPROPER')
-    propint = read(prop=proplabel, propfile=aoproper)
-    print(t_read)
-    if unpack:
-        t_unpack = timing("unpack")
-        propsq = propint.unpack()
-        print(t_unpack)
-    if verbose:
-        if unpack:
-            print(propsq)
-        else:
-            print(propint)
-    print(t_all)
+def main():
+    
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('label', help='Property label')
+    parser.add_argument('-t', '--tmpdir', help='Work directory')
+    parser.add_argument('--packed', action='store_true', help='Work directory')
+    args = parser.parse_args()
+
+    kwargs = {'tmpdir': args.tmpdir}
+    kwargs['unpack'] = not args.packed
+    prop, = read(args.label, **kwargs)
+    print(prop)
+
+
+if __name__ == "__main__":#pragma no cover
+    sys.exit(main())
