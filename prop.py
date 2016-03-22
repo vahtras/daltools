@@ -31,8 +31,7 @@ def read(*args, **kwargs):
             rec = next(AOPROPER)
             buffer_ = rec.read(rec.reclen//8, 'd')
             if symtype == b"SQUARE  ":
-                n = int(round(math.sqrt(matsize)))
-                assert n*n == matsize
+                n = int(round(math.sqrt(len(buffer_))))
                 mat[label] = full.init(buffer_).reshape((n, n))
             else:
                 mat[label] = np.array(buffer_).view(full.triangular)
