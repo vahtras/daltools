@@ -184,7 +184,7 @@ class sirifc(unformatted.FortranBinary):
     #fc = property(fget=get_fc)
     #fv = property(fget=get_fv)
 
-    def __repr__(self):
+    def __str__(self):
         retstr = ""
         retstr += "Nuclear Potential Energy: %12.6f\n" % self.potnuc
         retstr += "Electronic energy       : %12.6f\n" % self.emy
