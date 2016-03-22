@@ -113,6 +113,14 @@ class TestSirIfc(unittest.TestCase):
         print(fock)
         np.testing.assert_allclose(fock, _ref, atol=1e-8)
 
+    def test_fc(self):
+        fc = self.ifc.fc
+        _ref = full.matrix.diag([
+            -20.31162719, -11.12542328, -1.34192804, -0.80369198, -0.63876325, -0.54427391, -0.44621587, -0.35362572, 0.28583524, 0.62008686, 0.74574226, 0.92100240
+            ]).pack()
+        print(fc)
+        np.testing.assert_allclose(fc.subblock[0], _ref, atol=1e-8)
+
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()
