@@ -121,6 +121,12 @@ class TestSirIfc(unittest.TestCase):
         print(fc)
         np.testing.assert_allclose(fc.subblock[0], _ref, atol=1e-8)
 
+    def test_fv(self):
+        fv = self.ifc.fv
+        _ref = full.triangular((12, 12))
+        print(fv)
+        np.testing.assert_allclose(fv.subblock[0], _ref, atol=1e-8)
+
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()
