@@ -92,8 +92,7 @@ nsym 1
 naos (12,)
 potnuc   31.24922
 int_fmt q
-float_fmt d
-Time used in head                :      0.00 (cpu)       0.00 (wall)"""
+float_fmt d"""
         self.assertEqual(print_output, ref_output)
 
     def test_main_isordk(self):
@@ -115,9 +114,7 @@ nucdep=4 mxcent=120
               Column   1    Column   2    Column   3    Column   4
        1     -3.00157862   -3.13143304   -1.17289253   -4.73951438
        2     -1.45631744    0.82405098   -2.44685896   -2.61160339
-       3      0.05500804   -0.01842483    0.10251953    0.07612195
-
-Time used in getisrordk          :      0.00 (cpu)       0.00 (wall)"""
+       3      0.05500804   -0.01842483    0.10251953    0.07612195"""
 
         self.assertEqual(print_output, ref_output)
 
@@ -145,8 +142,7 @@ ifxyz (0, 0, 0)
 dummy 1e+20
 qpol (1e+20, 1e+20, 1e+20, 1e+20, 1e+20, 1e+20)
 qq (1e+20, 1e+20, 1e+20)
-jfxyz (-9999999, -9999999, -9999999)
-Time used in scfinp              :      0.00 (cpu)       0.00 (wall)"""
+jfxyz (-9999999, -9999999, -9999999)"""
 
         self.assertEqual(print_output, ref_output)
 
@@ -155,7 +151,6 @@ Time used in scfinp              :      0.00 (cpu)       0.00 (wall)"""
         one.main()
         print_output = sys.stdout.getvalue().strip()
         ref_output = """\
-Time used in read                :      0.00 (cpu)       0.00 (wall)
 OVERLAP 
 Block 1
 
@@ -179,9 +174,6 @@ Block 1
         one.main()
         print_output = sys.stdout.getvalue().strip()
         ref_output = """\
-Time used in read                :      0.00 (cpu)       0.00 (wall)
-Time used in unpack              :      0.00 (cpu)       0.00 (wall)
-Time used in unblock             :      0.00 (cpu)       0.00 (wall)
 OVERLAP 
  (12, 12) 
               Column   1    Column   2    Column   3    Column   4    Column   5

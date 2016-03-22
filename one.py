@@ -180,7 +180,6 @@ def read(label="OVERLAP", filename="AOONEINT"):
 
 def main():
     import argparse
-    from .util.timing import timing
 
     parser = argparse.ArgumentParser()
     
@@ -195,7 +194,6 @@ def main():
     args = parser.parse_args()
 
     if args.head: 
-        t = timing('head')
         head = readhead(args.aooneint)
         print("Header on AOONEINT")
         for k in head:
@@ -203,10 +201,8 @@ def main():
                 print("%s %10.5f" % (k, head[k]))
             else:
                 print("%s %s" % (k, head[k]))
-        print(t)
 
     if args.isordk:
-        t = timing('getisrordk')
         isordk = readisordk(args.aooneint)
         n = isordk["nucdep"]
         chrn = isordk["chrn"]
@@ -215,33 +211,27 @@ def main():
         print("nucdep=%i" % n + " mxcent=%i" % mxcent)
         print(full.init(chrn)[:n])
         print(full.init(cooo).reshape((3, mxcent))[:, :n])
-        print(t)
 
     if args.scfinp:
-        t = timing('scfinp')
         scfinp = readscfinp(args.aooneint)
         for k in scfinp:
             if type(scfinp[k]) is float and k != 'dummy':
                 print("%s%10.6f" % (k, scfinp[k]))
             else:
                 print(k + " " + str(scfinp[k]))
-        print(t)
 
     if args.label is not None:
-        tread = timing("read")
         s1 = read(label=args.label, filename=args.aooneint)
-        print(tread)
         if args.unpack:
-            t = timing("unpack")
             s2 = s1.unpack()
-            print(t)
-            t = timing("unblock")
             S = s2.unblock()
-            print(t)
         else:
             S = s1
         if args.verbose:
             print("%s %s" % (args.label, str(S)))
 
 if __name__ == "__main__":#pragma no cover
+    from .util.timing import timing
+    t = timing(" ".join(sys.argv))
     main()
+    print(t)
