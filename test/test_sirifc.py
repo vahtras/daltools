@@ -102,10 +102,9 @@ class TestSirIfc(unittest.TestCase):
             ]
         np.testing.assert_almost_equal(self.ifc.cmo[0], ref_cmo)
 
-    @unittest.skip('pv')
     def test_pv(self):
         pv = self.ifc.pv
-        np.testing.assert_allclose(pv, [0])
+        self.assertTupleEqual(pv.shape, (0, 0))
 
     def test_fock(self):
         fock = self.ifc.fock.subblock[0]

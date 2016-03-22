@@ -244,15 +244,11 @@ class sirifc(unformatted.FortranBinary):
         retstr += "FV" + str(self.fv)
         return retstr
 
-if __name__ == "__main__":
-    import sys
-    try:
-        filename = sys.argv[1]
-    except IndexError as e:
-        print("IndexError", e)
-        print("Usage: %s [path]/SIRIFC" % sys.argv[0])
-        sys.exit(1)
+if __name__ == "__main__":#pragma no cover
+    import argparse
 
-    ifc = sirifc(name=filename)
-    print(ifc)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('sirifc', help='SIRIFC file')
+    args = parser.parse_args()
+    print(sirifc(args.sirifc))
         
