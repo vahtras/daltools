@@ -6,10 +6,18 @@ from ..util import full
 
 class TestSirIfc(unittest.TestCase):
 
-    def setUp(self):
+    def tmpdir(self, name=""):
         n, _ = os.path.splitext(__file__)
-        tmpdir = n + ".d"
-        self.ifc = sirifc.sirifc(os.path.join(tmpdir, 'SIRIFC'))
+        dir_ = n + ".d"
+        return os.path.join(dir_, name)
+        
+
+    def setUp(self):
+        self.ifc = sirifc.sirifc(self.tmpdir('SIRIFC'))
+
+    def test_wrong_file_header(self):
+        with self.assertRaises(RuntimeError):
+            wrong = sirifc.sirifc(name=self.tmpdir('AOONEINT'))
 
     def test_potnuc(self):
         self.assertAlmostEqual(self.ifc.potnuc, 31.249215315972)
@@ -93,6 +101,17 @@ class TestSirIfc(unittest.TestCase):
                   -0.84083843,   -0.06116855]
             ]
         np.testing.assert_almost_equal(self.ifc.cmo[0], ref_cmo)
+
+    @unittest.skip('pv')
+    def test_pv(self):
+        pv = self.ifc.pv
+        np.testing.assert_allclose(pv, [0])
+
+    def test_fock(self):
+        fock = self.ifc.fock.subblock[0]
+        _ref = full.matrix.diag([-40.62325438, -22.25084656, -2.68385608, -1.60738397, -1.27752650, -1.08854783, -0.89243173, -0.70725144, 0.00000000, 0.00000000, 0.00000000, 0.00000000])
+        print(fock)
+        np.testing.assert_allclose(fock, _ref, atol=1e-8)
 
 
 if __name__ == "__main__":#pragma no cover

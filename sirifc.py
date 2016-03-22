@@ -16,7 +16,11 @@ class sirifc(unformatted.FortranBinary):
         self._fc = None
         self._fv = None
 
-        self.find(sirifc.ifclabel)
+        if not self.find(sirifc.ifclabel):
+            raise RuntimeError("Label %s not found on %s" % (
+                sirifc.ifclabel, name
+                )
+            )
 
         self.next()
         if self.reclen == 64:
@@ -121,7 +125,7 @@ class sirifc(unformatted.FortranBinary):
             self.file.close()
             m2orbt = max(self.n2orbt, 4)
             dbl = self.readbuf(m2orbt, self.FLOAT)
-            self._fock = blocked.matrix(self.norb, self.norb)
+            self._fock = blocked.BlockDiagonalMatrix(self.norb, self.norb)
             n = 0
             for isym in range(8):
                 for i in range(self.norb[isym]):
