@@ -180,7 +180,7 @@ def read(label="OVERLAP", filename="AOONEINT"):
 
 def main():
     import argparse
-    from util.timing import timing
+    from .util.timing import timing
 
     parser = argparse.ArgumentParser()
     
