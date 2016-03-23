@@ -4,8 +4,11 @@
      *************** Dalton - An Electronic Structure Program ***************
      ************************************************************************
 
-    This is output from DALTON 2014.0
+    This is output from DALTON release Dalton2017.alpha (2016)
+         ( Web site: http://daltonprogram.org )
+
    ----------------------------------------------------------------------------
+
     NOTE:
      
     Dalton is an experimental code for the evaluation of molecular
@@ -45,12 +48,12 @@
        O. Vahtras, M. A. Watson, D. J. D. Wilson, M. Ziolkowski
        and H. Agren,
        "The Dalton quantum chemistry program system",
-       WIREs Comput. Mol. Sci. 2013. (doi: 10.1002/wcms.1172)
-    
+       WIREs Comput. Mol. Sci. 2014, 4:269–284 (doi: 10.1002/wcms.1172)
+     
     and
-    
+     
        Dalton, a Molecular Electronic Structure Program,
-       Release DALTON2014.0 (2014), see http://daltonprogram.org
+       Release Dalton2017.alpha (2016), see http://daltonprogram.org
    ----------------------------------------------------------------------------
 
     Authors in alphabetical order (major contribution(s) in parenthesis):
@@ -59,7 +62,7 @@
   Celestino Angeli,         University of Ferrara,        Italy       (NEVPT2)
   Keld L. Bak,              UNI-C,                        Denmark     (AOSOPPA, non-adiabatic coupling, magnetic properties)
   Vebjoern Bakken,          University of Oslo,           Norway      (DALTON; geometry optimizer, symmetry detection)
-  Radovan Bast,             KTH Stockholm,                Sweden      (DALTON installation and execution frameworks)
+  Radovan Bast,             UiT The Arctic U. of Norway,  Norway      (DALTON installation and execution frameworks)
   Pablo Baudin,             University of Valencia,       Spain       (Cholesky excitation energies)
   Linus Boman,              NTNU,                         Norway      (Cholesky decomposition and subsystems)
   Ove Christiansen,         Aarhus University,            Denmark     (CC module)
@@ -70,6 +73,7 @@
   Erik K. Dalskov,          UNI-C,                        Denmark     (SOPPA)
   Thomas Enevoldsen,        Univ. of Southern Denmark,    Denmark     (SOPPA)
   Janus J. Eriksen,         Aarhus University,            Denmark     (Polarizable embedding model, TDA)
+  Rasmus Faber,             University of Copenhagen,     Denmark     (Vib.avg. NMR with SOPPA, parallel AO-SOPPA)
   Berta Fernandez,          U. of Santiago de Compostela, Spain       (doublet spin, ESR in RESPONS)
   Lara Ferrighi,            Aarhus University,            Denmark     (PCM Cubic response)
   Heike Fliegl,             University of Oslo,           Norway      (CCSD(R12))
@@ -78,6 +82,7 @@
   Christof Haettig,         Ruhr-University Bochum,       Germany     (CC module)
   Kasper Hald,              Aarhus University,            Denmark     (CC module)
   Asger Halkier,            Aarhus University,            Denmark     (CC module)
+  Frederik Beyer Hansen,    University of Copenhagen,     Denmark     (Parallel AO-SOPPA)
   Erik D. Hedegaard,        Univ. of Southern Denmark,    Denmark     (Polarizable embedding model, QM/MM)
   Hanne Heiberg,            University of Oslo,           Norway      (geometry analysis, selected one-electron integrals)
   Trygve Helgaker,          University of Oslo,           Norway      (DALTON; ABACUS, ERI, DFT modules, London, and much more)
@@ -105,7 +110,7 @@
   Rolf H. Myhre,            NTNU,                         Norway      (Cholesky, subsystems and ECC2)
   Christian Neiss,          Univ. Erlangen-Nuernberg,     Germany     (CCSD(R12))
   Christian B. Nielsen,     University of Copenhagen,     Denmark     (QM/MM)
-  Patrick Norman,           Linkoeping University,        Sweden      (Cubic response and complex response in RESPONS)
+  Patrick Norman,           Linkoeping University,        Sweden      (Cubic response and complex frequency response in RESPONS)
   Jeppe Olsen,              Aarhus University,            Denmark     (SIRIUS CI/density modules)
   Jogvan Magnus H. Olsen,   Univ. of Southern Denmark,    Denmark     (Polarizable embedding model, QM/MM)
   Anders Osted,             Copenhagen University,        Denmark     (QM/MM)
@@ -136,37 +141,38 @@
   Hans Agren,               KTH Stockholm,                Sweden      (SIRIUS module, RESPONS, MC-SCRF solvation model)
  --------------------------------------------------------------------------------
 
-     Date and time (Linux)  : Thu Dec 11 14:29:48 2014
-     Host name              : olav-ThinkPad-X1                        
+     Date and time (Linux)  : Wed Mar 23 15:19:41 2016
+     Host name              : olav-ThinkPad-W540                      
 
  * Work memory size             :    64000000 =  488.28 megabytes.
 
  * Directories for basis set searches:
-   1) /home/olav/dev/dalton/git/basis/
+   1) /home/olav/dev/dalton/basis/
 
 
 Compilation information
 -----------------------
 
  Who compiled             | olav
- Host                     | olav-ThinkPad-X1
- System                   | Linux-3.13.0-40-generic
+ Host                     | olav-ThinkPad-W540
+ System                   | Linux-3.13.0-48-generic
  CMake generator          | Unix Makefiles
  Processor                | x86_64
  64-bit integers          | OFF
  MPI                      | ON
  Fortran compiler         | /usr/bin/mpif90
- Fortran compiler version | GNU Fortran (Ubuntu 4.8.2-19ubuntu1) 4.8.2
+ Fortran compiler version | GNU Fortran (Ubuntu 5.2.1-22ubuntu2) 5.2.1 2015101
+                          | 0
  C compiler               | /usr/bin/mpicc
- C compiler version       | gcc (Ubuntu 4.8.2-19ubuntu1) 4.8.2
+ C compiler version       | gcc (Ubuntu 5.2.1-22ubuntu2) 5.2.1 20151010
  C++ compiler             | /usr/bin/mpicxx
  C++ compiler version     | unknown
  BLAS                     | /usr/lib/libblas.so
  LAPACK                   | /usr/lib/liblapack.so
  Static linking           | OFF
- Last Git revision        | 907d8fed1eb409fb94e266293839d37fd9eba90d
+ Last Git revision        | 00e5e26091adbc76753cbb08d5b1176e5c7adfef
  Git branch               | master
- Configuration time       | 2014-12-09 17:11:06.988350
+ Configuration time       | 2016-03-11 12:13:52.115779
 
  * Sequential calculation.
 
@@ -258,7 +264,7 @@ H           0 -1 -1
   Number of basis sets to read;    2
   The basis set is "STO-3G" from the basis set library.
   Basis set file used for this atomic type with Z =   6 :
-     "/home/olav/dev/dalton/git/basis/STO-3G"
+     "/home/olav/dev/dalton/basis/STO-3G"
 
   Atomic type no.    2
   --------------------
@@ -267,7 +273,7 @@ H           0 -1 -1
   Number of basis sets to read;    2
   The basis set is "STO-3G" from the basis set library.
   Basis set file used for this atomic type with Z =   8 :
-     "/home/olav/dev/dalton/git/basis/STO-3G"
+     "/home/olav/dev/dalton/basis/STO-3G"
 
   Atomic type no.    3
   --------------------
@@ -276,7 +282,7 @@ H           0 -1 -1
   Number of basis sets to read;    2
   The basis set is "STO-3G" from the basis set library.
   Basis set file used for this atomic type with Z =   1 :
-     "/home/olav/dev/dalton/git/basis/STO-3G"
+     "/home/olav/dev/dalton/basis/STO-3G"
 
 
                       SYMADD: Requested addition of symmetry
@@ -1007,8 +1013,8 @@ H           0 -1 -1
  HERMIT - Number of two-electron integrals written:        1028 ( 33.4% )
  HERMIT - Megabytes written:                              0.014
 
- >>>> Total CPU  time used in HERMIT:   0.01 seconds
- >>>> Total wall time used in HERMIT:   0.01 seconds
+  Total CPU  time used in HERMIT:   0.01 seconds
+  Total wall time used in HERMIT:   0.01 seconds
 
 
                         .----------------------------------.
@@ -1079,8 +1085,8 @@ H           0 -1 -1
  **********************************************************************
 
  
-     Date and time (Linux)  : Thu Dec 11 14:29:48 2014
-     Host name              : olav-ThinkPad-X1                        
+     Date and time (Linux)  : Wed Mar 23 15:19:41 2016
+     Host name              : olav-ThinkPad-W540                      
 
  Title lines from ".mol" input file:
      CH2O                                                                    
@@ -1098,7 +1104,7 @@ H           0 -1 -1
 
      Wave function specification
      ============================
-@    Wave function type        >>> HF <<<
+@    Wave function type        --- HF ---
 @    Number of closed shell electrons          16
 @    Number of electrons in active shells       0
 @    Total charge of the molecule               0
@@ -1109,11 +1115,11 @@ H           0 -1 -1
 
      Orbital specifications
      ======================
-     Abelian symmetry species          All |    1    2    3    4
-                                           |  A1   B1   B2   A2 
+@    Abelian symmetry species          All |    1    2    3    4
+@                                          |  A1   B1   B2   A2 
                                        --- |  ---  ---  ---  ---
-     Total number of orbitals           12 |    7    2    3    0
-     Number of basis functions          12 |    7    2    3    0
+@    Total number of orbitals           12 |    7    2    3    0
+@    Number of basis functions          12 |    7    2    3    0
 
       ** Automatic occupation of RHF orbitals **
 
@@ -1147,124 +1153,128 @@ H           0 -1 -1
     1.000000
       Virial theorem: -V/T =      2.000135
 @      MULPOP C       0.91; O      -0.31; H   _1 -0.30; H   _2 -0.30; 
- Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  1.00D-03
- CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  2.35D-02
+   1  Level shift: doubly occupied orbital energies shifted by -2.00D-01
+ Time used in FCKEIG, thr_jaco:   7.89D-04  0.00D+00  1.00D-03
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   7.89D-04  0.00D+00  2.35D-02
  -----------------------------------------------------------------------------
 
  *** DIIS iteration number    2
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.   2    -112.096344681        4.13234D-01   -2.03D-01  -20    T
+@ DIIS iter.   2    -112.096566935        3.69139D-01   -2.03D-01  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -1.67D-01
-    0.025161    0.974839
-      Virial theorem: -V/T =      2.003806
-@      MULPOP C       0.08; O      -0.12; H   _1  0.02; H   _2  0.02; 
- Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  2.87D-04
- CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  4.13D-03
+ DIIS C vector; C2DIIS = F, LAMBDA = -1.27D-01
+   -0.042389    1.042389
+      Virial theorem: -V/T =      2.004366
+@      MULPOP C       0.22; O      -0.16; H   _1 -0.03; H   _2 -0.03; 
+   2  Level shift: doubly occupied orbital energies shifted by -5.00D-02
+ Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  2.56D-04
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  3.69D-03
  -----------------------------------------------------------------------------
 
  *** DIIS iteration number    3
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.   3    -112.107788530        1.32909D-01   -1.14D-02  -20    T
+@ DIIS iter.   3    -112.107962249        1.02539D-01   -1.14D-02  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -8.14D-03
-   -0.020244    0.171133    0.849112
-      Virial theorem: -V/T =      2.002951
-@      MULPOP C       0.38; O      -0.31; H   _1 -0.03; H   _2 -0.03; 
- Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  9.22D-05
- CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  1.33D-03
+ DIIS C vector; C2DIIS = F, LAMBDA = -9.03D-03
+   -0.016620   -0.001477    1.018098
+      Virial theorem: -V/T =      2.003136
+@      MULPOP C       0.34; O      -0.29; H   _1 -0.03; H   _2 -0.03; 
+   3  Level shift: doubly occupied orbital energies shifted by -2.50D-02
+ Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  7.11D-05
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  1.03D-03
  -----------------------------------------------------------------------------
 
  *** DIIS iteration number    4
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.   4    -112.109426883        3.87568D-02   -1.64D-03  -20    T
+@ DIIS iter.   4    -112.109389023        4.43134D-02   -1.43D-03  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -5.73D-04
-    0.001209   -0.083265   -0.015217    1.097273
-      Virial theorem: -V/T =      2.003501
+ DIIS C vector; C2DIIS = F, LAMBDA = -4.94D-04
+    0.007026   -0.118152    0.102126    1.009000
+      Virial theorem: -V/T =      2.003505
 @      MULPOP C       0.31; O      -0.25; H   _1 -0.03; H   _2 -0.03; 
- Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  2.69D-05
- CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  3.88D-04
+   4  Level shift: doubly occupied orbital energies shifted by -1.25D-02
+ Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  3.07D-05
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  4.43D-04
  -----------------------------------------------------------------------------
 
  *** DIIS iteration number    5
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.   5    -112.109600917        6.98230D-03   -1.74D-04  -20    T
+@ DIIS iter.   5    -112.109599877        7.65899D-03   -2.11D-04  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -2.73D-05
-    0.000533    0.002285   -0.031757   -0.141275    1.170214
-      Virial theorem: -V/T =      2.003297
+ DIIS C vector; C2DIIS = F, LAMBDA = -9.51D-06
+   -0.002248    0.043996   -0.072623   -0.398610    1.429485
+      Virial theorem: -V/T =      2.003306
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
- Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  4.84D-06
- CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  6.98D-05
+ Time used in FCKEIG, thr_jaco:   1.70D-04  0.00D+00  5.31D-06
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   1.70D-04  0.00D+00  7.66D-05
  -----------------------------------------------------------------------------
 
  *** DIIS iteration number    6
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.   6    -112.109611505        1.82798D-03   -1.06D-05  -20    T
+@ DIIS iter.   6    -112.109611963        1.11701D-03   -1.21D-05  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -8.41D-07
-   -0.000220    0.004135    0.008002   -0.022773   -0.303804    1.314660
-      Virial theorem: -V/T =      2.003304
+ DIIS C vector; C2DIIS = F, LAMBDA = -7.87D-07
+    0.000280   -0.006149    0.010905    0.062790   -0.290535    1.222708
+      Virial theorem: -V/T =      2.003302
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
- Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  1.27D-06
- CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  1.83D-05
+ Time used in FCKEIG, thr_jaco:   7.10D-05  1.00D-03  7.75D-07
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   7.60D-05  1.00D-03  1.12D-05
  -----------------------------------------------------------------------------
 
  *** DIIS iteration number    7
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.   7    -112.109612216        4.39777D-04   -7.11D-07  -20    T
+@ DIIS iter.   7    -112.109612223        3.94437D-04   -2.60D-07  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -1.11D-08
-    0.000145   -0.002926   -0.006064    0.021451    0.204895   -1.015899    1.798399
+ DIIS C vector; C2DIIS = F, LAMBDA = -1.84D-08
+    0.000040   -0.000468   -0.000114    0.003520    0.029567   -0.629452    1.596908
       Virial theorem: -V/T =      2.003300
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
- Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  3.05D-07
- CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  4.40D-06
+ Time used in FCKEIG, thr_jaco:   2.17D-03  0.00D+00  2.73D-07
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   2.17D-03  0.00D+00  3.94D-06
  -----------------------------------------------------------------------------
 
  *** DIIS iteration number    8
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.   8    -112.109612258        3.27312D-05   -4.12D-08  -20    T
+@ DIIS iter.   8    -112.109612257        4.45280D-05   -3.43D-08  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -2.61D-10
-   -0.000025    0.000493    0.000955   -0.003319   -0.036609    0.180358   -0.354367    1.212513
+ DIIS C vector; C2DIIS = F, LAMBDA = -4.60D-10
+   -0.000015    0.000239   -0.000442   -0.001605    0.001416    0.074200   -0.266619    1.192825
       Virial theorem: -V/T =      2.003299
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
- Time used in FCKEIG, thr_jaco:   2.56D-04  0.00D+00  2.27D-08
- CPU and wall times used in FCKEIG, THR_FCKEIG:   2.56D-04  0.00D+00  3.27D-07
+ Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  3.09D-08
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  4.45D-07
  -----------------------------------------------------------------------------
 
  *** DIIS iteration number    9
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.   9    -112.109612258        4.26481D-06   -1.14D-10  -20    T
+@ DIIS iter.   9    -112.109612258        5.75963D-06   -2.30D-10  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -4.97D-13
-    1.167117    0.000001   -0.000006    0.000011    0.000279   -0.001941    0.011077   -0.176539
+ DIIS C vector; C2DIIS = F, LAMBDA = -3.56D-12
+    1.112085   -0.000006    0.000028    0.000135   -0.001241    0.012608   -0.021210   -0.102398
       Virial theorem: -V/T =      2.003299
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
  Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  5.55D-14
@@ -1274,12 +1284,12 @@ H           0 -1 -1
  *** DIIS iteration number   10
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.  10    -112.109612258        1.48436D-07   -1.25D-12  -20    T
+@ DIIS iter.  10    -112.109612258        1.78924D-07   -2.33D-12  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -1.35D-14
-   -0.157429    1.136026    0.000001   -0.000002   -0.000046    0.000300   -0.001501    0.022651
+ DIIS C vector; C2DIIS = F, LAMBDA = -4.66D-15
+   -0.060198    1.059219    0.000000   -0.000007    0.000064   -0.000808    0.001803   -0.000072
       Virial theorem: -V/T =      2.003299
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
  Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  5.55D-14
@@ -1289,12 +1299,12 @@ H           0 -1 -1
  *** DIIS iteration number   11
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.  11    -112.109612258        3.59375D-08    0.00D+00  -20    T
+@ DIIS iter.  11    -112.109612258        1.32732D-08   -2.84D-14  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -2.08D-16
-   -0.003186   -0.275724    1.278271   -0.000000   -0.000001    0.000008   -0.000051    0.000684
+ DIIS C vector; C2DIIS = F, LAMBDA = -4.48D-17
+    0.010950   -0.207972    1.197198    0.000001   -0.000011    0.000144   -0.000320    0.000011
       Virial theorem: -V/T =      2.003299
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
  Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  5.55D-14
@@ -1304,12 +1314,12 @@ H           0 -1 -1
  *** DIIS iteration number   12
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.  12    -112.109612258        2.71467D-09   -8.53D-14  -20    T
+@ DIIS iter.  12    -112.109612258        1.90475D-09    5.68D-14  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -1.01D-18
-    0.001606    0.005759   -0.081764    1.074595    0.000000   -0.000002    0.000014   -0.000210
+ DIIS C vector; C2DIIS = F, LAMBDA = -2.19D-18
+    0.000030    0.003702   -0.114870    1.111150   -0.000000    0.000001   -0.000000   -0.000013
       Virial theorem: -V/T =      2.003299
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
  Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  5.55D-14
@@ -1319,12 +1329,12 @@ H           0 -1 -1
  *** DIIS iteration number   13
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.  13    -112.109612258        1.84757D-10    2.84D-14  -20    T
+@ DIIS iter.  13    -112.109612258        4.38045D-10   -5.68D-14  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -1.47D-20
-   -0.000081    0.001245   -0.002366   -0.064554    1.065752    0.000000   -0.000000    0.000005
+ DIIS C vector; C2DIIS = F, LAMBDA = -8.04D-21
+   -0.000018    0.000079    0.018793   -0.364658    1.345804   -0.000000    0.000000   -0.000001
       Virial theorem: -V/T =      2.003299
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
  Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  5.55D-14
@@ -1334,12 +1344,12 @@ H           0 -1 -1
  *** DIIS iteration number   14
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.  14    -112.109612258        3.97101D-11    0.00D+00  -20    T
+@ DIIS iter.  14    -112.109612258        1.64205D-11    0.00D+00  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
- DIIS C vector; C2DIIS = F, LAMBDA = -3.82D-23
-   -0.000011   -0.000126    0.001451   -0.019007    0.023791    0.993900   -0.000000    0.000002
+ DIIS C vector; C2DIIS = F, LAMBDA = -1.26D-22
+   -0.000001    0.000013   -0.001590    0.031342   -0.121142    1.091378   -0.000000    0.000001
       Virial theorem: -V/T =      2.003299
 @      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
  Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  5.55D-14
@@ -1349,18 +1359,31 @@ H           0 -1 -1
  *** DIIS iteration number   15
 
  ITDIIS, energy, error norm, change in energy, scr.thr., difden:
-@ DIIS iter.  15    -112.109612258        9.10819D-13    0.00D+00  -20    T
+@ DIIS iter.  15    -112.109612258        5.50740D-12   -2.84D-14  -20    T
 
 @ AUTO OCC: current SCF occupation   5   1   2   0
 
-@ *** DIIS converged in  15 iterations !
-@     Converged SCF energy, gradient:   -112.109612257629    9.11D-13
+ DIIS C vector; C2DIIS = F, LAMBDA = -6.67D-24
+   -0.000001    0.000021   -0.000262    0.001783   -0.004207   -0.163761    1.166426   -0.000000
+      Virial theorem: -V/T =      2.003299
+@      MULPOP C       0.32; O      -0.27; H   _1 -0.03; H   _2 -0.03; 
+ Time used in FCKEIG, thr_jaco:   0.00D+00  0.00D+00  5.55D-14
+ CPU and wall times used in FCKEIG, THR_FCKEIG:   0.00D+00  0.00D+00  8.00D-13
+ -----------------------------------------------------------------------------
+
+ *** DIIS iteration number   16
+
+ ITDIIS, energy, error norm, change in energy, scr.thr., difden:
+@ DIIS iter.  16    -112.109612258        8.87477D-13    0.00D+00  -20    T
+
+@ AUTO OCC: current SCF occupation   5   1   2   0
+
+@ *** DIIS converged in  16 iterations !
+@     Converged SCF energy, gradient:   -112.109612257629    8.87D-13
     - total time used in SIRFCK :              0.00 seconds
 
 
  *** SCF orbital energy analysis ***
-
- Only the five lowest virtual orbital energies printed in each symmetry.
 
  Number of electrons :   16
  Orbital occupations :    5    1    2    0
@@ -1379,13 +1402,13 @@ H           0 -1 -1
   ------------------------------------------
     gap     :     0.63068325 au
 
- >>> Writing SIRIFC interface file
+ --- Writing SIRIFC interface file
 
- >>>> CPU and wall time for SCF :       0.007       0.007
+ CPU and wall time for SCF :       0.005       0.006
 
 
                        .-----------------------------------.
-                       | >>> Final results from SIRIUS <<< |
+                       | --- Final results from SIRIUS --- |
                        `-----------------------------------'
 
 
@@ -1400,10 +1423,12 @@ H           0 -1 -1
 @    Final gradient norm:           0.000000000001
 
  
-     Date and time (Linux)  : Thu Dec 11 14:29:48 2014
-     Host name              : olav-ThinkPad-X1                        
+     Date and time (Linux)  : Wed Mar 23 15:19:41 2016
+     Host name              : olav-ThinkPad-W540                      
 
- (Only coefficients >0.0100 are printed.)
+File label for MO orbitals:  23Mar16   FOCKDIIS
+
+ (Only coefficients > 0.0100 are printed.)
 
  Molecular orbitals for symmetry species 1  (A1 )
  ------------------------------------------------
@@ -1432,14 +1457,12 @@ H           0 -1 -1
    2 O   :2py    0.6815  -0.5859  -0.5618
    3 H   :1s     0.1173   0.5576  -0.5807
 
-
-
- >>>> Total CPU  time used in SIRIUS :      0.01 seconds
- >>>> Total wall time used in SIRIUS :      0.01 seconds
+  Total CPU  time used in SIRIUS :   0.01 seconds
+  Total wall time used in SIRIUS :   0.01 seconds
 
  
-     Date and time (Linux)  : Thu Dec 11 14:29:48 2014
-     Host name              : olav-ThinkPad-X1                        
+     Date and time (Linux)  : Wed Mar 23 15:19:41 2016
+     Host name              : olav-ThinkPad-W540                      
 
  NOTE:    2 warnings have been issued.
  Check output, result, and error files for "WARNING".
@@ -1461,7 +1484,7 @@ H           0 -1 -1
  ------------------------------------------------------------------------------
 
 
- <<<<<<<<<< OUTPUT FROM RESPONSE INPUT PROCESSING >>>>>>>>>>
+ -------- OUTPUT FROM RESPONSE INPUT PROCESSING --------
 
 
 
@@ -1490,9 +1513,11 @@ H           0 -1 -1
 
  Integral transformation: Total CPU and WALL times (sec)       0.000       0.000
 
+ Sorting integrals to Dirac format: Total CPU and WALL times (sec)       0.000       0.000
 
-   SCF energy         :     -112.109612257628555
- -- inactive part     :     -146.051408401477431
+
+   SCF energy         :     -112.109612257628584
+ -- inactive part     :     -146.051408401477460
  -- nuclear repulsion :       33.941796143848876
 
 
@@ -1500,10 +1525,10 @@ H           0 -1 -1
                      *** RHF response calculation (TDHF) ***
                      ***************************************
 
-
-
- >>>>>>>>>> Linear response calculation
- >>>>>>>>>> Symmetry of excitation/property operator(s)    1  ( A1 )
+ ----------------------------------------------------------------
+ ----- Linear response calculation
+ ----- Symmetry of excitation/property operator(s)    1  ( A1 )
+ ----------------------------------------------------------------
 
  Number of excitations of this symmetry            0
  Number of response properties of this symmetry    1
@@ -1525,7 +1550,7 @@ H           0 -1 -1
 
 
 
- <<<  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES >>>
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
 
  Operator symmetry = 1  ( A1 ); triplet =   F
 
@@ -1536,8 +1561,8 @@ RSPORT:    1 out of    2 new trial vectors linear dependent
  Convergence of RSP solution vectors, threshold = 1.00D-09
  ---------------------------------------------------------------
  (dimension of paired reduced space:   26)
- RSP solution vector no.    1; norm of residual   8.66D-16
- RSP solution vector no.    2; norm of residual   7.24D-16
+ RSP solution vector no.    1; norm of residual   5.70D-16
+ RSP solution vector no.    2; norm of residual   6.79D-16
 
  *** RSPCTL MICROITERATIONS CONVERGED
 
@@ -1563,14 +1588,14 @@ RSPORT:    1 out of    2 new trial vectors linear dependent
 @  kJ/mol:  1.3127498D+03
 @    nm  :  9.1126706D+01
 
-@ -<< ZDIPLEN  ; ZDIPLEN  >> =  8.048119118986D+01
+@ -<< ZDIPLEN  ; ZDIPLEN  >> =  8.048119118989D+01
 
 
  Time used in linear response calculation is      0.00 CPU seconds for symmetry 1
-
-
- >>>>>>>>>> Linear response calculation
- >>>>>>>>>> Symmetry of excitation/property operator(s)    2  ( B1 )
+ ----------------------------------------------------------------
+ ----- Linear response calculation
+ ----- Symmetry of excitation/property operator(s)    2  ( B1 )
+ ----------------------------------------------------------------
 
  Number of excitations of this symmetry            0
  Number of response properties of this symmetry    1
@@ -1592,33 +1617,33 @@ RSPORT:    1 out of    2 new trial vectors linear dependent
 
 
 
- <<<  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES >>>
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
 
  Operator symmetry = 2  ( B1 ); triplet =   F
 
 
- *** INFO, negative eigenvalues in reduced matrix. Symmetry  2,  triplet       F
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  2,  triplet       F Dimension of reduced matrix =    12
 
  GP * SOLUTION vector at frequency     0.50000 a.u.
  after    6 linear transformations is      1.69056989D+00
  INERTIA (POS,ZER,NEG) of reduced matrix is   11    0    1
- Determinant of reduced matrix is-41.83 * 10 ** 20.0
+ Determinant of reduced matrix is -4.18 * 10 **  2.0
 RSPORT:    1 out of    2 new trial vectors linear dependent
 
- *** INFO, negative eigenvalues in reduced matrix. Symmetry  2,  triplet       F
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  2,  triplet       F Dimension of reduced matrix =    14
 
  GP * SOLUTION vector at frequency     0.50000 a.u.
  after    7 linear transformations is      2.39938565D+00
  INERTIA (POS,ZER,NEG) of reduced matrix is   13    0    1
- Determinant of reduced matrix is-71.21 * 10 ** 50.0
+ Determinant of reduced matrix is -7.12 * 10 **  5.0
 
  *** THE REQUESTED    2 SOLUTION VECTORS CONVERGED
 
  Convergence of RSP solution vectors, threshold = 1.00D-09
  ---------------------------------------------------------------
  (dimension of paired reduced space:   14)
- RSP solution vector no.    1; norm of residual   2.30D-16
- RSP solution vector no.    2; norm of residual   1.08D-15
+ RSP solution vector no.    1; norm of residual   8.63D-16
+ RSP solution vector no.    2; norm of residual   1.69D-15
 
  *** RSPCTL MICROITERATIONS CONVERGED
 
@@ -1644,14 +1669,14 @@ RSPORT:    1 out of    2 new trial vectors linear dependent
 @  kJ/mol:  1.3127498D+03
 @    nm  :  9.1126706D+01
 
-@ -<< XDIPLEN  ; XDIPLEN  >> =  2.399385652645D+00
+@ -<< XDIPLEN  ; XDIPLEN  >> =  2.399385652643D+00
 
 
  Time used in linear response calculation is      0.00 CPU seconds for symmetry 2
-
-
- >>>>>>>>>> Linear response calculation
- >>>>>>>>>> Symmetry of excitation/property operator(s)    3  ( B2 )
+ ----------------------------------------------------------------
+ ----- Linear response calculation
+ ----- Symmetry of excitation/property operator(s)    3  ( B2 )
+ ----------------------------------------------------------------
 
  Number of excitations of this symmetry            0
  Number of response properties of this symmetry    1
@@ -1673,54 +1698,54 @@ RSPORT:    1 out of    2 new trial vectors linear dependent
 
 
 
- <<<  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES >>>
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
 
  Operator symmetry = 3  ( B2 ); triplet =   F
 
 
- *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F Dimension of reduced matrix =     4
 
  GP * SOLUTION vector at frequency     0.50000 a.u.
  after    2 linear transformations is     -1.64651426D+01
  INERTIA (POS,ZER,NEG) of reduced matrix is    3    0    1
- Determinant of reduced matrix is-74.30 * 10 **-10.0
+ Determinant of reduced matrix is -7.43 * 10 ** -1.0
 
- *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F Dimension of reduced matrix =     8
 
  GP * SOLUTION vector at frequency     0.50000 a.u.
  after    4 linear transformations is     -1.48585873D+01
  INERTIA (POS,ZER,NEG) of reduced matrix is    7    0    1
- Determinant of reduced matrix is-11.42 * 10 ** 10.0
+ Determinant of reduced matrix is -1.14 * 10 **  1.0
 
- *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F Dimension of reduced matrix =    12
 
  GP * SOLUTION vector at frequency     0.50000 a.u.
  after    6 linear transformations is     -1.48031875D+01
  INERTIA (POS,ZER,NEG) of reduced matrix is   11    0    1
- Determinant of reduced matrix is-25.29 * 10 ** 20.0
+ Determinant of reduced matrix is -2.53 * 10 **  2.0
 
- *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F Dimension of reduced matrix =    16
 
  GP * SOLUTION vector at frequency     0.50000 a.u.
  after    8 linear transformations is     -1.48015161D+01
  INERTIA (POS,ZER,NEG) of reduced matrix is   15    0    1
- Determinant of reduced matrix is-25.56 * 10 ** 60.0
+ Determinant of reduced matrix is -2.56 * 10 **  6.0
 RSPORT:    1 out of    2 new trial vectors linear dependent
 
- *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F
+ *** INFO, negative eigenvalues in reduced matrix. Symmetry  3,  triplet       F Dimension of reduced matrix =    18
 
  GP * SOLUTION vector at frequency     0.50000 a.u.
  after    9 linear transformations is     -1.48015012D+01
  INERTIA (POS,ZER,NEG) of reduced matrix is   17    0    1
- Determinant of reduced matrix is-22.45 * 10 ** 80.0
+ Determinant of reduced matrix is -2.25 * 10 **  8.0
 
  *** THE REQUESTED    2 SOLUTION VECTORS CONVERGED
 
  Convergence of RSP solution vectors, threshold = 1.00D-09
  ---------------------------------------------------------------
  (dimension of paired reduced space:   18)
- RSP solution vector no.    1; norm of residual   7.45D-16
- RSP solution vector no.    2; norm of residual   3.83D-16
+ RSP solution vector no.    1; norm of residual   3.33D-16
+ RSP solution vector no.    2; norm of residual   3.48D-16
 
  *** RSPCTL MICROITERATIONS CONVERGED
 
@@ -1746,25 +1771,25 @@ RSPORT:    1 out of    2 new trial vectors linear dependent
 @  kJ/mol:  1.3127498D+03
 @    nm  :  9.1126706D+01
 
-@ -<< YDIPLEN  ; YDIPLEN  >> = -1.480150119284D+01
+@ -<< YDIPLEN  ; YDIPLEN  >> = -1.480150119286D+01
 
 
  Time used in linear response calculation is      0.00 CPU seconds for symmetry 3
 
- >>>> Total CPU  time used in RESPONSE:   0.01 seconds
- >>>> Total wall time used in RESPONSE:   0.01 seconds
+  Total CPU  time used in RESPONSE:   0.00 seconds
+  Total wall time used in RESPONSE:   0.00 seconds
 
 
                    .-------------------------------------------.
                    | End of Dynamic Property Section (RESPONS) |
                    `-------------------------------------------'
 
- >>>> Total CPU  time used in DALTON:   0.04 seconds
- >>>> Total wall time used in DALTON:   0.04 seconds
+  Total CPU  time used in DALTON:   0.04 seconds
+  Total wall time used in DALTON:   0.04 seconds
 
  
-     Date and time (Linux)  : Thu Dec 11 14:29:48 2014
-     Host name              : olav-ThinkPad-X1                        
+     Date and time (Linux)  : Wed Mar 23 15:19:41 2016
+     Host name              : olav-ThinkPad-W540                      
   
 
  +---------------------------------------------------------+ 
@@ -1777,11 +1802,11 @@ RSPORT:    1 out of    2 new trial vectors linear dependent
  #  1 1 ENERGY   Ground state Energy =    -112.1096122576
 
  LR-SCF/DFT properties :
- #  2 1 <<ZDIPLEN ,ZDIPLEN >>( 0.000000) =     12.553441048833
- #  3 1 <<ZDIPLEN ,ZDIPLEN >>( 0.500000) =     80.481191189862
+ #  2 1 <<ZDIPLEN ,ZDIPLEN >>( 0.000000) =     12.553441048834
+ #  3 1 <<ZDIPLEN ,ZDIPLEN >>( 0.500000) =     80.481191189889
  #  4 1 <<XDIPLEN ,XDIPLEN >>( 0.000000) =      2.273948663128
- #  5 1 <<XDIPLEN ,XDIPLEN >>( 0.500000) =      2.399385652645
- #  6 1 <<YDIPLEN ,YDIPLEN >>( 0.000000) =     10.902683276286
- #  7 1 <<YDIPLEN ,YDIPLEN >>( 0.500000) =    -14.801501192844
+ #  5 1 <<XDIPLEN ,XDIPLEN >>( 0.500000) =      2.399385652643
+ #  6 1 <<YDIPLEN ,YDIPLEN >>( 0.000000) =     10.902683276287
+ #  7 1 <<YDIPLEN ,YDIPLEN >>( 0.500000) =    -14.801501192858
 
  THE_END   
