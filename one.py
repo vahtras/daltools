@@ -103,11 +103,8 @@ def readscfinp(filename="AOONEINT"):
     import collections
     scfinp_ = collections.OrderedDict()
     aooneint.next()
-    if len(aooneint.data) == 144:
-        title = aooneint.data.decode()
-        aooneint.next()
-    else:
-        title = aooneint.readbuf(192,'c')
+    title = aooneint.data.decode()
+    aooneint.next()
     scfinp_["ttitle"] = title
     nsym = aooneint.readbuf(1, INT)[0]
     scfinp_["nsym"] = nsym
