@@ -48,7 +48,7 @@ class NewTest(unittest.TestCase):
         sys.argv[1:] = ['XDIPLEN', 'XDIPLEN', 'XDIPLEN', '-t', self.tmpdir]
         main()
         print_output = sys.stdout.getvalue().strip()
-        self.assertEqual(print_output, "0.000133228776144")
+        self.assertEqual(print_output, "0.00013323")
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()

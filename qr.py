@@ -121,7 +121,7 @@ def main():
           )
     args = parser.parse_args()
 
-    print(QR(args.A, args.B, args.C, tmpdir=args.tmpdir))
+    print("%12.5g" % QR(args.A, args.B, args.C, tmpdir=args.tmpdir))
 
 if __name__ == "__main__":#pragma: no cover
     sys.exit(main())
