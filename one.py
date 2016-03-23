@@ -60,7 +60,7 @@ def _get_integer_format(header_record):
     elif header_record.reclen in dimensions[:, 1]:
        integer_format = 'q'
     else:
-       raise Exception("Unknown binary format in AOONEINT")
+       raise RuntimeError("Unknown binary format in AOONEINT")
 
     return integer_format
 

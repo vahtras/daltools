@@ -223,5 +223,11 @@ OVERLAP
         with self.assertRaises(RuntimeError):
             one.readhead(self.aoproper)
 
+    def test_wrong_integer_format(self):
+        class dummy(object):
+            reclen = 7
+        with self.assertRaises(RuntimeError):
+            i = one._get_integer_format(dummy)
+
 if __name__ == "__main__":#pragma: no cover
     unittest.main()
