@@ -141,7 +141,7 @@
   Hans Agren,               KTH Stockholm,                Sweden      (SIRIUS module, RESPONS, MC-SCRF solvation model)
  --------------------------------------------------------------------------------
 
-     Date and time (Linux)  : Tue Mar 22 16:34:24 2016
+     Date and time (Linux)  : Wed Mar 23 15:22:14 2016
      Host name              : olav-ThinkPad-W540                      
 
  * Work memory size             :    64000000 =  488.28 megabytes.
@@ -1219,5 +1219,5 @@ H           -2.508043   -1.382001     .040282
   Total wall time used in DALTON:   0.02 seconds
 
  
-     Date and time (Linux)  : Tue Mar 22 16:34:24 2016
+     Date and time (Linux)  : Wed Mar 23 15:22:14 2016
      Host name              : olav-ThinkPad-W540                      
