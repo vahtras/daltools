@@ -23,15 +23,16 @@ class sirifc(unformatted.FortranBinary):
             )
 
         self.next()
-        if self.reclen == 64:
-           self.INT = 'q'
-        elif self.reclen == 48:
-           self.INT = 'i'
-        elif self.reclen == 52:
-           self.INT = 'i'
-        else:
-           raise Exception('Unconsistent first record in SIRIFC')
 
+# Integer size from first record, 4 floats, 5 ints
+#    1) POTNUC,EMY,EACTIV,EMCSCF,ISTATE,ISPIN,NACTEL,LSYM,MS2
+
+        n_floats = 4
+        n_ints = 5
+        float_size = 8
+        int_size = (self.reclen - 4*float_size)//5
+        int_codes = {4: 'i', 8: 'q'}
+        self.INT = int_codes[int_size]
         self.FLOAT = 'd'
 
         self.potnuc, self.emy, self.eactive, self.emcscf = self.readbuf(4, self.FLOAT)
