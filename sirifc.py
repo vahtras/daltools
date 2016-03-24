@@ -3,6 +3,13 @@
 import numpy
 from .util import unformatted, blocked, full
 
+
+def get_intcode(reclen, n_floats, n_ints):
+    float_size = 8
+    int_size = (reclen - 4*float_size)//n_ints
+    int_codes = {4: 'i', 8: 'q'}
+    return int_codes[int_size]
+
 class sirifc(unformatted.FortranBinary):
     """Read data from dalton interface file"""
     ifclabel = "SIR IPH "
@@ -27,12 +34,12 @@ class sirifc(unformatted.FortranBinary):
 # Integer size from first record, 4 floats, 5 ints
 #    1) POTNUC,EMY,EACTIV,EMCSCF,ISTATE,ISPIN,NACTEL,LSYM,MS2
 
-        n_floats = 4
-        n_ints = 5
-        float_size = 8
-        int_size = (self.reclen - 4*float_size)//5
-        int_codes = {4: 'i', 8: 'q'}
-        self.INT = int_codes[int_size]
+        try:
+            self.INT = get_intcode(self.reclen, 4, 5)
+        except KeyError:#pragma no cover
+            #Allow Dalton 2013 version
+            self.INT = get_intcode(self.reclen, 4, 4)
+            
         self.FLOAT = 'd'
 
         self.potnuc, self.emy, self.eactive, self.emcscf = self.readbuf(4, self.FLOAT)
