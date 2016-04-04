@@ -1,7 +1,8 @@
 import unittest
 import os
 import sys
-from .. import mol
+from . import daltools
+from daltools import mol
 
 
 class MolTest(unittest.TestCase):

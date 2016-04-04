@@ -2,8 +2,9 @@ import unittest
 import os
 import sys
 import numpy as np
-from .. import prop, sirifc
-from ..util import full
+from util import full
+from . import daltools
+from daltools import prop, sirifc
 
 class TestProp(unittest.TestCase):
 

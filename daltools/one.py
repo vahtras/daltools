@@ -3,7 +3,7 @@
 import sys 
 import struct
 import numpy as np
-from .util import unformatted, full, blocked
+from util import unformatted, full, blocked
 
 def readhead(filename="AOONEINT"):
     """Read data in header of AOONEINT"""

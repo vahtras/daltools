@@ -4,7 +4,7 @@ import os
 import sys
 import math
 import numpy as np
-from .util import unformatted, full
+from util import unformatted, full
 from . import one, sirifc, dens, rspvec
 
 def read(*args, **kwargs):

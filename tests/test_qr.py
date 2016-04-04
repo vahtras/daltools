@@ -3,7 +3,8 @@ import os
 import sys
 import pdb
 import numpy as np
-from ..qr import QR, main
+from . import daltools
+from daltools.qr import QR, main
 
 class NewTest(unittest.TestCase):
 

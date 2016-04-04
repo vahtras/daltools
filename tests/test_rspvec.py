@@ -3,7 +3,8 @@ import os
 import sys
 import numpy as np
 from nose.tools import raises
-from .. import rspvec, sirifc
+from . import daltools
+from daltools import rspvec, sirifc
 
 class TestRspVec(unittest.TestCase):
 

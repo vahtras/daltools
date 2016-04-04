@@ -1,8 +1,9 @@
 import unittest
 import os
 import numpy as np
-from ..util.full import init
-from .. import prop
+from util.full import init
+from . import daltools
+from daltools import prop
 
 class TestPropVec(unittest.TestCase):
 

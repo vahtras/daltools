@@ -4,7 +4,7 @@ Utility routines to generate density matrices
 """
 from math import sqrt
 from . import one, sirifc
-from .util import full, blocked
+from util import full, blocked
 
 def h1diag(nisht, nasht, filename='AOONEINT'):
     """Generate density from diagonalized one-electron Hamiltonian"""

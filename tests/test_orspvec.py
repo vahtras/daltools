@@ -1,7 +1,8 @@
 import unittest
 import os
 import numpy as np
-from .. import rspvec, sirifc
+from . import daltools
+from daltools import rspvec, sirifc
 
 class TestOpenRspVec(unittest.TestCase):
 

@@ -1,8 +1,9 @@
 import unittest
 import os
 import numpy as np
-from ..rspvec import read
-from ..lr import LR
+from . import daltools
+from daltools.rspvec import read
+from daltools.lr import LR
 
 class TestALR(unittest.TestCase):
 

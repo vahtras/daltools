@@ -6,7 +6,7 @@ THRESHOLD = 1e-5
 import sys
 import numpy as np
 import time
-from .util import full, unformatted
+from util import full, unformatted
 
 class RspVecError(Exception): pass
 

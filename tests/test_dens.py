@@ -1,8 +1,9 @@
 import unittest
 import os
 import numpy as np
-from ..util import full
-from .. import dens
+from util import full
+from . import daltools
+from daltools import dens
 
 class TestDens(unittest.TestCase):
 

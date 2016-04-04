@@ -2,7 +2,7 @@
 """Linear response module"""
 import os
 import os
-from .util.timing import timing
+from util.timing import timing
 from . import prop, sirifc, dens, rspvec, one
 def LR(A, B, w=0.0, tmpdir='/tmp', absorption=False):
     """Calculate the linear response function <<A;B>> from response vector

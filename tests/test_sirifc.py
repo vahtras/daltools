@@ -1,8 +1,9 @@
 import unittest
 import os
 import numpy as np
-from .. import sirifc
-from ..util import full
+from util import full
+from . import daltools
+from daltools import sirifc
 
 class TestSirIfc(unittest.TestCase):
 

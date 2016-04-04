@@ -1,7 +1,8 @@
 import unittest
 import os
 import numpy as np
-from ..lr import LR
+from . import daltools
+from daltools.lr import LR
 
 class TestOpenLR(unittest.TestCase):
 

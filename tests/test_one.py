@@ -2,8 +2,9 @@ import unittest
 import os
 import sys
 import numpy as np
-from .. import one
-from ..util import blocked, full
+from util import blocked, full
+from . import daltools
+from daltools import one
 
 class TestOne(unittest.TestCase):
 

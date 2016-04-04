@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Module for reading SIRIUS interface file (SIRIFC)"""
 import numpy
-from .util import unformatted, blocked, full
+from util import unformatted, blocked, full
 
 
 def get_intcode(reclen, n_floats, n_ints):
