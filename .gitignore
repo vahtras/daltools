@@ -2,4 +2,8 @@
 *.swp
 .coverage
 cover
-venv*
+/*env*
+/dist
+/build
+/.cache
+/daltools.egg-info
