@@ -228,7 +228,7 @@ def main():
             print("%s %s" % (args.label, str(S)))
 
 if __name__ == "__main__":#pragma no cover
-    from .util.timing import timing
+    from util.timing import timing
     t = timing(" ".join(sys.argv))
     main()
     print(t)
