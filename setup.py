@@ -8,4 +8,5 @@ setup(
     url="https://github.com/vahtras/daltools",
     packages=["daltools"],
     install_requires=["util"],
+    dependency_links=["https://github.com/vahtras/util.git@master#egg=util"],
     )
