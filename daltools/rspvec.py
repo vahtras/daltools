@@ -93,7 +93,7 @@ def tomat(N, ifc, tmpdir='/tmp'):
     import os
     norbt = ifc.norbt
     new = full.matrix((norbt, norbt))
-    lwop = len(N)/2
+    lwop = len(N)//2
     ij = 0
     for i, j in jwop(ifc):
         new[i, j] = N[ij]
