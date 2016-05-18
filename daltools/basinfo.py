@@ -54,5 +54,5 @@ def main():
         print("Usage: %s [path]/SIRIUS.RST" % sys.argv[0])
         sys.exit(1)
 
-if __name__ == "__main__":
+if __name__ == "__main__":#pragma: no cover
     sys.exit(main())

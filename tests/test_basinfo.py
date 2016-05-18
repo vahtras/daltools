@@ -1,5 +1,6 @@
 """Test BASINFO data on Sirius restart files (SIRIUS.RST)"""
 import unittest
+import sys
 import os
 try:
     import mock
@@ -8,7 +9,7 @@ except ImportError:
 
 import numpy
 from . import daltools
-from daltools.basinfo import BasInfo
+from daltools.basinfo import BasInfo, main
 from daltools import basinfo
 
 
@@ -55,11 +56,16 @@ IOPRHF :   0
 """
         self.assertEqual(str(self.bas_info), ref)
 
-    @mock.patch.object(basinfo.sys, 'argv')
     @mock.patch.object(basinfo, 'BasInfo')
-    def test_main_without_args_exits(self, mock_BasInfo, mock_argv):
-        mock_argv =  ['one']
-        mock_BasInfo.called_once_with('one')
+    def test_main_with_arg(self, mock_BasInfo):
+        sys.argv[1:] = ['one']
+        main()
+        mock_BasInfo.assert_called_once_with('one')
+
+    def test_main_without_arg(self):
+        sys.argv[1:] = []
+        with self.assertRaises(SystemExit):
+            main()
 
 
 if __name__ == "__main__":
