@@ -2,7 +2,7 @@
 import numpy
 import sys
 from util import unformatted, blocked, full
-from basinfo import BasInfo
+from .basinfo import BasInfo
 
 class SiriusRestart(unformatted.FortranBinary):
     def __init__(self, name="SIRIUS.RST"):

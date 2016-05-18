@@ -5,7 +5,7 @@ import sys
 import numpy
 from util.unformatted import FortranBinary
 
-class BasInfo():
+class BasInfo(object):
     """Simple class for BASINFO data"""
     label = "BASINFO"
     def __init__(self, name="SIRIUS.RST"):
@@ -13,10 +13,10 @@ class BasInfo():
         sirrst = FortranBinary(name)
         sirrst.find(BasInfo.label)
         sirrst.next()
-        self.nsym, = sirrst.readbuf(1,'i')
-        self.nbas = numpy.array(sirrst.readbuf(8,'i'))[:self.nsym]
-        self.norb = numpy.array(sirrst.readbuf(8,'i'))[:self.nsym]
-        self.nrhf = numpy.array(sirrst.readbuf(8,'i'))[:self.nsym]
+        self.nsym, = sirrst.readbuf(1, 'i')
+        self.nbas = numpy.array(sirrst.readbuf(8, 'i'))[:self.nsym]
+        self.norb = numpy.array(sirrst.readbuf(8, 'i'))[:self.nsym]
+        self.nrhf = numpy.array(sirrst.readbuf(8, 'i'))[:self.nsym]
         self.ioprhf, = sirrst.readbuf(1,'i')
         sirrst.close()
 
@@ -44,13 +44,14 @@ class BasInfo():
     @property
     def ncmot(self):
         """Return numboer of MO coefficients"""
-        return sum([i*j for i,j in zip(self.nbas, self.norb)])
+        return sum([i*j for i, j in zip(self.nbas, self.norb)])
 
 def main():
+    """main routine"""
     try:
-        print BasInfo(sys.argv[1])
+        print(BasInfo(sys.argv[1]))
     except IndexError:
-        print "Usage: %s [path]/SIRIUS.RST" % sys.argv[0]
+        print("Usage: %s [path]/SIRIUS.RST" % sys.argv[0])
         sys.exit(1)
 
 if __name__ == "__main__":
