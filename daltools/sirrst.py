@@ -1,14 +1,26 @@
 #!/usr/bin/env python
 import numpy
 import sys
+import os
+import tarfile
+import tempfile
 from util import unformatted, blocked, full
 from .basinfo import BasInfo
 
 class SiriusRestart(unformatted.FortranBinary):
-    def __init__(self, name="SIRIUS.RST"):
-        unformatted.FortranBinary.__init__(self, name)
+    def __init__(self, name="SIRIUS.RST", tgz=None):
+        if tgz is not None:
+            tmp = tempfile.gettempdir()
+            tarfile.open(tgz, 'r:gz').extractall(
+                path=tmp
+                )
+            sirius_rst = os.path.join(tmp, "SIRIUS.RST")
+            unformatted.FortranBinary.__init__(self, sirius_rst)
+        else:
+            unformatted.FortranBinary.__init__(self, name)
         self.basinfo = BasInfo(name)
         self.cmo = self.getcmo()
+        #os.rmdir(tmp)
         #self.close()
 
     def __str__(self):
@@ -42,13 +54,26 @@ class SiriusRestart(unformatted.FortranBinary):
             dens += 2*cmo[:, :occ]*cmo[:, :occ].T
         return densities.unblock()
 
+    def get_occ_density(self, occnum):
+        densities = blocked.BlockDiagonalMatrix(self.basinfo.nbas,
+                self.basinfo.nbas)
+        for dens, occ, cmo in zip(densities, occnum, self.cmo):
+            for i, ni in enumerate(occ):
+                dens += ni*numpy.outer(cmo[:, i], cmo[:, i])
+        return densities.unblock()
+
+
 def main():
-    import os
-    try:
-        rst=SiriusRestart(sys.argv[1])
-    except IndexError:
-        print("Usage: %s [<path>/]SIRIUS.RST")
-        sys.exit(1)
+
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('SIRIUS_RST')
+
+    args = parser.parse_args()
+    print args
+
+    rst=SiriusRestart(args.SIRIUS_RST)
     print(rst)
 
 if __name__ == "__main__":#pragma: no cover
