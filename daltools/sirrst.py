@@ -4,24 +4,26 @@ import sys
 import os
 import tarfile
 import tempfile
+import shutil
 from util import unformatted, blocked, full
 from .basinfo import BasInfo
 
 class SiriusRestart(unformatted.FortranBinary):
     def __init__(self, name="SIRIUS.RST", tgz=None):
+        sirius_rst = name
         if tgz is not None:
-            tmp = tempfile.gettempdir()
+            tmp = tempfile.mkdtemp()
             tarfile.open(tgz, 'r:gz').extractall(
                 path=tmp
                 )
             sirius_rst = os.path.join(tmp, "SIRIUS.RST")
-            unformatted.FortranBinary.__init__(self, sirius_rst)
-        else:
-            unformatted.FortranBinary.__init__(self, name)
-        self.basinfo = BasInfo(name)
+
+        unformatted.FortranBinary.__init__(self, sirius_rst)
+        self.basinfo = BasInfo(sirius_rst)
         self.cmo = self.getcmo()
-        #os.rmdir(tmp)
-        #self.close()
+        self.close()
+        if tgz:
+            shutil.rmtree(tmp)
 
     def __str__(self):
         retstr=""
@@ -71,7 +73,6 @@ def main():
     parser.add_argument('SIRIUS_RST')
 
     args = parser.parse_args()
-    print args
 
     rst=SiriusRestart(args.SIRIUS_RST)
     print(rst)

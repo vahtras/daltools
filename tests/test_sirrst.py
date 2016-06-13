@@ -63,11 +63,6 @@ class TestSirRst(unittest.TestCase):
         sirius_restart = SiriusRestart(os.path.join(self.suppdir, 'hf_S.SIRIUS.RST'))
         cmo = sirius_restart.cmo
 
-    def test_main_without_args(self):
-        sys.argv[1:] = []
-        with self.assertRaises(SystemExit):
-            main()
-
     def test_main(self):
         sys.argv[1:] = [os.path.join(self.suppdir, "SIRIUS.RST")]
         main()
