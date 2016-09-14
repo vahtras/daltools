@@ -11,6 +11,7 @@ class TestSirRst(unittest.TestCase):
     def setUp(self):
         self.suppdir = os.path.splitext(__file__)[0] + ".d"
         self.sirrst = SiriusRestart(os.path.join(self.suppdir, 'SIRIUS.RST'))
+        self.daltgz = os.path.join(self.suppdir, 'dalton.tar.gz')
         self.ref_cmo = numpy.array([
            [ 0.71551428,  -0.72497592,    0.00000000,    0.00000000,    0.20543401],
            [ 0.00000000,   0.00000000,    0.00000000,    1.00000000,    0.00000000],
@@ -22,12 +23,28 @@ class TestSirRst(unittest.TestCase):
     def test_cmo(self):
         numpy.testing.assert_almost_equal(self.sirrst.cmo[0], self.ref_cmo)
 
+    def test_cmo_from_tgz(self):
+        sirrst = SiriusRestart(tgz=self.daltgz)
+        numpy.testing.assert_almost_equal(sirrst.cmo[0], self.ref_cmo)
+
     def test_dens(self):
         occupied = self.ref_cmo[:, :1]
         numpy.testing.assert_almost_equal(
             self.sirrst.get_rhf_density(), 
             2*occupied*occupied.T
         )
+
+    def test_dens_from_occnum(self):
+        occnum=((2, 1),)
+        cmo0 = self.ref_cmo[:, 0]
+        cmo1 = self.ref_cmo[:, 1]
+        dref = 2*numpy.outer(cmo0, cmo0) + numpy.outer(cmo1, cmo1)
+        #assert False
+        numpy.testing.assert_allclose(
+            self.sirrst.get_occ_density(occnum),
+            dref
+            )
+
 
     def test_dens_symmetry(self):
         sir = SiriusRestart(os.path.join(self.suppdir, 'hf_S.SIRIUS.RST'))
@@ -45,11 +62,6 @@ class TestSirRst(unittest.TestCase):
     def test_hf_S_symmetry(self):
         sirius_restart = SiriusRestart(os.path.join(self.suppdir, 'hf_S.SIRIUS.RST'))
         cmo = sirius_restart.cmo
-
-    def test_main_without_args(self):
-        sys.argv[1:] = []
-        with self.assertRaises(SystemExit):
-            main()
 
     def test_main(self):
         sys.argv[1:] = [os.path.join(self.suppdir, "SIRIUS.RST")]
