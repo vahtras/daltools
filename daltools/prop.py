@@ -4,7 +4,8 @@ import os
 import sys
 import math
 import numpy as np
-from util import unformatted, full
+from util import full
+from fortran_binary import FortranBinary
 from . import one, sirifc, dens, rspvec
 
 def read(*args, **kwargs):
@@ -15,7 +16,7 @@ def read(*args, **kwargs):
         propfile = os.path.join(tmpdir, 'AOPROPER')
 
     unpack = kwargs.get("unpack", True)
-    AOPROPER = unformatted.FortranBinary(propfile)
+    AOPROPER = FortranBinary(propfile)
     mat = {}
     for rec in AOPROPER:
         buf = rec.read(32, 'c')

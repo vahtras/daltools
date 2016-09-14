@@ -6,7 +6,8 @@ THRESHOLD = 1e-5
 import sys
 import numpy as np
 import time
-from util import full, unformatted
+from util import full
+from fortran_binary import FortranBinary
 
 class RspVecError(Exception): pass
 
@@ -22,7 +23,7 @@ def read(*args, **kwargs):
     propfile = kwargs.get('propfile', 'RSPVEC')
     lr_vecs = kwargs.get('lr_vecs', False)
 
-    rspvec = unformatted.FortranBinary(propfile)
+    rspvec = FortranBinary(propfile)
     vecs = {}
 
     
@@ -76,7 +77,7 @@ def read(*args, **kwargs):
 def readall(property_label, propfile="RSPVEC"):
     """Read response all vectors given property"""
     import time, numpy
-    _rspvec = unformatted.FortranBinary(propfile)
+    _rspvec = FortranBinary(propfile)
     found=[]
     while _rspvec.find(property_label) is not None:
         veclabs = _rspvec.rec.read(16,'c')

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """Module for reading SIRIUS interface file (SIRIFC)"""
 import numpy
-from util import unformatted, blocked, full
+from util import blocked, full
+from fortran_binary import FortranBinary
 
 
 def get_intcode(reclen, n_floats, n_ints):
@@ -10,12 +11,12 @@ def get_intcode(reclen, n_floats, n_ints):
     int_codes = {4: 'i', 8: 'q'}
     return int_codes[int_size]
 
-class sirifc(unformatted.FortranBinary):
+class sirifc(FortranBinary):
     """Read data from dalton interface file"""
     ifclabel = "SIR IPH "
 
     def __init__(self, name="SIRIFC"):
-        unformatted.FortranBinary.__init__(self, name)
+        FortranBinary.__init__(self, name)
         self._cmo = None
         self._dv = None
         self._pv = None

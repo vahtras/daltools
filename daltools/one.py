@@ -3,11 +3,12 @@
 import sys 
 import struct
 import numpy as np
-from util import unformatted, full, blocked
+from util import full, blocked
+from fortran_binary import FortranBinary
 
 def readhead(filename="AOONEINT"):
     """Read data in header of AOONEINT"""
-    aooneint = unformatted.FortranBinary(filename)
+    aooneint = FortranBinary(filename)
     rec = aooneint.next()
     if len(aooneint.data) == 144:
         #
@@ -72,7 +73,7 @@ def readisordk(filename="AOONEINT"):
     INT = header['int_fmt']
     FLOAT = header['float_fmt']
 
-    aooneint = unformatted.FortranBinary(filename)
+    aooneint = FortranBinary(filename)
     table1 = aooneint.find("ISORDK")
     aooneint.next()
     aooneint.next()
@@ -98,7 +99,7 @@ def readscfinp(filename="AOONEINT"):
     INT = header['int_fmt']
     FLOAT = header['float_fmt']
 
-    aooneint = unformatted.FortranBinary(filename)
+    aooneint = FortranBinary(filename)
     table2 = aooneint.find("SCFINP")
     import collections
     scfinp_ = collections.OrderedDict()
@@ -151,7 +152,7 @@ def read(label="OVERLAP", filename="AOONEINT"):
     #
     # Open file, locate label
     #
-    aooneint = unformatted.FortranBinary(filename)
+    aooneint = FortranBinary(filename)
     labinfo = aooneint.find(label)
     #
     # Loop over records

@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 import numpy
 import sys
-from util import unformatted, blocked, full
+from util import blocked, full
+from fortran_binary import FortranBinary
 from .basinfo import BasInfo
 
-class SiriusRestart(unformatted.FortranBinary):
+class SiriusRestart(FortranBinary):
     def __init__(self, name="SIRIUS.RST"):
-        unformatted.FortranBinary.__init__(self, name)
+        FortranBinary.__init__(self, name)
         self.basinfo = BasInfo(name)
         self.cmo = self.getcmo()
         #self.close()
