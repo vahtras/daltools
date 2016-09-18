@@ -22,7 +22,7 @@ class SiriusRestart(FortranBinary):
         FortranBinary.__init__(self, sirius_rst)
         self.basinfo = BasInfo(sirius_rst)
         self.cmo = self.getcmo()
-        self.close()
+        #self.close()
         if tgz:
             shutil.rmtree(tmp)
 
@@ -64,6 +64,13 @@ class SiriusRestart(FortranBinary):
             for i, ni in enumerate(occ):
                 dens += ni*numpy.outer(cmo[:, i], cmo[:, i])
         return densities.unblock()
+
+    def xindx(self):
+        self.find('STARTVEC')
+        assert False
+        ci_rec = self.next()
+        return numpy.array(ci_rec.read(4, 'd'))       
+            
 
 
 def main():
