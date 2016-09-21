@@ -14,6 +14,7 @@ class TestSirRst(unittest.TestCase):
         self.daltgz = os.path.join(self.suppdir, 'mc_h2.tar.gz')
         self.sirrst = SiriusRestart(tgz=self.daltgz)
         self.sirifc = sirifc(os.path.join(self.suppdir, 'SIRIFC'))
+        self.sirifc3 = sirifc(os.path.join(self.suppdir, 'SIRIFC3'))
 
     def test_cmo(self):
         numpy.testing.assert_almost_equal(
@@ -37,6 +38,12 @@ class TestSirRst(unittest.TestCase):
         self.assertTupleEqual(
             list(self.sirifc.xindx())[3],
             ((1,), (1,))
+            )
+
+    def test_dets3(self):
+        self.assertTupleEqual(
+            list(self.sirifc3.xindx())[0],
+            ((0, 1,),())
             )
 
 if __name__ == "__main__":
