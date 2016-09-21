@@ -76,7 +76,6 @@ class SiriusRestart(object):
                 ci_record = fb.next()
                 self._ci = numpy.array(ci_record.read(ci_record.reclen//8, 'd'))       
         return self._ci
-            
 
 
 def main():

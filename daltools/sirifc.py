@@ -253,6 +253,16 @@ class sirifc(FortranBinary):
         retstr += "FV" + str(self.fv)
         return retstr
 
+    def xindx(self):
+        from itertools import combinations
+        ms2 = self.ispin - 1
+        na = (self.nactel + ms2)/2
+        nb = (self.nactel - ms2)/2
+        astrings = tuple(combinations(range(self.nasht), na))
+        bstrings = tuple(combinations(range(self.nasht), nb))
+        dets = ((adet, bdet) for adet in astrings for bdet in bstrings)
+        return dets
+
 if __name__ == "__main__":#pragma no cover
     import argparse
 
