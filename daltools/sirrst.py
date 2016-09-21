@@ -54,29 +54,27 @@ class SiriusRestart(object):
     @property
     def cmo(self):
         if self._cmo is None:
-            fb = FortranBinary(self.name)
-            fb.find("NEWORB")
-            cmo_rec=fb.next()
-            assert cmo_rec.reclen//8 == numpy.dot(self.basinfo.nbas, self.basinfo.norb)
-            ncmot4 = max(self.basinfo.ncmot,4)
-            n=0
-            cmo=blocked.BlockDiagonalMatrix(self.basinfo.nbas, self.basinfo.norb)
-            for isym in range(self.basinfo.nsym):
-                cmoi = numpy.array(cmo_rec.read(self.basinfo.nbas[isym]*self.basinfo.norb[isym],'d')
-                       ).reshape((self.basinfo.nbas[isym], self.basinfo.norb[isym]), order='F')
-                cmo.subblock[isym] = cmoi.view(full.matrix)
-            self._cmo = cmo
-            fb.close()
+            with FortranBinary(self.name) as fb:
+                fb.find("NEWORB")
+                cmo_rec = fb.next()
+                nbas = self.basinfo.nbas
+                norb = self.basinfo.norb
+                assert cmo_rec.reclen//8 == numpy.dot(nbas, norb)
+                cmo = blocked.BlockDiagonalMatrix(self.basinfo.nbas, self.basinfo.norb)
+                for nbasi, norbi, cmoi in zip(nbas, norb, cmo.subblock):
+                    cmoi[:, :] = numpy.array(
+                        cmo_rec.read(nbasi*norbi,'d')).reshape((nbasi, norbi), order='F'
+                        ).view(full.matrix)
+                self._cmo = cmo
         return self._cmo
             
     @property
     def ci(self):
         if self._ci is None:
-            fb = FortranBinary(self.name)
-            fb.find('STARTVEC')
-            ci_record = fb.next()
-            fb.close()
-            self._ci = numpy.array(ci_record.read(ci_record.reclen//8, 'd'))       
+            with FortranBinary(self.name) as fb:
+                fb.find('STARTVEC')
+                ci_record = fb.next()
+                self._ci = numpy.array(ci_record.read(ci_record.reclen//8, 'd'))       
         return self._ci
             
 
