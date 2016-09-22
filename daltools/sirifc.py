@@ -258,9 +258,9 @@ class sirifc(FortranBinary):
         ms2 = self.ispin - 1
         na = (self.nactel + ms2)//2
         nb = (self.nactel - ms2)//2
-        astrings = tuple(combinations(range(self.nasht), na))
-        bstrings = tuple(combinations(range(self.nasht), nb))
-        dets = ((adet, bdet) for adet in astrings for bdet in bstrings)
+        astrings = tuple(combinations(range(self.nasht)[::-1], na))[::-1]
+        bstrings = tuple(combinations(range(self.nasht)[::-1], nb))[::-1]
+        dets = ((adet[::-1], bdet[::-1]) for bdet in bstrings for adet in astrings)
         return dets
 
 if __name__ == "__main__":#pragma no cover
