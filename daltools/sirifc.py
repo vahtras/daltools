@@ -16,7 +16,9 @@ class sirifc(FortranBinary):
     ifclabel = "SIR IPH "
 
     def __init__(self, name="SIRIFC"):
+        self.name = name
         FortranBinary.__init__(self, name)
+        #self.file = self
         self._cmo = None
         self._dv = None
         self._pv = None
@@ -76,12 +78,12 @@ class sirifc(FortranBinary):
     def cmo(self):
         """Read MO coefficients"""
         if self._cmo is None:
-            self.file = open(self.name,'rb')
-            self.find(self.ifclabel)
-            for i in range(3): self.next()
-            self.file.close()
-            ncmot4 = max(self.ncmot, 4)
-            dbl = self.readbuf(ncmot4, self.FLOAT)
+            with  FortranBinary(self.name) as fb:
+                fb.find(self.ifclabel)
+                for i in range(3):
+                    fb.next()
+                ncmot4 = max(self.ncmot, 4)
+                dbl = fb.readbuf(ncmot4, self.FLOAT)
             n = 0
             self._cmo = blocked.BlockDiagonalMatrix(self.nbas, self.norb)
             for isym in range(8):
@@ -96,12 +98,12 @@ class sirifc(FortranBinary):
     def dv(self):
         """Get active density matrix"""
         if self._dv is None:
-            self.file = open(self.name,'rb')
-            self.find(self.ifclabel)
-            for i in range(5): 
-                self.next()
-            mmashx = max(self.nnashx, 4)
-            dbl = self.readbuf(self.nnashx, self.FLOAT)
+            with  FortranBinary(self.name) as fb:
+                fb.find(self.ifclabel)
+                for i in range(5): 
+                    fb.next()
+                mmashx = max(self.nnashx, 4)
+                dbl = fb.readbuf(self.nnashx, self.FLOAT)
             self._dv = full.triangular.init(dbl)
         return self._dv
 
@@ -109,12 +111,11 @@ class sirifc(FortranBinary):
     def pv(self):
         """Get two-electron density"""
         if self._pv is None:
-            self.file = open(self.name, 'rb')
-            self.find(self.ifclabel)
-            for i in range(7): self.next()
-            self.file.close()
-            m2ashy = max(self.nnashx**2, 4)
-            dbl = self.readbuf(m2ashy, self.FLOAT)
+            with  FortranBinary(self.name) as fb:
+                fb.find(self.ifclabel)
+                for i in range(7): fb.next()
+                m2ashy = max(self.nnashx**2, 4)
+                dbl = fb.readbuf(m2ashy, self.FLOAT)
             self._pv = full.matrix((self.nnashx, self.nnashx))
             n = 0
             for i in range(self.nnashx):
@@ -128,12 +129,11 @@ class sirifc(FortranBinary):
     def fock(self):
         """Read Fock matrix (MO)"""
         if self._fock is None:
-            self.file = open(self.name, 'rb')
-            self.find(self.ifclabel)
-            for i in range(6): self.next()
-            self.file.close()
-            m2orbt = max(self.n2orbt, 4)
-            dbl = self.readbuf(m2orbt, self.FLOAT)
+            with  FortranBinary(self.name) as fb:
+                fb.find(self.ifclabel)
+                for i in range(6): fb.next()
+                m2orbt = max(self.n2orbt, 4)
+                dbl = fb.readbuf(m2orbt, self.FLOAT)
             self._fock = blocked.BlockDiagonalMatrix(self.norb, self.norb)
             n = 0
             for isym in range(8):
@@ -148,11 +148,12 @@ class sirifc(FortranBinary):
     def fc(self):
         """Read inactive Fock matrix (MO)"""
         if self._fc is None:
-            self.file = open(self.name, 'rb')
-            self.find(self.ifclabel)
-            for i in range(8): self.next()
-            mmorbt = max(self.nnorbt, 4)
-            dbl = self.readbuf(mmorbt, self.FLOAT)
+            with FortranBinary(self.name) as fb:
+                fb.find(self.ifclabel)
+                for i in range(8): fb.next()
+                mmorbt = max(self.nnorbt, 4)
+                dbl = fb.readbuf(mmorbt, self.FLOAT)
+
             self._fc = blocked.triangular(self.norb)
             n = 0
             for isym in range(8):
@@ -169,11 +170,11 @@ class sirifc(FortranBinary):
     def fv(self):
         """Get active Fock matrix"""
         if self._fv is None:
-            self.file = open(self.name, 'rb')
-            self.find(self.ifclabel)
-            for i in range(9): self.next()
-            mmorbt = max(self.nnorbt, 4)
-            dbl = self.readbuf(mmorbt, self.FLOAT)
+            with FortranBinary(self.name) as fb:
+                fb.find(self.ifclabel)
+                for i in range(9): fb.next()
+                mmorbt = max(self.nnorbt, 4)
+                dbl = fb.readbuf(mmorbt, self.FLOAT)
             self._fv = blocked.triangular(self.norb)
             n = 0
             for isym in range(8):
@@ -185,13 +186,6 @@ class sirifc(FortranBinary):
                 n += ij
             assert (n == self.nnorbt)
         return self._fv
-
-    #dv = property(fget=get_dv)
-    #pv = property(fget=get_pv)
-    #cmo = property(fget=get_cmo)
-    #fock = property(fget=get_fock)
-    #fc = property(fget=get_fc)
-    #fv = property(fget=get_fv)
 
     def __str__(self):
         retstr = ""
