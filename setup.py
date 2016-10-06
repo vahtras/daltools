@@ -1,12 +1,12 @@
 from setuptools import setup
+from daltools import __version__
 
 setup(
     name="daltools",
     author="Olav Vahtras",
     author_email="olav.vahtras@gmail.com",
-    version="1.0",
+    version=__version__,
     url="https://github.com/vahtras/daltools",
     packages=["daltools"],
-    install_requires=["util"],
-    dependency_links=["git+https://github.com/vahtras/util.git@master#egg=util"],
+    install_requires=["blocked-matrix-utils", "fortran-binary"],
     )
