@@ -11,7 +11,7 @@ def get_intcode(reclen, n_floats, n_ints):
     int_codes = {4: 'i', 8: 'q'}
     return int_codes[int_size]
 
-class sirifc(FortranBinary):
+class SirIfc(FortranBinary):
     """Read data from dalton interface file"""
     ifclabel = "SIR IPH "
 
@@ -27,9 +27,9 @@ class sirifc(FortranBinary):
         self._fv = None
         self._orbdiag = None
 
-        if not self.find(sirifc.ifclabel):
+        if not self.find(self.ifclabel):
             raise RuntimeError("Label %s not found on %s" % (
-                sirifc.ifclabel, name
+                self.ifclabel, name
                 )
             )
 
@@ -268,12 +268,14 @@ class sirifc(FortranBinary):
         dets = ((adet[::-1], bdet[::-1]) for bdet in bstrings for adet in astrings)
         return dets
 
+# For back compatibility
+sirifc = SirIfc
 
 if __name__ == "__main__":#pragma no cover
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('sirifc', help='SIRIFC file')
+    parser.add_argument('sirifc', help='Sirius interface file (SIRIFC)')
     args = parser.parse_args()
-    print(sirifc(args.sirifc))
+    print(SirIfc(args.sirifc))
         

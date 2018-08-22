@@ -14,12 +14,13 @@ class TestSirIfc(unittest.TestCase):
         
 
     def setUp(self):
+        self.cls = sirifc.sirifc
         self.maxDiff = None
-        self.ifc = sirifc.sirifc(self.tmpdir('SIRIFC'))
+        self.ifc = self.cls(self.tmpdir('SIRIFC'))
 
     def test_wrong_file_header(self):
         with self.assertRaises(RuntimeError):
-            wrong = sirifc.sirifc(name=self.tmpdir('AOONEINT'))
+            wrong = self.cls(name=self.tmpdir('AOONEINT'))
 
     def test_potnuc(self):
         self.assertAlmostEqual(self.ifc.potnuc, 31.249215315972)
@@ -269,6 +270,14 @@ Block 1
         )
         od = self.ifc.orbdiag
         np.testing.assert_allclose(od, ref)
+
+class TestSirIfcRenamed(TestSirIfc):
+    """renamed class SirIfc"""
+
+    def setUp(self):
+        self.cls = sirifc.SirIfc
+        self.maxDiff = None
+        self.ifc = self.cls(self.tmpdir('SIRIFC'))
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()
