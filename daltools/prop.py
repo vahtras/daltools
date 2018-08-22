@@ -79,7 +79,7 @@ def main():
     kwargs = {'tmpdir': args.tmpdir}
     kwargs['unpack'] = not args.packed
     prop, = read(args.label, **kwargs)
-    print(prop)
+    print(str(prop))
 
 
 if __name__ == "__main__":#pragma no cover

@@ -92,18 +92,26 @@ def readin(inputfile):
 def printbasis(molecule):
     """Print molecular info returned by function molecule"""
     i = 0
+    retstr = ""
     for atom in molecule:
         i += 1
-        print("Atom type %d charge %f" % (i, atom['charge']))
+        #print("Atom type %d charge %f" % (i, atom['charge']))
+        retstr += ("Atom type %d charge %f\n" % (i, atom['charge']))
         for at in range(len(atom['label'])):
-            print("center" + " %d "%(at+1) + str(atom['center'][at]))
+            #print("center" + " %d "%(at+1) + str(atom['center'][at]))
+            retstr += ("center" + " %d "%(at+1) + str(atom['center'][at]) + "\n")
         for l in range(len(atom['basis'])):
-            print("%s-functions" % ll[l])
+            #print("%s-functions" % ll[l])
+            retstr += ("%s-functions\n" % ll[l])
             for block in range(len(atom['basis'][l])):
+                prim = atom['basis'][l][block]['prim']
                 prim = atom['basis'][l][block]['prim']
                 cont = atom['basis'][l][block]['cont']
                 for ip in range(len(prim)):
-                    print("    %s %s"%(prim[ip], cont[ip][:]))
+                    #print("    %s %s"%(prim[ip], cont[ip][:]))
+                    retstr += ("    %s %s\n"%(prim[ip], cont[ip][:]))
+        
+    print(retstr)
 
 
 #Test nuclear repulsion

@@ -88,7 +88,7 @@ def main():
     args = parser.parse_args()
 
     rst=SiriusRestart(args.SIRIUS_RST)
-    print(rst)
+    print(str(rst))
 
 if __name__ == "__main__":#pragma: no cover
     sys.exit(main())

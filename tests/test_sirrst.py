@@ -1,4 +1,5 @@
 import unittest
+import unittest.mock
 import os
 import sys
 import numpy
@@ -65,9 +66,9 @@ class TestSirRst(unittest.TestCase):
 
     def test_main(self):
         sys.argv[1:] = [os.path.join(self.suppdir, "SIRIUS.RST")]
-        main()
-        print_output = sys.stdout.getvalue().strip()
-        self.assertEqual(print_output, """\
+        with unittest.mock.patch('daltools.sirrst.print') as mock_print:
+            main()
+        mock_print.assert_called_once_with("""
 NSYM : 1
 NBAS : [5]
 NBAST: 5
@@ -84,6 +85,8 @@ Block 1
        2      0.00000000    0.00000000    0.00000000    1.00000000    0.00000000
        3      0.00000000    0.00000000    1.00000000    0.00000000    0.00000000
        4     -0.03156984    0.09811871    0.00000000    0.00000000    1.09913926
-       5      0.55260971    0.83525754    0.00000000    0.00000000   -0.54355525"""
+       5      0.55260971    0.83525754    0.00000000    0.00000000   -0.54355525
+
+"""
         )
 

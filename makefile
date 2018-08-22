@@ -1,6 +1,6 @@
 test:
-	python -m nose -x
+	python -m pytest -x 2>&1 | tee errors.err
 debug:
-	python -m nose -x --pdb
+	python -m pytest -x --pdb
 coverage:
-	python -m nose --with-coverage --cover-package daltools --cover-html
+	python -m pytest --with-coverage --cover-package daltools --cover-html

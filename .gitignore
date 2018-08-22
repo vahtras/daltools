@@ -7,3 +7,5 @@ cover
 /build
 /.cache
 /daltools.egg-info
+*ipynb*
+*.err

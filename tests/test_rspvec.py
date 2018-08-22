@@ -1,8 +1,9 @@
 import unittest
+import pytest
 import os
 import sys
 import numpy as np
-from nose.tools import raises
+
 from . import daltools
 from daltools import rspvec, sirifc
 
@@ -40,9 +41,9 @@ class TestRspVec(unittest.TestCase):
         ref = 0.05668560
         self.assertAlmostEqual(this, ref)
 
-    @raises(rspvec.RspVecError)
     def test_read_missing(self):
-        Nx = rspvec.read("WRONGLAB", propfile=self.RSPVEC)
+        with pytest.raises(rspvec.RspVecError):
+            Nx = rspvec.read("WRONGLAB", propfile=self.RSPVEC)
 
     def test_read_all(self):
         N1, N2 = rspvec.readall("XDIPLEN", self.RSPVEC)[:4:2]

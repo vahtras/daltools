@@ -1,4 +1,5 @@
 import unittest
+import unittest.mock
 import os
 import sys
 from . import daltools
@@ -80,12 +81,11 @@ center 2 [-6.98661118e-05, -1.7998043816988, -2.2005635940297]
 s-functions
     3.4252509 [0.15432897]
     0.6239137 [0.53532814]
-    0.1688554 [0.44463454]"""
-        mol.printbasis(self.bas)
-        if not hasattr(sys.stdout, "getvalue"):#pragma no cover
-            self.fail("need to run in buffered mode")
-        print_output = sys.stdout.getvalue().strip()
-        self.assertEqual(print_output, output)
+    0.1688554 [0.44463454]
+"""
+        with unittest.mock.patch('builtins.print') as mock_print:
+            mol.printbasis(self.bas)
+        mock_print.assert_called_once_with(output)
 
 
         

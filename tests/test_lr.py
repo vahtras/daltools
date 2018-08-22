@@ -1,4 +1,5 @@
 import unittest
+import unittest.mock
 import os
 import numpy as np
 from . import daltools
@@ -33,9 +34,9 @@ class TestLR(unittest.TestCase):
     def test_main_ZZ(self):
         import sys
         sys.argv[1:] = ['XDIPLEN', 'XDIPLEN', '-t', self.tmpdir]
-        main()
-        print_output = sys.stdout.getvalue().strip()
-        self.assertEqual(print_output, '-2.46116966495')
+        with unittest.mock.patch('daltools.lr.print') as mock_print:
+            main()
+            mock_print.assert_called_once_with(-2.4611696649494026)
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()

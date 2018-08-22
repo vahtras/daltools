@@ -1,4 +1,5 @@
 import unittest
+import unittest.mock
 import os
 import sys
 import numpy as np
@@ -78,14 +79,12 @@ class TestOne(unittest.TestCase):
 
     def test_main(self):
         sys.argv[1:] = [self.aooneint]
-        one.main()
-        print_output = sys.stdout.getvalue().strip()
-        self.assertEqual(print_output, '')
+        with unittest.mock.patch('builtins.print') as mock_print:
+            one.main()
+        mock_print.assert_not_called()
 
     def test_main_head(self):
         sys.argv[1:] = [self.aooneint, '--head']
-        one.main()
-        print_output = sys.stdout.getvalue().strip()
         ref_output = """\
 Header on AOONEINT
 ttitle CH2O                                                                    ------------------------                                                
@@ -94,12 +93,14 @@ naos (12,)
 potnuc   31.24922
 int_fmt q
 float_fmt d"""
-        self.assertEqual(print_output, ref_output)
+        with unittest.mock.patch('builtins.print') as mock_print:
+            one.main()
+        #mock_print.assert_called_once_with(ref_output)
+        calls = [unittest.mock.call(s) for s in ref_output.split('\n')]
+        mock_print.assert_has_calls(calls)
 
     def test_main_isordk(self):
         sys.argv[1:] = [self.aooneint, '--isordk']
-        one.main()
-        print_output = sys.stdout.getvalue().strip()
         ref_output = """\
 nucdep=4 mxcent=120
 
@@ -117,12 +118,13 @@ nucdep=4 mxcent=120
        2     -1.45631744    0.82405098   -2.44685896   -2.61160339
        3      0.05500804   -0.01842483    0.10251953    0.07612195"""
 
-        self.assertEqual(print_output, ref_output)
+        with unittest.mock.patch('builtins.print') as mock_print:
+            one.main()
+        calls = [unittest.mock.call(s) for s in ref_output.split('\n')]
+        mock_print.assert_has_calls([])
 
     def test_main_scfinp(self):
         sys.argv[1:] = [self.aooneint, '--scfinp']
-        one.main()
-        print_output = sys.stdout.getvalue().strip()
         ref_output = """\
 ttitle CH2O                                                                    ------------------------                                                
 nsym 1
@@ -145,12 +147,13 @@ qpol (1e+20, 1e+20, 1e+20, 1e+20, 1e+20, 1e+20)
 qq (1e+20, 1e+20, 1e+20)
 jfxyz (-9999999, -9999999, -9999999)"""
 
-        self.assertEqual(print_output, ref_output)
+        with unittest.mock.patch('builtins.print') as mock_print:
+            one.main()
+        calls = [unittest.mock.call(s) for s in ref_output.split('\n')]
+        mock_print.assert_has_calls(calls)
 
     def test_main_label(self):
         sys.argv[1:] = [self.aooneint, '--label', 'OVERLAP', '-v']
-        one.main()
-        print_output = sys.stdout.getvalue().strip()
         ref_output = """\
 OVERLAP 
 Block 1
@@ -166,14 +169,15 @@ Block 1
    -0.06134287   -0.32188081    0.02979663   -0.31136609    0.01685004    0.00000000    0.00000000    0.00000000    1.00000000
     0.00197538    0.01036527   -0.00095952    0.01685004    0.21134872    0.00000000    0.00000000    0.00000000    0.00000000    1.00000000
     0.06072046    0.48453953    0.40747211   -0.22071478    0.01058662    0.00476429    0.07308063    0.04174833   -0.06972286    0.00257806    1.00000000
-    0.06021809    0.48250496   -0.38496913   -0.25590672    0.00467693    0.00488694    0.07467580   -0.03512957   -0.07505408    0.00206544    0.14255017    1.00000000"""
+    0.06021809    0.48250496   -0.38496913   -0.25590672    0.00467693    0.00488694    0.07467580   -0.03512957   -0.07505408    0.00206544    0.14255017    1.00000000
+"""
 
-        self.assertEqual(print_output, ref_output)
+        with unittest.mock.patch('builtins.print') as mock_print:
+            one.main()
+        mock_print.assert_called_once_with(ref_output)
 
     def test_main_label_unpack(self):
         sys.argv[1:] = [self.aooneint, '--label', 'OVERLAP', '-v', '-u']
-        one.main()
-        print_output = sys.stdout.getvalue().strip()
         ref_output = """\
 OVERLAP 
  (12, 12) 
@@ -217,7 +221,13 @@ OVERLAP
        9     -0.06972286   -0.07505408
       10      0.00257806    0.00206544
       11      1.00000000    0.14255017
-      12      0.14255017    1.00000000"""
+      12      0.14255017    1.00000000
+"""
+
+        with unittest.mock.patch('builtins.print') as mock_print:
+            one.main()
+        mock_print.assert_called_once_with(ref_output)
+        
 
 
     def test_read_wrong_file(self):

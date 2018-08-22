@@ -25,6 +25,7 @@ class sirifc(FortranBinary):
         self._fock = None
         self._fc = None
         self._fv = None
+        self._orbdiag = None
 
         if not self.find(sirifc.ifclabel):
             raise RuntimeError("Label %s not found on %s" % (
@@ -187,6 +188,16 @@ class sirifc(FortranBinary):
             assert (n == self.nnorbt)
         return self._fv
 
+    @property
+    def orbdiag(self):
+        """Get orbital Hessian diagonal"""
+        if self._orbdiag is None:
+            with FortranBinary(self.name) as fb:
+                fb.find('ORBDIAG')
+                rec = next(fb)
+                self._orbdiag = rec.read(self.nwopt, self.FLOAT)
+        return self._orbdiag
+
     def __str__(self):
         retstr = ""
         retstr += "Nuclear Potential Energy: %12.6f\n" % self.potnuc
@@ -256,6 +267,7 @@ class sirifc(FortranBinary):
         bstrings = tuple(combinations(range(self.nasht)[::-1], nb))[::-1]
         dets = ((adet[::-1], bdet[::-1]) for bdet in bstrings for adet in astrings)
         return dets
+
 
 if __name__ == "__main__":#pragma no cover
     import argparse
