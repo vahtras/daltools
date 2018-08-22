@@ -11,14 +11,13 @@ def get_intcode(reclen, n_floats, n_ints):
     int_codes = {4: 'i', 8: 'q'}
     return int_codes[int_size]
 
-class SirIfc(FortranBinary):
+class SirIfc(object):
     """Read data from dalton interface file"""
     ifclabel = "SIR IPH "
 
     def __init__(self, name="SIRIFC"):
         self.name = name
-        FortranBinary.__init__(self, name)
-        #self.file = self
+        self.file = FortranBinary(name)
         self._cmo = None
         self._dv = None
         self._pv = None
@@ -27,49 +26,49 @@ class SirIfc(FortranBinary):
         self._fv = None
         self._orbdiag = None
 
-        if not self.find(self.ifclabel):
+        if not self.file.find(self.ifclabel):
             raise RuntimeError("Label %s not found on %s" % (
                 self.ifclabel, name
                 )
             )
 
-        self.next()
+        self.file.next()
 
 # Integer size from first record, 4 floats, 5 ints
 #    1) POTNUC,EMY,EACTIV,EMCSCF,ISTATE,ISPIN,NACTEL,LSYM,MS2
 
         try:
-            self.INT = get_intcode(self.reclen, 4, 5)
+            self.INT = get_intcode(self.file.reclen, 4, 5)
         except KeyError:#pragma no cover
             #Allow Dalton 2013 version
-            self.INT = get_intcode(self.reclen, 4, 4)
+            self.INT = get_intcode(self.file.reclen, 4, 4)
             
         self.FLOAT = 'd'
 
-        self.potnuc, self.emy, self.eactive, self.emcscf = self.readbuf(4, self.FLOAT)
-        self.istate, self.ispin, self.nactel, self.lsym  = self.readbuf(4, self.INT)
+        self.potnuc, self.emy, self.eactive, self.emcscf = self.file.readbuf(4, self.FLOAT)
+        self.istate, self.ispin, self.nactel, self.lsym  = self.file.readbuf(4, self.INT)
 
-        self.next()
+        self.file.next()
         self.nisht, self.nasht, self.nocct, self.norbt, self.nbast, \
         self.nconf, self.nwopt, self.nwoph, self.ncdets, self.ncmot, \
         self.nnashx, self.nnashy, self.nnorbt, self.n2orbt, self.nsym, \
-        = self.readbuf(15, self.INT)
+        = self.file.readbuf(15, self.INT)
 
-        self.muld2h = numpy.array(self.readbuf(64, self.INT)).reshape((8, 8))
+        self.muld2h = numpy.array(self.file.readbuf(64, self.INT)).reshape((8, 8))
 
-        self.nrhf = numpy.array(self.readbuf(8, self.INT))
-        self.nfro = numpy.array(self.readbuf(8, self.INT))
-        self.nish = numpy.array(self.readbuf(8, self.INT))
-        self.nash = numpy.array(self.readbuf(8, self.INT))
-        self.norb = numpy.array(self.readbuf(8, self.INT))
-        self.nbas = numpy.array(self.readbuf(8, self.INT))
+        self.nrhf = numpy.array(self.file.readbuf(8, self.INT))
+        self.nfro = numpy.array(self.file.readbuf(8, self.INT))
+        self.nish = numpy.array(self.file.readbuf(8, self.INT))
+        self.nash = numpy.array(self.file.readbuf(8, self.INT))
+        self.norb = numpy.array(self.file.readbuf(8, self.INT))
+        self.nbas = numpy.array(self.file.readbuf(8, self.INT))
 
         self.nelmn1, self.nelmx1, self.nelmn3, self.nelmx3, self.mctype \
-        = self.readbuf(5, self.INT)
+        = self.file.readbuf(5, self.INT)
 
-        self.nas1 = numpy.array(self.readbuf(8, self.INT))
-        self.nas2 = numpy.array(self.readbuf(8, self.INT))
-        self.nas3 = numpy.array(self.readbuf(8, self.INT))
+        self.nas1 = numpy.array(self.file.readbuf(8, self.INT))
+        self.nas2 = numpy.array(self.file.readbuf(8, self.INT))
+        self.nas3 = numpy.array(self.file.readbuf(8, self.INT))
 
         self.file.close()
         return
