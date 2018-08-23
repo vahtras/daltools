@@ -195,7 +195,7 @@ class SirIfc(object):
                 fb.find('ORBDIAG')
                 rec = next(fb)
                 self._orbdiag = rec.read(self.nwopt, self.FLOAT)
-        return self._orbdiag
+        return numpy.array(self._orbdiag)
 
     def __str__(self):
         retstr = ""
