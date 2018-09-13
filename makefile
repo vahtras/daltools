@@ -3,4 +3,4 @@ test:
 debug:
 	python -m pytest -x --pdb
 coverage:
-	python -m pytest --cov=daltools --cov-report="html"
+	python -m pytest tests --cov=daltools --cov-report=html --cov-report=term-missing
