@@ -9,3 +9,4 @@ cover
 /daltools.egg-info
 *ipynb*
 *.err
+htmlcov

@@ -3,4 +3,4 @@ test:
 debug:
 	python -m pytest -x --pdb
 coverage:
-	python -m pytest --with-coverage --cover-package daltools --cover-html
+	python -m pytest --cov=daltools --cov-report="html"
