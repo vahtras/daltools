@@ -36,7 +36,7 @@ class TestLR(unittest.TestCase):
         sys.argv[1:] = ['XDIPLEN', 'XDIPLEN', '-t', self.tmpdir]
         with unittest.mock.patch('daltools.lr.print') as mock_print:
             main()
-            mock_print.assert_called_once_with(-2.4611696649494026)
+            mock_print.assert_called_once_with('-2.461170')
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()

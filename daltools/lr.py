@@ -85,7 +85,7 @@ def main():
           )
     args = parser.parse_args()
 
-    print(LR(args.A, args.B, tmpdir=args.tmpdir))
+    print("{:.6f}".format(LR(args.A, args.B, tmpdir=args.tmpdir)))
 
 if __name__ == "__main__":#pragma no cover
     sys.exit(main())
