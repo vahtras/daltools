@@ -58,7 +58,7 @@ class TestOne(unittest.TestCase):
         np.testing.assert_almost_equal(scfinp["cooo"], coor_bohr)
 
     def test_overlap(self):
-        Sref = blocked.triangular.init([
+        Sref = [
             [ 1.00000000,
             0.24836239, 1.00000000,
             0.00000000, 0.00000000, 1.00000000,
@@ -71,13 +71,13 @@ class TestOne(unittest.TestCase):
             [1.00000000,
              0.31956952, 1.00000000,
              0.48763174, 0.04810438, 1.76156694]
-        ])
+        ]
 
 
         S = one.read("OVERLAP", self.aooneint)
-        np.testing.assert_almost_equal(S.subblock[0], Sref.subblock[0])
-        np.testing.assert_almost_equal(S.subblock[1], Sref.subblock[1])
-        np.testing.assert_almost_equal(S.subblock[2], Sref.subblock[2])
+        np.testing.assert_almost_equal(np.array(S.subblock[0]), Sref[0])
+        np.testing.assert_almost_equal(np.array(S.subblock[1]), Sref[1])
+        np.testing.assert_almost_equal(np.array(S.subblock[2]), Sref[2])
 
 if __name__ == "__main__":#pragma no cover
     unittest.main()

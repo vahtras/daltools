@@ -1,5 +1,5 @@
 import unittest
-import unittest.mock
+import mock
 import os
 import sys
 import numpy
@@ -66,7 +66,7 @@ class TestSirRst(unittest.TestCase):
 
     def test_main(self):
         sys.argv[1:] = [os.path.join(self.suppdir, "SIRIUS.RST")]
-        with unittest.mock.patch('daltools.sirrst.print') as mock_print:
+        with mock.patch('daltools.sirrst.print') as mock_print:
             main()
         mock_print.assert_called_once_with("""
 NSYM : 1

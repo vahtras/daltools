@@ -1,5 +1,5 @@
 import unittest
-import unittest.mock
+import mock
 import os
 import sys
 import numpy as np
@@ -58,7 +58,7 @@ class TestOne(unittest.TestCase):
         np.testing.assert_almost_equal(scfinp["cooo"], coor_bohr)
 
     def test_overlap(self):
-        Sref = full.triangular.init([
+        Sref = [
     1.00000000,
     0.24836239,   1.00000000,
     0.00000000,   0.00000000,   1.00000000,
@@ -71,15 +71,15 @@ class TestOne(unittest.TestCase):
     0.00197538,   0.01036527,  -0.00095952,   0.01685004,   0.21134872,   0.00000000,   0.00000000,   0.00000000,   0.00000000,   1.00000000,
     0.06072046,   0.48453953,   0.40747211,  -0.22071478,   0.01058662,   0.00476429,   0.07308063,   0.04174833,  -0.06972286,   0.00257806,   1.00000000,
     0.06021809,   0.48250496,  -0.38496913,  -0.25590672,   0.00467693,   0.00488694,   0.07467580,  -0.03512957,  -0.07505408,   0.00206544,   0.14255017,   1.00000000
-    ])
+    ]
 
 
         S = one.read("OVERLAP", self.aooneint)
-        np.testing.assert_almost_equal(S.subblock[0], Sref)
+        np.testing.assert_almost_equal(np.array(S.subblock[0]), Sref)
 
     def test_main(self):
         sys.argv[1:] = [self.aooneint]
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.one.print') as mock_print:
             one.main()
         mock_print.assert_not_called()
 
@@ -93,10 +93,10 @@ naos (12,)
 potnuc   31.24922
 int_fmt q
 float_fmt d"""
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.one.print') as mock_print:
             one.main()
         #mock_print.assert_called_once_with(ref_output)
-        calls = [unittest.mock.call(s) for s in ref_output.split('\n')]
+        calls = [mock.call(s) for s in ref_output.split('\n')]
         mock_print.assert_has_calls(calls)
 
     def test_main_isordk(self):
@@ -118,9 +118,9 @@ nucdep=4 mxcent=120
        2     -1.45631744    0.82405098   -2.44685896   -2.61160339
        3      0.05500804   -0.01842483    0.10251953    0.07612195"""
 
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.one.print') as mock_print:
             one.main()
-        calls = [unittest.mock.call(s) for s in ref_output.split('\n')]
+        calls = [mock.call(s) for s in ref_output.split('\n')]
         mock_print.assert_has_calls([])
 
     def test_main_scfinp(self):
@@ -147,9 +147,9 @@ qpol (1e+20, 1e+20, 1e+20, 1e+20, 1e+20, 1e+20)
 qq (1e+20, 1e+20, 1e+20)
 jfxyz (-9999999, -9999999, -9999999)"""
 
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.one.print') as mock_print:
             one.main()
-        calls = [unittest.mock.call(s) for s in ref_output.split('\n')]
+        calls = [mock.call(s) for s in ref_output.split('\n')]
         mock_print.assert_has_calls(calls)
 
     def test_main_label(self):
@@ -172,7 +172,7 @@ Block 1
     0.06021809    0.48250496   -0.38496913   -0.25590672    0.00467693    0.00488694    0.07467580   -0.03512957   -0.07505408    0.00206544    0.14255017    1.00000000
 """
 
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.one.print') as mock_print:
             one.main()
         mock_print.assert_called_once_with(ref_output)
 
@@ -224,7 +224,7 @@ OVERLAP
       12      0.14255017    1.00000000
 """
 
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.one.print') as mock_print:
             one.main()
         mock_print.assert_called_once_with(ref_output)
         

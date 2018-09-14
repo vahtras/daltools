@@ -1,5 +1,5 @@
 import unittest
-import unittest.mock
+import mock
 import os
 import sys
 from . import daltools
@@ -89,7 +89,7 @@ s-functions
     0.3136498 [0.44463454]
 """
 
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.mol.print') as mock_print:
             mol.printbasis(self.bas)
         mock_print.assert_called_once_with(output)
 
