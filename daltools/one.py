@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Module for reading data from Dalton one-electron integral file AOONEINT"""
+from __future__ import print_function
 import sys 
 import struct
 import numpy as np

@@ -1,5 +1,5 @@
 import unittest
-import unittest.mock
+import mock
 import pytest
 import os
 import sys
@@ -71,7 +71,7 @@ class TestProp(unittest.TestCase):
    -0.07300170   -0.81945232    0.00003256    0.67188009    0.74090119    0.00524496    0.00124665    0.00000003    0.00064587    0.05278446   -0.31647999   -2.20056359
 """
 
-        with unittest.mock.patch('daltools.prop.print') as mock_print:
+        with mock.patch('daltools.prop.print') as mock_print:
             prop.main()
         mock_print.assert_called_with(_ref)
 
@@ -123,7 +123,7 @@ class TestProp(unittest.TestCase):
 """
 
 
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.prop.print') as mock_print:
             prop.main()
         mock_print.assert_called_once_with(_ref)
 

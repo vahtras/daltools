@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Module for reading data fro property integral file AOPROPER"""
+from __future__ import print_function
 import os
 import sys
 import math
