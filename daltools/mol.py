@@ -1,4 +1,5 @@
 """Extract molecular info from Dalton molecule file"""
+from __future__ import print_function
 
 ll = ('s', 'p', 'd', 'f', 'g', 'h', 'i')
 

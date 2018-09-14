@@ -1,5 +1,5 @@
 import unittest
-import unittest.mock
+import mock
 import os
 import sys
 import pdb
@@ -48,7 +48,7 @@ class NewTest(unittest.TestCase):
 
     def test_mainXXX(self):
         sys.argv[1:] = ['XDIPLEN', 'XDIPLEN', 'XDIPLEN', '-t', self.tmpdir]
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with mock.patch('daltools.qr.print') as mock_print:
             main()
         mock_print.assert_called_once_with("  0.00013323")
 
