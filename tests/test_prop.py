@@ -1,5 +1,5 @@
 import unittest
-import mock
+import unittest.mock as mock
 import pytest
 import os
 import sys
