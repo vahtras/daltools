@@ -235,10 +235,12 @@ OVERLAP
             one.readhead(self.aoproper)
 
     def test_wrong_integer_format(self):
-        class dummy(object):
+        class Dummy(object):
             reclen = 7
+            def __len__(self):
+                return self.reclen
         with self.assertRaises(RuntimeError):
-            i = one._get_integer_format(dummy)
+            i = one._get_integer_format(Dummy())
 
 if __name__ == "__main__":#pragma: no cover
     unittest.main()

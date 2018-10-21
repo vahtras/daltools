@@ -10,7 +10,7 @@ from fortran_binary import FortranBinary
 def readhead(filename="AOONEINT"):
     """Read data in header of AOONEINT"""
     aooneint = FortranBinary(filename)
-    rec = aooneint.next()
+    rec = next(aooneint)
     if len(aooneint.data) == 144:
         #
         # Newer versions: title in own record
@@ -19,7 +19,7 @@ def readhead(filename="AOONEINT"):
         #
         # Next record contains MAXREP...
         #
-        aooneint.next()
+        rec = next(aooneint)
     else:
         #
         # Older versions: not supported
@@ -30,11 +30,11 @@ def readhead(filename="AOONEINT"):
     #
 
     FLOAT = 'd'
-    INT = _get_integer_format(aooneint.rec)
+    INT = _get_integer_format(rec)
 
-    nsym = aooneint.readbuf(1, INT)[0]
-    naos = aooneint.readbuf(nsym, INT)
-    potnuc = aooneint.readbuf(1, FLOAT)[0]
+    nsym = rec.read(1, INT)[0]
+    naos = rec.read(nsym, INT)
+    potnuc = rec.read(1, FLOAT)[0]
     import collections
     unlabeled = collections.OrderedDict([
         ("ttitle", title),
@@ -57,9 +57,9 @@ def _get_integer_format(header_record):
         [[intsize*(nsym+1) + 3*floatsize for intsize in [4, 8]
          ] for nsym in [1, 2, 4, 8]]
         )
-    if header_record.reclen in dimensions[:, 0]:
+    if len(header_record) in dimensions[:, 0]:
        integer_format = 'i'
-    elif header_record.reclen in dimensions[:, 1]:
+    elif len(header_record) in dimensions[:, 1]:
        integer_format = 'q'
     else:
        raise RuntimeError("Unknown binary format in AOONEINT")
