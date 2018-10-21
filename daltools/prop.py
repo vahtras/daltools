@@ -32,7 +32,7 @@ def read(*args, **kwargs):
         if blabel.strip() in bargs:
             label = blabel.decode()
             rec = next(AOPROPER)
-            buffer_ = rec.read(rec.reclen//8, 'd')
+            buffer_ = rec.read(len(rec)//8, 'd')
             if symtype == b"SQUARE  ":
                 n = int(round(math.sqrt(len(buffer_))))
                 mat[label] = full.init(buffer_).reshape((n, n))

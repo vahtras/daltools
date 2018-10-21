@@ -43,8 +43,8 @@ def read(*args, **kwargs):
                     rec.read(16,'c')
                     cfreq, bfreq = rec.read(2, 'd')
                 if bfreq in bfreqs and cfreq in cfreqs:
-                    rspvec.next()
-                    kzyvar = rspvec.reclen // 8
+                    _rec = rspvec.next()
+                    kzyvar = len(_rec) // 8
                     buffer_ = rspvec.readbuf(kzyvar,'d')
                     vecs[(lab, bfreq, cfreq)] = \
                        np.array(buffer_).view(full.matrix)
@@ -82,8 +82,8 @@ def readall(property_label, propfile="RSPVEC"):
     while _rspvec.find(property_label) is not None:
         veclabs = _rspvec.rec.read(16,'c')
         vfreq = _rspvec.rec.read(1, 'd')[0]
-        _rspvec.next()
-        kzyvar = _rspvec.reclen // 8
+        _rec = _rspvec.next()
+        kzyvar = len(_rec) // 8
         buffer_ = _rspvec.readbuf(kzyvar,'d')
         mat = numpy.array(buffer_).view(full.matrix)
         found.append((mat, vfreq))

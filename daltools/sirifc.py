@@ -32,16 +32,16 @@ class SirIfc(object):
                 )
             )
 
-        self.file.next()
+        rec = next(self.file)
 
 # Integer size from first record, 4 floats, 5 ints
 #    1) POTNUC,EMY,EACTIV,EMCSCF,ISTATE,ISPIN,NACTEL,LSYM,MS2
 
         try:
-            self.INT = get_intcode(self.file.reclen, 4, 5)
+            self.INT = get_intcode(len(rec), 4, 5)
         except KeyError:#pragma no cover
             #Allow Dalton 2013 version
-            self.INT = get_intcode(self.file.reclen, 4, 4)
+            self.INT = get_intcode(len(rec), 4, 4)
             
         self.FLOAT = 'd'
 
