@@ -60,7 +60,7 @@ class SiriusRestart(object):
                 cmo_rec = fb.next()
                 nbas = self.basinfo.nbas
                 norb = self.basinfo.norb
-                assert cmo_rec.reclen//8 == numpy.dot(nbas, norb)
+                assert len(cmo_rec)//8 == numpy.dot(nbas, norb)
                 cmo = blocked.BlockDiagonalMatrix(self.basinfo.nbas, self.basinfo.norb)
                 for nbasi, norbi, cmoi in zip(nbas, norb, cmo.subblock):
                     cmoi[:, :] = numpy.array(
@@ -75,7 +75,7 @@ class SiriusRestart(object):
             with FortranBinary(self.name) as fb:
                 fb.find('STARTVEC')
                 ci_record = fb.next()
-                self._ci = numpy.array(ci_record.read(ci_record.reclen//8, 'd'))       
+                self._ci = numpy.array(ci_record.read(len(ci_record)//8, 'd'))       
         return self._ci
 
 
