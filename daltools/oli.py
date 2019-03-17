@@ -54,9 +54,9 @@ def e2n(N, tmpdir='/tmp', hfx=1, Sg=1, Sv=1):
     dbk = (kn.T*S*db - db*S*kn.T)*Sv
 
 
-    fa, fb = two.fockab((da, db),  filename=AOTWOINT, hfx=hfx)
+    (fa, fb), = two.fockab((da, db),  filename=AOTWOINT, hfx=hfx)
     fa += h; fb += h
-    fak, fbk = two.fockab((dak, dbk), filename=AOTWOINT, hfx=hfx)
+    (fak, fbk), = two.fockab((dak, dbk), filename=AOTWOINT, hfx=hfx)
 
     kfa = (S*kn*fa - fa*kn*S)
     kfb = (S*kn*fb - fb*kn*S)*Sv
@@ -100,6 +100,7 @@ def s2n(N, tmpdir='/tmp', Sg=1, Sv=1):
 
     dak = (kn.T*S*da - da*S*kn.T)
     dbk = (kn.T*S*db - db*S*kn.T)*Sv
+
 
     gv = -rspvec.tovec(cmo.T*S*(dak+Sg*dbk)*S*cmo, ifc)
 
