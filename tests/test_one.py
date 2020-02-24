@@ -4,16 +4,16 @@ import os
 import sys
 import numpy as np
 from util import blocked, full
-from . import daltools
+
 from daltools import one
 
-class TestOne(unittest.TestCase):
 
+class TestOne(unittest.TestCase):
     def setUp(self):
         n, _ = os.path.splitext(__file__)
         self.tmpdir = n + ".d"
-        self.aooneint = os.path.join(self.tmpdir, 'AOONEINT')
-        self.aoproper = os.path.join(self.tmpdir, 'AOPROPER')
+        self.aooneint = os.path.join(self.tmpdir, "AOONEINT")
+        self.aoproper = os.path.join(self.tmpdir, "AOPROPER")
         self.header = one.readhead(self.aooneint)
         self.maxDiff = None
 
@@ -32,10 +32,10 @@ class TestOne(unittest.TestCase):
     def test_isordk_nucdep(self):
         isordk = one.readisordk(self.aooneint)
         self.assertEqual(isordk["nucdep"], 4)
-    
+
     def test_isordk_chrn(self):
         isordk = one.readisordk(self.aooneint)
-        self.assertTupleEqual(isordk["chrn"][:3], (6., 8., 1.))
+        self.assertTupleEqual(isordk["chrn"][:3], (6.0, 8.0, 1.0))
 
     def test_isordk_cooo(self):
         isordk = one.readisordk(self.aooneint)
@@ -52,39 +52,115 @@ class TestOne(unittest.TestCase):
         scfinp = one.readscfinp(self.aooneint)
         self.assertEqual(scfinp["nsym"], 1)
         coor_angstrom = (
-            -1.588367, -.770650, .029109, -1.657083, .436069, -.009750, -.620668, -1.294822, .054251, -2.508043, -1.382001, .040282
-            )
-        coor_bohr = [ i/0.52917721 for i in coor_angstrom ]
+            -1.588367,
+            -0.770650,
+            0.029109,
+            -1.657083,
+            0.436069,
+            -0.009750,
+            -0.620668,
+            -1.294822,
+            0.054251,
+            -2.508043,
+            -1.382001,
+            0.040282,
+        )
+        coor_bohr = [i / 0.52917721 for i in coor_angstrom]
         np.testing.assert_almost_equal(scfinp["cooo"], coor_bohr)
 
     def test_overlap(self):
         Sref = [
-    1.00000000,
-    0.24836239,   1.00000000,
-    0.00000000,   0.00000000,   1.00000000,
-    0.00000000,   0.00000000,   0.00000000,   1.00000000,
-    0.00000000,   0.00000000,   0.00000000,   0.00000000,   1.00000000,
-    0.00000126,   0.03708896,  -0.00354693,   0.06228751,  -0.00200579,   1.00000000,
-    0.03664911,   0.36526353,  -0.02523128,   0.44308559,  -0.01426833,   0.23670394,   1.00000000,
-    0.00349314,   0.01832934,   0.21019458,   0.02979663,  -0.00095952,   0.00000000,   0.00000000,   1.00000000,
-   -0.06134287,  -0.32188081,   0.02979663,  -0.31136609,   0.01685004,   0.00000000,   0.00000000,   0.00000000,   1.00000000,
-    0.00197538,   0.01036527,  -0.00095952,   0.01685004,   0.21134872,   0.00000000,   0.00000000,   0.00000000,   0.00000000,   1.00000000,
-    0.06072046,   0.48453953,   0.40747211,  -0.22071478,   0.01058662,   0.00476429,   0.07308063,   0.04174833,  -0.06972286,   0.00257806,   1.00000000,
-    0.06021809,   0.48250496,  -0.38496913,  -0.25590672,   0.00467693,   0.00488694,   0.07467580,  -0.03512957,  -0.07505408,   0.00206544,   0.14255017,   1.00000000
-    ]
-
+            1.00000000,
+            0.24836239,
+            1.00000000,
+            0.00000000,
+            0.00000000,
+            1.00000000,
+            0.00000000,
+            0.00000000,
+            0.00000000,
+            1.00000000,
+            0.00000000,
+            0.00000000,
+            0.00000000,
+            0.00000000,
+            1.00000000,
+            0.00000126,
+            0.03708896,
+            -0.00354693,
+            0.06228751,
+            -0.00200579,
+            1.00000000,
+            0.03664911,
+            0.36526353,
+            -0.02523128,
+            0.44308559,
+            -0.01426833,
+            0.23670394,
+            1.00000000,
+            0.00349314,
+            0.01832934,
+            0.21019458,
+            0.02979663,
+            -0.00095952,
+            0.00000000,
+            0.00000000,
+            1.00000000,
+            -0.06134287,
+            -0.32188081,
+            0.02979663,
+            -0.31136609,
+            0.01685004,
+            0.00000000,
+            0.00000000,
+            0.00000000,
+            1.00000000,
+            0.00197538,
+            0.01036527,
+            -0.00095952,
+            0.01685004,
+            0.21134872,
+            0.00000000,
+            0.00000000,
+            0.00000000,
+            0.00000000,
+            1.00000000,
+            0.06072046,
+            0.48453953,
+            0.40747211,
+            -0.22071478,
+            0.01058662,
+            0.00476429,
+            0.07308063,
+            0.04174833,
+            -0.06972286,
+            0.00257806,
+            1.00000000,
+            0.06021809,
+            0.48250496,
+            -0.38496913,
+            -0.25590672,
+            0.00467693,
+            0.00488694,
+            0.07467580,
+            -0.03512957,
+            -0.07505408,
+            0.00206544,
+            0.14255017,
+            1.00000000,
+        ]
 
         S = one.read("OVERLAP", self.aooneint)
         np.testing.assert_almost_equal(np.array(S.subblock[0]), Sref)
 
     def test_main(self):
         sys.argv[1:] = [self.aooneint]
-        with mock.patch('daltools.one.print') as mock_print:
+        with mock.patch("daltools.one.print") as mock_print:
             one.main()
         mock_print.assert_not_called()
 
     def test_main_head(self):
-        sys.argv[1:] = [self.aooneint, '--head']
+        sys.argv[1:] = [self.aooneint, "--head"]
         ref_output = """\
 Header on AOONEINT
 ttitle CH2O                                                                    ------------------------                                                
@@ -93,14 +169,14 @@ naos (12,)
 potnuc   31.24922
 int_fmt q
 float_fmt d"""
-        with mock.patch('daltools.one.print') as mock_print:
+        with mock.patch("daltools.one.print") as mock_print:
             one.main()
-        #mock_print.assert_called_once_with(ref_output)
-        calls = [mock.call(s) for s in ref_output.split('\n')]
+        # mock_print.assert_called_once_with(ref_output)
+        calls = [mock.call(s) for s in ref_output.split("\n")]
         mock_print.assert_has_calls(calls)
 
     def test_main_isordk(self):
-        sys.argv[1:] = [self.aooneint, '--isordk']
+        sys.argv[1:] = [self.aooneint, "--isordk"]
         ref_output = """\
 nucdep=4 mxcent=120
 
@@ -118,13 +194,13 @@ nucdep=4 mxcent=120
        2     -1.45631744    0.82405098   -2.44685896   -2.61160339
        3      0.05500804   -0.01842483    0.10251953    0.07612195"""
 
-        with mock.patch('daltools.one.print') as mock_print:
+        with mock.patch("daltools.one.print") as mock_print:
             one.main()
-        calls = [mock.call(s) for s in ref_output.split('\n')]
+        calls = [mock.call(s) for s in ref_output.split("\n")]
         mock_print.assert_has_calls([])
 
     def test_main_scfinp(self):
-        sys.argv[1:] = [self.aooneint, '--scfinp']
+        sys.argv[1:] = [self.aooneint, "--scfinp"]
         ref_output = """\
 ttitle CH2O                                                                    ------------------------                                                
 nsym 1
@@ -147,13 +223,13 @@ qpol (1e+20, 1e+20, 1e+20, 1e+20, 1e+20, 1e+20)
 qq (1e+20, 1e+20, 1e+20)
 jfxyz (-9999999, -9999999, -9999999)"""
 
-        with mock.patch('daltools.one.print') as mock_print:
+        with mock.patch("daltools.one.print") as mock_print:
             one.main()
-        calls = [mock.call(s) for s in ref_output.split('\n')]
+        calls = [mock.call(s) for s in ref_output.split("\n")]
         mock_print.assert_has_calls(calls)
 
     def test_main_label(self):
-        sys.argv[1:] = [self.aooneint, '--label', 'OVERLAP', '-v']
+        sys.argv[1:] = [self.aooneint, "--label", "OVERLAP", "-v"]
         ref_output = """\
 OVERLAP 
 Block 1
@@ -172,12 +248,12 @@ Block 1
     0.06021809    0.48250496   -0.38496913   -0.25590672    0.00467693    0.00488694    0.07467580   -0.03512957   -0.07505408    0.00206544    0.14255017    1.00000000
 """
 
-        with mock.patch('daltools.one.print') as mock_print:
+        with mock.patch("daltools.one.print") as mock_print:
             one.main()
         mock_print.assert_called_once_with(ref_output)
 
     def test_main_label_unpack(self):
-        sys.argv[1:] = [self.aooneint, '--label', 'OVERLAP', '-v', '-u']
+        sys.argv[1:] = [self.aooneint, "--label", "OVERLAP", "-v", "-u"]
         ref_output = """\
 OVERLAP 
  (12, 12)
@@ -224,11 +300,9 @@ OVERLAP
       12      0.14255017    1.00000000
 """
 
-        with mock.patch('daltools.one.print') as mock_print:
+        with mock.patch("daltools.one.print") as mock_print:
             one.main()
         mock_print.assert_called_once_with(ref_output)
-        
-
 
     def test_read_wrong_file(self):
         with self.assertRaises(RuntimeError):
@@ -237,10 +311,13 @@ OVERLAP
     def test_wrong_integer_format(self):
         class Dummy(object):
             reclen = 7
+
             def __len__(self):
                 return self.reclen
+
         with self.assertRaises(RuntimeError):
             i = one._get_integer_format(Dummy())
 
-if __name__ == "__main__":#pragma: no cover
+
+if __name__ == "__main__":  # pragma: no cover
     unittest.main()

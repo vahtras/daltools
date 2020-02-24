@@ -7,7 +7,7 @@ import daltools
 
 
 def test_python_version2():
-    with patch('daltools.sys') as mock_sys:
+    with patch("daltools.sys") as mock_sys:
         mock_sys.version_info = (3, 7)
         daltools.verify_version()
 

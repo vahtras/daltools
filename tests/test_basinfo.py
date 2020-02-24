@@ -2,16 +2,16 @@
 import unittest
 import sys
 import os
+
 try:
     import mock
 except ImportError:
     import unittest.mock as mock
 
 import numpy
-from . import daltools
+
 from daltools.basinfo import BasInfo, main
 from daltools import basinfo
-
 
 
 class TestBasInfo(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestBasInfo(unittest.TestCase):
 
     def setUp(self):
         suppdir = os.path.splitext(__file__)[0] + ".d"
-        self.bas_info = BasInfo(os.path.join(suppdir, 'SIRIUS.RST'))
+        self.bas_info = BasInfo(os.path.join(suppdir, "SIRIUS.RST"))
 
     def test_nsym(self):
         """Check number of symmetries NSYM"""
@@ -27,7 +27,7 @@ class TestBasInfo(unittest.TestCase):
 
     def test_nbas(self):
         """Check number of basis functions/symmetry NBAS"""
-        numpy.testing.assert_equal(self.bas_info.nbas, [5,])
+        numpy.testing.assert_equal(self.bas_info.nbas, [5])
 
     def test_nbast(self):
         """Check total number of basis functions"""
@@ -35,7 +35,7 @@ class TestBasInfo(unittest.TestCase):
 
     def test_norb(self):
         """Check number of molecular orbitals/symmetry, NORB"""
-        numpy.testing.assert_equal(self.bas_info.norb, [5,])
+        numpy.testing.assert_equal(self.bas_info.norb, [5])
 
     def test_norbt(self):
         """Check total number of molecular orbitals NORBT"""
@@ -56,11 +56,11 @@ IOPRHF :   0
 """
         self.assertEqual(str(self.bas_info), ref)
 
-    @mock.patch.object(basinfo, 'BasInfo')
+    @mock.patch.object(basinfo, "BasInfo")
     def test_main_with_arg(self, mock_BasInfo):
-        sys.argv[1:] = ['one']
+        sys.argv[1:] = ["one"]
         main()
-        mock_BasInfo.assert_called_once_with('one')
+        mock_BasInfo.assert_called_once_with("one")
 
     def test_main_without_arg(self):
         sys.argv[1:] = []

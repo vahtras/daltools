@@ -4,20 +4,19 @@ import numpy as np
 from daltools import sirifc
 from util import full
 
-class TestSirIfc(unittest.TestCase):
 
+class TestSirIfc(unittest.TestCase):
     def tmpdir(self, name=""):
         n, _ = os.path.splitext(__file__)
         dir_ = n + ".d"
         return os.path.join(dir_, name)
-        
 
     def setUp(self):
-        self.ifc = sirifc.sirifc(self.tmpdir('SIRIFC'))
+        self.ifc = sirifc.sirifc(self.tmpdir("SIRIFC"))
 
     def test_wrong_file_header(self):
         with self.assertRaises(RuntimeError):
-            wrong = sirifc.sirifc(name=self.tmpdir('AOONEINT'))
+            wrong = sirifc.sirifc(name=self.tmpdir("AOONEINT"))
 
     def test_potnuc(self):
         self.assertAlmostEqual(self.ifc.potnuc, 31.249215315972)
@@ -64,6 +63,5 @@ class TestSirIfc(unittest.TestCase):
     def test_pv(self):
         pv = self.ifc.pv
         np.testing.assert_allclose(
-            pv.diagonal(), [1.87279201, -0.24404616, 0.12720799],
-            rtol=1e-7
-            )
+            pv.diagonal(), [1.87279201, -0.24404616, 0.12720799], rtol=1e-7
+        )

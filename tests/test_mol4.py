@@ -2,15 +2,14 @@ import unittest
 import unittest.mock as mock
 import os
 import sys
-from . import daltools
+
 from daltools import mol
 
 
 class MolTest(unittest.TestCase):
-
     def setUp(self):
         pwd = os.path.dirname(__file__)
-        dalton_bas = os.path.join(pwd, 'test_mol4.d', 'DALTON.BAS')
+        dalton_bas = os.path.join(pwd, "test_mol4.d", "DALTON.BAS")
         self.bas = mol.readin(dalton_bas)
         self.maxDiff = None
 
@@ -22,9 +21,8 @@ class MolTest(unittest.TestCase):
 
     def test_dist(self):
         self.assertAlmostEqual(
-            mol.dist(self.bas[0]["center"][0], self.bas[1]["center"][0]),
-            2.2852428069
-            )
+            mol.dist(self.bas[0]["center"][0], self.bas[1]["center"][0]), 2.2852428069
+        )
 
     def test_num(self):
         self.assertAlmostEqual(mol.nuc(self.bas), 62.46624333537319)
@@ -32,20 +30,14 @@ class MolTest(unittest.TestCase):
     def test_opa(self):
         self.assertListEqual(
             mol.occupied_per_atom(self.bas),
-            [[0, 1, 2, 3, 4], [0, 1, 2, 3,4, 5, 6, 7, 8], [0, 1]]
-            )
+            [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5, 6, 7, 8], [0, 1]],
+        )
 
     def test_cpa(self):
-        self.assertListEqual(
-            mol.contracted_per_atom(self.bas),
-            [5, 9, 1]
-            )
+        self.assertListEqual(mol.contracted_per_atom(self.bas), [5, 9, 1])
 
     def test_cpal(self):
-        self.assertListEqual(
-            mol.contracted_per_atom_l(self.bas),
-            [[2, 3], [3, 6], [1]]
-            )
+        self.assertListEqual(mol.contracted_per_atom_l(self.bas), [[2, 3], [3, 6], [1]])
 
     def test_print_atoms(self):
         output = """\
@@ -89,12 +81,10 @@ s-functions
     0.3136498 [0.44463454]
 """
 
-        with mock.patch('daltools.mol.print') as mock_print:
+        with mock.patch("daltools.mol.print") as mock_print:
             mol.printbasis(self.bas)
         mock_print.assert_called_once_with(output)
 
 
-        
-
-if __name__ == "__main__":#pragma no cover
+if __name__ == "__main__":  # pragma no cover
     unittest.main()

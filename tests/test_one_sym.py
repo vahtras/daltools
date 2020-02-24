@@ -1,16 +1,16 @@
-import unittest
 import os
+import unittest
+
 import numpy as np
-from util import blocked, full
-from . import daltools
+
 from daltools import one
 
-class TestOne(unittest.TestCase):
 
+class TestOne(unittest.TestCase):
     def setUp(self):
         n, _ = os.path.splitext(__file__)
         self.tmpdir = n + ".d"
-        self.aooneint = os.path.join(self.tmpdir, 'AOONEINT')
+        self.aooneint = os.path.join(self.tmpdir, "AOONEINT")
         self.header = one.readhead(self.aooneint)
 
     def test_header_title(self):
@@ -28,15 +28,15 @@ class TestOne(unittest.TestCase):
     def test_isordk_nucdep(self):
         isordk = one.readisordk(self.aooneint)
         self.assertEqual(isordk["nucdep"], 4)
-    
+
     def test_isordk_chrn(self):
         isordk = one.readisordk(self.aooneint)
-        self.assertTupleEqual(isordk["chrn"][:3], (6., 8., 1.))
+        self.assertTupleEqual(isordk["chrn"][:3], (6.0, 8.0, 1.0))
 
-    #@unittest.skip('Wrong format here')
+    # @unittest.skip('Wrong format here')
     def test_isordk_cooo(self):
         isordk = one.readisordk(self.aooneint)
-        C = [0.0000000000, 0.0000000000,-0.8802560791]
+        C = [0.0000000000, 0.0000000000, -0.8802560791]
         O = [0.0000000000, 0.0000000000, 1.0094700459]
         H1 = [0.0000000000, 1.8897261250, -2.7699822041]
         H2 = [0.0000000000, -1.8897261250, -2.7699822041]
@@ -49,35 +49,63 @@ class TestOne(unittest.TestCase):
         scfinp = one.readscfinp(self.aooneint)
         self.assertEqual(scfinp["nsym"], 4)
         coor_bohr = (
-            0.0000000000, 0.0000000000,-0.8802560791,
-            0.0000000000, 0.0000000000, 1.0094700459,
-            0.0000000000, 1.8897261250, -2.7699822041,
-            0.0000000000, -1.8897261250, -2.7699822041,
-            )
+            0.0000000000,
+            0.0000000000,
+            -0.8802560791,
+            0.0000000000,
+            0.0000000000,
+            1.0094700459,
+            0.0000000000,
+            1.8897261250,
+            -2.7699822041,
+            0.0000000000,
+            -1.8897261250,
+            -2.7699822041,
+        )
 
         np.testing.assert_almost_equal(scfinp["cooo"], coor_bohr)
 
     def test_overlap(self):
         Sref = [
-            [ 1.00000000,
-            0.24836239, 1.00000000,
-            0.00000000, 0.00000000, 1.00000000,
-            0.00005599, 0.05942391, 0.10228506, 1.00000000,
-            0.07053810, 0.49046481, 0.53543774, 0.23670394, 1.00000000,
-           -0.11599611,-0.37963762,-0.27726502,-0.00000000, 0.00000000, 1.00000000,
-            0.05926125, 0.64602901, -0.48763174,0.00548289, 0.09221295,-0.09620875, 2.23843306],
-            [1.00000000, 
-             0.31956952, 1.00000000],
-            [1.00000000,
-             0.31956952, 1.00000000,
-             0.48763174, 0.04810438, 1.76156694]
+            [
+                1.00000000,
+                0.24836239,
+                1.00000000,
+                0.00000000,
+                0.00000000,
+                1.00000000,
+                0.00005599,
+                0.05942391,
+                0.10228506,
+                1.00000000,
+                0.07053810,
+                0.49046481,
+                0.53543774,
+                0.23670394,
+                1.00000000,
+                -0.11599611,
+                -0.37963762,
+                -0.27726502,
+                -0.00000000,
+                0.00000000,
+                1.00000000,
+                0.05926125,
+                0.64602901,
+                -0.48763174,
+                0.00548289,
+                0.09221295,
+                -0.09620875,
+                2.23843306,
+            ],
+            [1.00000000, 0.31956952, 1.00000000],
+            [1.00000000, 0.31956952, 1.00000000, 0.48763174, 0.04810438, 1.76156694],
         ]
-
 
         S = one.read("OVERLAP", self.aooneint)
         np.testing.assert_almost_equal(np.array(S.subblock[0]), Sref[0])
         np.testing.assert_almost_equal(np.array(S.subblock[1]), Sref[1])
         np.testing.assert_almost_equal(np.array(S.subblock[2]), Sref[2])
 
-if __name__ == "__main__":#pragma no cover
+
+if __name__ == "__main__":  # pragma no cover
     unittest.main()

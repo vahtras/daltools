@@ -1,34 +1,35 @@
 import unittest
 import os
 import numpy as np
-from . import daltools
+
 from daltools.lr import LR
 
-class TestOpenLR(unittest.TestCase):
 
+class TestOpenLR(unittest.TestCase):
     def setUp(self):
         n, _ = os.path.splitext(__file__)
         self.tmpdir = n + ".d"
 
     def test_XX(self):
-        XX = LR('XDIPLEN', 'XDIPLEN', 0, self.tmpdir)
+        XX = LR("XDIPLEN", "XDIPLEN", 0, self.tmpdir)
         XXref = -5.455606903637
         self.assertAlmostEqual(XX, XXref)
 
     def test_YY(self):
-        YY = LR('YDIPLEN', 'YDIPLEN', 0, self.tmpdir)
+        YY = LR("YDIPLEN", "YDIPLEN", 0, self.tmpdir)
         YYref = -10.31180304740
         self.assertAlmostEqual(YY, YYref)
 
     def test_YZ(self):
-        YZ = LR('YDIPLEN', 'ZDIPLEN', 0, self.tmpdir)
+        YZ = LR("YDIPLEN", "ZDIPLEN", 0, self.tmpdir)
         YZref = 0.2324294799056
         self.assertAlmostEqual(YZ, YZref)
 
     def test_ZZ(self):
-        ZZ = LR('ZDIPLEN', 'ZDIPLEN', 0, self.tmpdir)
+        ZZ = LR("ZDIPLEN", "ZDIPLEN", 0, self.tmpdir)
         ZZref = -3.124432068117
         self.assertAlmostEqual(ZZ, ZZref)
 
-if __name__ == "__main__":#pragma no cover
+
+if __name__ == "__main__":  # pragma no cover
     unittest.main()

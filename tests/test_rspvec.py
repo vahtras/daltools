@@ -1,20 +1,19 @@
-import unittest
-import pytest
 import os
-import sys
-import numpy as np
+import unittest
 
-from . import daltools
+import numpy as np
+import pytest
+
 from daltools import rspvec, sirifc
 
-class TestRspVec(unittest.TestCase):
 
+class TestRspVec(unittest.TestCase):
     def setUp(self):
         n, e = os.path.splitext(__file__)
         self.tmpdir = n + ".d"
-        self.RSPVEC = os.path.join(self.tmpdir, 'RSPVEC')
-        self.SIRIFC = os.path.join(self.tmpdir, 'SIRIFC')
-        self.E3VEC = os.path.join(self.tmpdir, 'E3VEC')
+        self.RSPVEC = os.path.join(self.tmpdir, "RSPVEC")
+        self.SIRIFC = os.path.join(self.tmpdir, "SIRIFC")
+        self.E3VEC = os.path.join(self.tmpdir, "E3VEC")
         self.ifc = sirifc.sirifc(name=self.SIRIFC)
 
     def test_read(self):
@@ -24,7 +23,9 @@ class TestRspVec(unittest.TestCase):
         self.assertAlmostEqual(this, ref)
 
     def test_read_w(self):
-        Nx = rspvec.read("XDIPLEN", freqs=(0.5,), propfile=self.RSPVEC)[("XDIPLEN", 0.5)]
+        Nx = rspvec.read("XDIPLEN", freqs=(0.5,), propfile=self.RSPVEC)[
+            ("XDIPLEN", 0.5)
+        ]
         this = Nx[12]
         ref = -2.242435
         self.assertAlmostEqual(this, ref)
@@ -36,7 +37,9 @@ class TestRspVec(unittest.TestCase):
         self.assertAlmostEqual(this, ref)
 
     def test_read_e3_w(self):
-        Nx = rspvec.read("XDIPLEN XDIPLEN", freqs=(0.5,), propfile=self.E3VEC)[("XDIPLEN XDIPLEN",0.5)]
+        Nx = rspvec.read("XDIPLEN XDIPLEN", freqs=(0.5,), propfile=self.E3VEC)[
+            ("XDIPLEN XDIPLEN", 0.5)
+        ]
         this = Nx[1]
         ref = 0.05668560
         self.assertAlmostEqual(this, ref)
@@ -70,9 +73,9 @@ class TestRspVec(unittest.TestCase):
 
     def test_jwop(self):
         this = list(rspvec.jwop(self.ifc))
-        ref = [ (i, j) for i in range(8) for j in range(8, 12)]
+        ref = [(i, j) for i in range(8) for j in range(8, 12)]
         self.assertListEqual(this, ref)
 
 
-if __name__ == "__main__":#pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
     unittest.main()

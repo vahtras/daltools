@@ -4,20 +4,19 @@ import numpy as np
 from daltools import sirifc
 from util import full
 
-class TestSirIfc(unittest.TestCase):
 
+class TestSirIfc(unittest.TestCase):
     def tmpdir(self, name=""):
         n, _ = os.path.splitext(__file__)
         dir_ = n + ".d"
         return os.path.join(dir_, name)
-        
 
     def setUp(self):
-        self.ifc = sirifc.sirifc(self.tmpdir('SIRIFC'))
+        self.ifc = sirifc.sirifc(self.tmpdir("SIRIFC"))
 
     def test_wrong_file_header(self):
         with self.assertRaises(RuntimeError):
-            wrong = sirifc.sirifc(name=self.tmpdir('AOONEINT'))
+            wrong = sirifc.sirifc(name=self.tmpdir("AOONEINT"))
 
     def test_potnuc(self):
         self.assertAlmostEqual(self.ifc.potnuc, 31.249215315972)
@@ -64,13 +63,14 @@ class TestSirIfc(unittest.TestCase):
     def test_pv(self):
         pv = self.ifc.pv
         np.testing.assert_allclose(
-            pv.diagonal(), [1.87279201, -0.24404616, 0.12720799],
-            rtol=1e-7
-            )
+            pv.diagonal(), [1.87279201, -0.24404616, 0.12720799], rtol=1e-7
+        )
 
     def test_str(self):
         print(self.ifc)
-        self.assertEqual(str(self.ifc), """\
+        self.assertEqual(
+            str(self.ifc),
+            """\
 Nuclear Potential Energy:    31.249215
 Electronic energy       :  -142.124923
 Active energy           :    -1.530878
@@ -239,11 +239,9 @@ Block 1
     0.00018878    0.02159739    0.01264562   -0.12284365   -0.00053158   -0.08442019    0.00137253   -0.00000170   -0.00000536    0.74496590
     0.00008754   -0.00002585   -0.00370618    0.00239882   -0.12282341    0.00219046    0.15937985    0.00000008   -0.00000012   -0.00146631    0.85736994
    -0.00303377   -0.00639892    0.09075032   -0.02624258   -0.00452965   -0.04108642    0.00600712   -0.00000260    0.00000565    0.07083251   -0.00965537    1.14634522
-"""
+""",
         )
 
 
-if __name__ == "__main__":#pragma no cover
+if __name__ == "__main__":  # pragma no cover
     unittest.main()
-
-
