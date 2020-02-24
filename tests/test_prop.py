@@ -8,6 +8,7 @@ from util import full
 from . import daltools
 from daltools import prop, sirifc
 
+
 class TestProp(unittest.TestCase):
 
     def setUp(self):
@@ -78,7 +79,7 @@ class TestProp(unittest.TestCase):
     def test_main_z_unpacked(self):
         sys.argv[1:] = ['ZDIPLEN', '-t', self.tmpdir]
         _ref = """
- (12, 12) 
+ (12, 12)
               Column   1    Column   2    Column   3    Column   4    Column   5
        1     -1.14582446   -0.28457970    0.00000000   -0.00000000    0.07185549
        2     -0.28457970   -1.14582446    0.00000000    0.00000000    0.83874358

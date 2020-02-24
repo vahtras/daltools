@@ -3,13 +3,13 @@ import unittest.mock as mock
 import os
 import sys
 import numpy
-from . import daltools
 from daltools.sirrst import SiriusRestart, main
 from util.blocked import BlockDiagonalMatrix
 
-class TestSirRst(unittest.TestCase):
 
-    def setUp(self):
+class TestSirRst:
+
+    def setup(self):
         self.suppdir = os.path.splitext(__file__)[0] + ".d"
         self.sirrst = SiriusRestart(os.path.join(self.suppdir, 'SIRIUS.RST'))
         self.daltgz = os.path.join(self.suppdir, 'dalton.tar.gz')
@@ -64,11 +64,12 @@ class TestSirRst(unittest.TestCase):
         sirius_restart = SiriusRestart(os.path.join(self.suppdir, 'hf_S.SIRIUS.RST'))
         cmo = sirius_restart.cmo
 
-    def test_main(self):
+    def test_main(self, capsys):
         sys.argv[1:] = [os.path.join(self.suppdir, "SIRIUS.RST")]
-        with mock.patch('daltools.sirrst.print') as mock_print:
-            main()
-        mock_print.assert_called_once_with("""
+
+        main()
+
+        expected = """
 NSYM : 1
 NBAS : [5]
 NBAST: 5
@@ -79,7 +80,7 @@ IOPRHF:0
 CMO:   
 Block 1
 
- (5, 5) 
+ (5, 5)
               Column   1    Column   2    Column   3    Column   4    Column   5
        1      0.71551428   -0.72497592    0.00000000    0.00000000    0.20543401
        2      0.00000000    0.00000000    0.00000000    1.00000000    0.00000000
@@ -87,6 +88,7 @@ Block 1
        4     -0.03156984    0.09811871    0.00000000    0.00000000    1.09913926
        5      0.55260971    0.83525754    0.00000000    0.00000000   -0.54355525
 
-"""
-        )
 
+"""
+        std = capsys.readouterr()
+        assert std.out == expected

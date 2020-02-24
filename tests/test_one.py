@@ -180,7 +180,7 @@ Block 1
         sys.argv[1:] = [self.aooneint, '--label', 'OVERLAP', '-v', '-u']
         ref_output = """\
 OVERLAP 
- (12, 12) 
+ (12, 12)
               Column   1    Column   2    Column   3    Column   4    Column   5
        1      1.00000000    0.24836239    0.00000000    0.00000000    0.00000000
        2      0.24836239    1.00000000    0.00000000    0.00000000    0.00000000
