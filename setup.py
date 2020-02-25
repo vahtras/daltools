@@ -8,5 +8,5 @@ setup(
     version=__version__,
     url="https://github.com/vahtras/daltools",
     packages=["daltools"],
-    install_requires=["blocked-matrix-utils", "fortran-binary", "two-electron"],
+    install_requires=["blocked-matrix-utils", "fortran-binary"]
     )
