@@ -8,5 +8,6 @@ setup(
     version=__version__,
     url="https://github.com/vahtras/daltools",
     packages=["daltools"],
-    install_requires=["blocked-matrix-utils", "fortran-binary"]
+    install_requires=["blocked-matrix-utils", "fortran-binary"],
+    description="Misc utilities for extracting data from Dalton files",
     )
