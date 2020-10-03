@@ -1,15 +1,16 @@
-import unittest
 import unittest.mock as mock
-import os
-import sys
 
 from daltools import mol
+from pytest import approx
+
+from .common_tests import tmpdir
 
 
-class MolTest(unittest.TestCase):
-    def setUp(self):
-        pwd = os.path.dirname(__file__)
-        dalton_bas = os.path.join(pwd, "test_mol4.d", "DALTON.BAS")
+class TestMol:
+
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
+        dalton_bas = self.tmpdir/"DALTON.BAS"
         self.bas = mol.readin(dalton_bas)
         self.maxDiff = None
 
@@ -20,24 +21,22 @@ class MolTest(unittest.TestCase):
         pass
 
     def test_dist(self):
-        self.assertAlmostEqual(
-            mol.dist(self.bas[0]["center"][0], self.bas[1]["center"][0]), 2.2852428069
-        )
+        assert \
+            mol.dist(self.bas[0]["center"][0], self.bas[1]["center"][0]) \
+            == approx(2.2852428069)
 
     def test_num(self):
-        self.assertAlmostEqual(mol.nuc(self.bas), 62.46624333537319)
+        assert mol.nuc(self.bas) == approx(62.46624333537319)
 
     def test_opa(self):
-        self.assertListEqual(
-            mol.occupied_per_atom(self.bas),
-            [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5, 6, 7, 8], [0, 1]],
-        )
+        assert mol.occupied_per_atom(self.bas) == \
+            [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5, 6, 7, 8], [0, 1]]
 
     def test_cpa(self):
-        self.assertListEqual(mol.contracted_per_atom(self.bas), [5, 9, 1])
+        assert mol.contracted_per_atom(self.bas) == [5, 9, 1]
 
     def test_cpal(self):
-        self.assertListEqual(mol.contracted_per_atom_l(self.bas), [[2, 3], [3, 6], [1]])
+        assert mol.contracted_per_atom_l(self.bas) == [[2, 3], [3, 6], [1]]
 
     def test_print_atoms(self):
         output = """\
@@ -84,7 +83,3 @@ s-functions
         with mock.patch("daltools.mol.print") as mock_print:
             mol.printbasis(self.bas)
         mock_print.assert_called_once_with(output)
-
-
-if __name__ == "__main__":  # pragma no cover
-    unittest.main()

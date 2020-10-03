@@ -1,23 +1,19 @@
-import os
-import unittest
-
-import numpy as np
+import numpy.testing as npt
+from pytest import approx
 
 from daltools.rspvec import read
 from daltools.lr import LR
 
+from .common_tests import tmpdir
 
-class TestALR(unittest.TestCase):
-    def setUp(self):
-        n, _ = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
 
-    def tmp(self, file_):
-        return os.path.join(self.tmpdir, file_)
+class TestALR:
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
 
     def test_first_xvec(self):
-        vecs = read("XDIPLEN", freqs=(0.4425,), propfile=self.tmp("ABSVECS"))
-        np.testing.assert_allclose(
+        vecs = read("XDIPLEN", freqs=(0.4425,), propfile=self.tmpdir/"ABSVECS")
+        npt.assert_allclose(
             vecs[("XDIPLEN", 0.4425, 0.0)][:10],
             [
                 -1.7563977677089527e-09,
@@ -34,8 +30,10 @@ class TestALR(unittest.TestCase):
         )
 
     def test_first_yvec(self):
-        vecs = read("XDIPLEN", "YDIPLEN", freqs=(0.4425,), propfile=self.tmp("ABSVECS"))
-        np.testing.assert_allclose(
+        vecs = read(
+            "XDIPLEN", "YDIPLEN", freqs=(0.4425,), propfile=self.tmpdir / "ABSVECS"
+        )
+        npt.assert_allclose(
             vecs[("YDIPLEN", 0.4425, 0.0)][:10],
             [
                 -3.062472422126098e-08,
@@ -57,46 +55,56 @@ class TestALR(unittest.TestCase):
             "YDIPLEN",
             "ZDIPLEN",
             freqs=(0.4425, 0.49),
-            propfile=self.tmp("ABSVECS"),
+            propfile=self.tmpdir/"ABSVECS",
             lr_vecs=True,
         )
-        self.assertEqual(len(vecs), 6)
+        assert len(vecs) == 6
 
     def test_real_alpha_xx(self):
         w = 0.4425
-        re_alpha, _ = LR("XDIPLEN", "XDIPLEN", w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 30.854533, delta=1e-6)
+        re_alpha, _ = LR(
+            "XDIPLEN", "XDIPLEN", w, tmpdir=self.tmpdir, absorption=True
+        )
+        assert -re_alpha == approx(30.854533)
 
     def test_real_alpha_yy(self):
         w = 0.4450
-        re_alpha, _ = LR("YDIPLEN", "YDIPLEN", w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 31.544221, delta=1e-6)
+        re_alpha, _ = LR(
+            "YDIPLEN", "YDIPLEN", w, tmpdir=self.tmpdir, absorption=True
+        )
+        assert -re_alpha == approx(31.544221)
 
     def test_real_alpha_zz(self):
         w = 0.4475
-        re_alpha, _ = LR("ZDIPLEN", "ZDIPLEN", w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 32.275296, delta=1e-6)
+        re_alpha, _ = LR(
+            "ZDIPLEN", "ZDIPLEN", w, tmpdir=self.tmpdir, absorption=True
+        )
+        assert -re_alpha == approx(32.275296)
 
     def test_real_alpha_xy(self):
         w = 0.4425
-        re_alpha, _ = LR("XDIPLEN", "YDIPLEN", w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, -0.000004, delta=1e-6)
+        re_alpha, _ = LR(
+            "XDIPLEN", "YDIPLEN", w, tmpdir=self.tmpdir, absorption=True
+        )
+        assert -round(re_alpha, 6) == approx(-0.000004)
 
     def test_real_alpha_xz(self):
         w = 0.4425
-        re_alpha, _ = LR("XDIPLEN", "ZDIPLEN", w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 0.000000, delta=1e-6)
+        re_alpha, _ = LR(
+            "XDIPLEN", "ZDIPLEN", w, tmpdir=self.tmpdir, absorption=True
+        )
+        assert -re_alpha == approx(0.000000)
 
     def test_real_alpha_yz(self):
         w = 0.4425
-        re_alpha, _ = LR("XDIPLEN", "ZDIPLEN", w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-re_alpha, 0.000000, delta=1e-6)
+        re_alpha, _ = LR(
+            "XDIPLEN", "ZDIPLEN", w, tmpdir=self.tmpdir, absorption=True
+        )
+        assert -re_alpha == approx(0.000000)
 
     def test_real_im(self):
         w = 0.4425
-        _, im_alpha = LR("XDIPLEN", "XDIPLEN", w, tmpdir=self.tmpdir, absorption=True)
-        self.assertAlmostEqual(-im_alpha, 1.228334, delta=1e-6)
-
-
-if __name__ == "__main__":  # pragma: no cover
-    unittest.main()
+        _, im_alpha = LR(
+            "XDIPLEN", "XDIPLEN", w, tmpdir=self.tmpdir, absorption=True
+        )
+        assert -im_alpha == approx(1.228334)

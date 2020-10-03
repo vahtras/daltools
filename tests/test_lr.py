@@ -1,44 +1,40 @@
-import unittest
 import unittest.mock as mock
-import os
-import numpy as np
 
 from daltools.lr import LR, main
+from pytest import approx
+
+from .common_tests import tmpdir
 
 
-class TestLR(unittest.TestCase):
-    def setUp(self):
-        n, _ = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
+class TestLR:
+
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
 
     def test_XX(self):
         XX = LR("XDIPLEN", "XDIPLEN", 0, self.tmpdir)
         XXref = -2.461169664950
-        self.assertAlmostEqual(XX, XXref)
+        assert XX == approx(XXref)
 
     def test_YY(self):
         YY = LR("YDIPLEN", "YDIPLEN", 0, self.tmpdir)
         YYref = -6.184500121159
-        self.assertAlmostEqual(YY, YYref)
+        assert YY == approx(YYref)
 
     def test_YZ(self):
         YZ = LR("YDIPLEN", "ZDIPLEN", 0, self.tmpdir)
         YZref = 0.016158638023
-        self.assertAlmostEqual(YZ, YZref)
+        assert YZ == approx(YZref)
 
     def test_ZZ(self):
         ZZ = LR("ZDIPLEN", "ZDIPLEN", 0, self.tmpdir)
         ZZref = -10.308181624834
-        self.assertAlmostEqual(ZZ, ZZref)
+        assert ZZ == approx(ZZref)
 
     def test_main_ZZ(self):
         import sys
 
-        sys.argv[1:] = ["XDIPLEN", "XDIPLEN", "-t", self.tmpdir]
+        sys.argv[1:] = ["XDIPLEN", "XDIPLEN", "-t", str(self.tmpdir)]
         with mock.patch("daltools.lr.print") as mock_print:
             main()
             mock_print.assert_called_once_with("-2.461170")
-
-
-if __name__ == "__main__":  # pragma no cover
-    unittest.main()

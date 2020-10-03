@@ -1,16 +1,16 @@
-import unittest
-import os
 import numpy as np
-from util import full
 
 from daltools import dens
+from util import full
+
+from .common_tests import tmpdir
 
 
-class TestDens(unittest.TestCase):
-    def setUp(self):
-        n, _ = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
-        self.sirifc = os.path.join(self.tmpdir, "SIRIFC")
+class TestDens:
+
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
+        self.sirifc = self.tmpdir/"SIRIFC"
         np.random.seed(0)
 
     def test_h1diag(self):
@@ -22,7 +22,7 @@ class TestDens(unittest.TestCase):
             ]
         )
 
-        di, da = dens.h1diag(1, 1, filename=os.path.join(self.tmpdir, "AOONEINT"))
+        di, da = dens.h1diag(1, 1, filename=self.tmpdir/"AOONEINT")
         np.testing.assert_almost_equal(di, diref)
 
     def test_Dab(self):
@@ -223,7 +223,3 @@ class TestDens(unittest.TestCase):
             ],
             atol=1e-7,
         )
-
-
-if __name__ == "__main__":  # pragma no cover
-    unittest.main()
