@@ -31,7 +31,8 @@ class TestALR:
 
     def test_first_yvec(self):
         vecs = read(
-            "XDIPLEN", "YDIPLEN", freqs=(0.4425,), propfile=self.tmpdir / "ABSVECS"
+            "XDIPLEN", "YDIPLEN", freqs=(0.4425,),
+            propfile=self.tmpdir/"ABSVECS"
         )
         npt.assert_allclose(
             vecs[("YDIPLEN", 0.4425, 0.0)][:10],

@@ -2,36 +2,38 @@ import os
 import unittest
 
 import numpy as np
+from pytest import approx
 
 from daltools import one
 
+from .common_tests import tmpdir
 
-class TestOne(unittest.TestCase):
-    def setUp(self):
-        n, _ = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
-        self.aooneint = os.path.join(self.tmpdir, "AOONEINT")
+class TestOne:
+
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
+        self.aooneint = self.tmpdir/"AOONEINT"
         self.header = one.readhead(self.aooneint)
 
     def test_header_title(self):
-        self.assertIn("CH2O", self.header["ttitle"])
+        assert "CH2O" in  self.header["ttitle"]
 
     def test_header_naos(self):
-        self.assertTupleEqual(self.header["naos"], (7, 2, 3, 0))
+        assert self.header["naos"] == (7, 2, 3, 0)
 
     def test_header_nsym(self):
-        self.assertEqual(self.header["nsym"], 4)
+        assert self.header["nsym"] == 4
 
     def test_header_potnuc(self):
-        self.assertAlmostEqual(self.header["potnuc"], 33.941796143849)
+        assert self.header["potnuc"] == approx(33.941796143849)
 
     def test_isordk_nucdep(self):
         isordk = one.readisordk(self.aooneint)
-        self.assertEqual(isordk["nucdep"], 4)
+        assert  isordk["nucdep"] == 4
 
     def test_isordk_chrn(self):
         isordk = one.readisordk(self.aooneint)
-        self.assertTupleEqual(isordk["chrn"][:3], (6.0, 8.0, 1.0))
+        assert isordk["chrn"][:3] == (6.0, 8.0, 1.0)
 
     # @unittest.skip('Wrong format here')
     def test_isordk_cooo(self):
@@ -47,7 +49,7 @@ class TestOne(unittest.TestCase):
 
     def test_scfinp(self):
         scfinp = one.readscfinp(self.aooneint)
-        self.assertEqual(scfinp["nsym"], 4)
+        assert  scfinp["nsym"] == 4
         coor_bohr = (
             0.0000000000,
             0.0000000000,

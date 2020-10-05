@@ -181,18 +181,19 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser()
-    
+
     parser.add_argument('-H', '--head', dest='head', action='store_true')
     parser.add_argument('-i', '--isordk', dest='isordk', action='store_true')
     parser.add_argument('-s', '--scfinp', dest='scfinp', action='store_true')
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
     parser.add_argument('-u', '--unpack', dest='unpack', action='store_true')
     parser.add_argument('-l', '--label')
+    #breakpoint()
     parser.add_argument('aooneint')
-    
+
     args = parser.parse_args()
 
-    if args.head: 
+    if args.head:
         head = readhead(args.aooneint)
         print("Header on AOONEINT")
         for k in head:
@@ -229,8 +230,6 @@ def main():
         if args.verbose:
             print("%s %s" % (args.label, str(S)))
 
-if __name__ == "__main__":#pragma no cover
-    from util.timing import timing
-    t = timing(" ".join(sys.argv))
+
+if __name__ == "__main__":
     main()
-    print(t)

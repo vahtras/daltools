@@ -1,16 +1,16 @@
 import os
-import unittest
 
 import numpy as np
 from util.full import init
 
 from daltools import prop
+from . import tmpdir
 
 
-class TestPropVec(unittest.TestCase):
-    def setUp(self):
-        n, _ = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
+class TestPropVec:
+
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
 
     def test_X1(self):
         ref = init(
@@ -83,7 +83,3 @@ class TestPropVec(unittest.TestCase):
         )
         this, = prop.grad("XDIPLEN", tmpdir=self.tmpdir)
         np.testing.assert_almost_equal(this, ref)
-
-
-if __name__ == "__main__":  # pragma no cover
-    unittest.main()

@@ -1,30 +1,30 @@
-import unittest
-import os
 import numpy as np
+from pytest import approx
 
 from daltools import rspvec, sirifc
 
+from .common_tests import tmpdir
 
-class TestOpenRspVec(unittest.TestCase):
-    def setUp(self):
-        n, _ = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
-        self.RSPVEC = os.path.join(self.tmpdir, "RSPVEC")
-        self.SIRIFC = os.path.join(self.tmpdir, "SIRIFC")
+class TestOpenRspVec:
+
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
+        self.RSPVEC = self.tmpdir/"RSPVEC"
+        self.SIRIFC = self.tmpdir/"SIRIFC"
         self.ifc = sirifc.sirifc(name=self.SIRIFC)
 
     def test_read(self):
         Nx = rspvec.read("XDIPLEN", propfile=self.RSPVEC)["XDIPLEN"]
         this = Nx[5]
         ref = -2.34009730
-        self.assertAlmostEqual(this, ref)
+        assert this == approx(ref)
 
     def test_tomat(self):
         Nx = rspvec.read("XDIPLEN", propfile=self.RSPVEC)["XDIPLEN"]
         kx = rspvec.tomat(Nx, self.ifc, tmpdir=self.tmpdir)
         this = kx[5, 7]
         ref = -2.34009730
-        self.assertAlmostEqual(this, ref)
+        assert this == approx(ref)
 
     def test_tovec(self):
         ref = rspvec.read("XDIPLEN", propfile=self.RSPVEC)["XDIPLEN"]
@@ -40,7 +40,3 @@ class TestOpenRspVec(unittest.TestCase):
             + [(i, j) for i in range(7, 8) for j in range(8, 11)]
         )
         np.testing.assert_almost_equal(this, ref)
-
-
-if __name__ == "__main__":  # pragma no cover
-    unittest.main()

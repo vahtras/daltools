@@ -1,68 +1,65 @@
-import unittest
-import os
-
-import numpy as np
 from util import full
 
+import numpy as np
+from pytest import approx, raises
+
 from daltools import sirifc
+from . import tmpdir
 
 
-class TestSirIfc(unittest.TestCase):
-    def tmpdir(self, name=""):
-        n, _ = os.path.splitext(__file__)
-        dir_ = n + ".d"
-        return os.path.join(dir_, name)
+class TestSirIfc:
 
-    def setUp(self):
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
         self.cls = sirifc.sirifc
         self.maxDiff = None
-        self.ifc = self.cls(self.tmpdir("SIRIFC"))
+        self.ifc = self.cls(self.tmpdir/"SIRIFC")
 
     def test_wrong_file_header(self):
-        with self.assertRaises(RuntimeError):
-            wrong = self.cls(name=self.tmpdir("AOONEINT"))
+        with raises(RuntimeError):
+            self.cls(name=self.tmpdir/"AOONEINT")
 
     def test_potnuc(self):
-        self.assertAlmostEqual(self.ifc.potnuc, 31.249215315972)
+        assert self.ifc.potnuc == approx(31.249215315972)
 
     def test_emy(self):
-        self.assertAlmostEqual(self.ifc.emy, -143.60291282551114)
+        assert self.ifc.emy == approx(-143.60291282551114)
 
     def test_eactive(self):
-        self.assertAlmostEqual(self.ifc.eactive, 0.0)
+        assert self.ifc.eactive == approx(0.0)
 
     def test_emcscf(self):
-        self.assertAlmostEqual(self.ifc.emcscf, -112.353697509539)
+        assert self.ifc.emcscf == approx(-112.353697509539)
 
     def test_istate(self):
-        self.assertEqual(self.ifc.istate, 1)
+        assert self.ifc.istate == 1
 
     def test_ispin(self):
-        self.assertEqual(self.ifc.ispin, 1)
+        assert self.ifc.ispin == 1
 
     def test_nactel(self):
-        self.assertEqual(self.ifc.nactel, 0)
+        assert self.ifc.nactel == 0
 
     def test_lsym(self):
-        self.assertEqual(self.ifc.lsym, 1)
+        assert self.ifc.lsym == 1
 
     def test_nisht(self):
-        self.assertEqual(self.ifc.nisht, 8)
+        assert self.ifc.nisht == 8
 
     def test_nasht(self):
-        self.assertEqual(self.ifc.nasht, 0)
+        assert self.ifc.nasht == 0
 
     def test_nocct(self):
-        self.assertEqual(self.ifc.nocct, 8)
+        assert self.ifc.nocct == 8
 
     def test_norbt(self):
-        self.assertEqual(self.ifc.norbt, 12)
+        assert self.ifc.norbt == 12
 
     def test_nbast(self):
-        self.assertEqual(self.ifc.nbast, 12)
+        assert self.ifc.nbast == 12
 
     def test_nsym(self):
-        self.assertEqual(self.ifc.nsym, 1)
+        assert self.ifc.nsym == 1
 
     def test_cmo(self):
         ref_cmo = [
@@ -240,7 +237,7 @@ class TestSirIfc(unittest.TestCase):
 
     def test_pv(self):
         pv = self.ifc.pv
-        self.assertTupleEqual(pv.shape, (0, 0))
+        assert pv.shape == (0, 0)
 
     def test_fock(self):
         fock = self.ifc.fock.subblock[0]
@@ -292,9 +289,7 @@ class TestSirIfc(unittest.TestCase):
 
     def test_str(self):
         print(self.ifc)
-        self.assertEqual(
-            str(self.ifc),
-            """\
+        assert str(self.ifc) == """\
 Nuclear Potential Energy:    31.249215
 Electronic energy       :  -143.602913
 Active energy           :     0.000000
@@ -440,8 +435,7 @@ Block 1
     0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000
     0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000
     0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000    0.00000000
-""",
-        )
+"""
 
     def test_orbdiag(self):
         ref = (

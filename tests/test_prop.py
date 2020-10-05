@@ -1,4 +1,3 @@
-import os
 import sys
 import unittest
 import unittest.mock as mock
@@ -7,15 +6,16 @@ import numpy as np
 from util import full
 
 from daltools import prop
+from . import tmpdir
 
 
-class TestProp(unittest.TestCase):
-    def setUp(self):
+class TestProp:
+
+    def setup(self):
         self.maxDiff = None
-        n, e = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
-        self.propfile = os.path.join(self.tmpdir, "AOPROPER")
-        self.ifcfile = os.path.join(self.tmpdir, "SIRIFC")
+        self.tmpdir = tmpdir(__file__)
+        self.propfile = self.tmpdir/"AOPROPER"
+        self.ifcfile = self.tmpdir/"SIRIFC"
 
     def test_zdiplen(self):
         _ref = [
@@ -275,11 +275,11 @@ class TestProp(unittest.TestCase):
             ]
         )
 
-        z, = prop.read("ZANGLON", filename=self.propfile, unpack=False)
+        z, = prop.read("ZANGLON", filename=str(self.propfile), unpack=False)
         np.testing.assert_allclose(z, _ref, atol=1e-5)
 
     def test_main_z_packed(self):
-        sys.argv[1:] = ["ZDIPLEN", "-t", self.tmpdir, "--packed"]
+        sys.argv[1:] = ["ZDIPLEN", "-t", str(self.tmpdir), "--packed"]
         _ref = """
    -1.14582446
    -0.28457970   -1.14582446
@@ -300,7 +300,7 @@ class TestProp(unittest.TestCase):
         mock_print.assert_called_with(_ref)
 
     def test_main_z_unpacked(self):
-        sys.argv[1:] = ["ZDIPLEN", "-t", self.tmpdir]
+        sys.argv[1:] = ["ZDIPLEN", "-t", str(self.tmpdir)]
         _ref = """
  (12, 12)
               Column   1    Column   2    Column   3    Column   4    Column   5

@@ -3,8 +3,8 @@
 Linear response module
 """
 
-import os
 import sys
+import pathlib
 
 from . import prop, sirifc, dens, rspvec, one
 
@@ -12,8 +12,9 @@ from . import prop, sirifc, dens, rspvec, one
 def LR(A, B, w=0.0, tmpdir="/tmp", absorption=False):
     """Calculate the linear response function <<A;B>> from response vector
     on RSPVEC for B, as <[kB,A]>"""
-    ifcfile = os.path.join(tmpdir, "SIRIFC")
-    propfile = os.path.join(tmpdir, "AOPROPER")
+    tmpdir = pathlib.Path(tmpdir)
+    ifcfile = tmpdir/"SIRIFC"
+    propfile = tmpdir/"AOPROPER"
     ifc = sirifc.sirifc(ifcfile)
     a, = prop.read(A, filename=propfile, unpack=True)
     dkb = Dk(B, freqs=(w,), ifc=ifc, tmpdir=tmpdir, absorption=absorption)
@@ -34,21 +35,21 @@ def Dk(*args, **kwargs):
     # Read interface data from SIRIFC if not provided
     #
     if ifc is None:
-        ifc = sirifc.sirifc(name=os.path.join(tmpdir, "SIRIFC"))
+        ifc = sirifc.sirifc(name=tmpdir/"SIRIFC")
     cmo = ifc.cmo
     #
     # Get densities in AO basis
     #
-    dc, do = dens.ifc(os.path.join(tmpdir, "SIRIFC"), ifc)
+    dc, do = dens.ifc(tmpdir/"SIRIFC", ifc)
     d = dc + do
     #
     # Get response vector (no symmetry)
     #
 
     if absorption:
-        vecfile = os.path.join(tmpdir, "ABSVECS")
+        vecfile = tmpdir/"ABSVECS"
     else:
-        vecfile = os.path.join(tmpdir, "RSPVEC")
+        vecfile = tmpdir/"RSPVEC"
 
     NB = rspvec.read(*args, freqs=freqs, propfile=vecfile)
 
@@ -59,7 +60,7 @@ def Dk(*args, **kwargs):
     # Vector to matrix
     #
     cmo = ifc.cmo.unblock()
-    S = one.read(filename=os.path.join(tmpdir, "AOONEINT")).unpack().unblock()
+    S = one.read(filename=tmpdir/"AOONEINT").unpack().unblock()
     # (D S kb - kb S D)
     dS = d * S
 

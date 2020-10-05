@@ -1,20 +1,15 @@
-import os
 import sys
-import unittest
 import unittest.mock as mock
 
 import numpy as np
 
 from daltools.qr import QR, main
+from . import tmpdir
 
 
-class NewTest(unittest.TestCase):
-    def setUp(self):
-        (n, e) = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
-
-    def tearDown(self):
-        pass
+class TestQR:
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
 
     def assert_(self, this, ref, **kwargs):
         np.testing.assert_allclose(this, ref, **kwargs)
@@ -45,11 +40,7 @@ class NewTest(unittest.TestCase):
         self.assert_(XXZ, XXZref)
 
     def test_mainXXX(self):
-        sys.argv[1:] = ["XDIPLEN", "XDIPLEN", "XDIPLEN", "-t", self.tmpdir]
+        sys.argv[1:] = ["XDIPLEN", "XDIPLEN", "XDIPLEN", "-t", str(self.tmpdir)]
         with mock.patch("daltools.qr.print") as mock_print:
             main()
         mock_print.assert_called_once_with("  0.00013323")
-
-
-if __name__ == "__main__":  # pragma no cover
-    unittest.main()

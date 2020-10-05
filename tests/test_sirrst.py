@@ -6,12 +6,15 @@ import numpy
 from daltools.sirrst import SiriusRestart, main
 from util.blocked import BlockDiagonalMatrix
 
+from . import tmpdir
+
 
 class TestSirRst:
+
     def setup(self):
-        self.suppdir = os.path.splitext(__file__)[0] + ".d"
-        self.sirrst = SiriusRestart(os.path.join(self.suppdir, "SIRIUS.RST"))
-        self.daltgz = os.path.join(self.suppdir, "dalton.tar.gz")
+        self.suppdir = tmpdir(__file__)
+        self.sirrst = SiriusRestart(self.suppdir/"SIRIUS.RST")
+        self.daltgz = self.suppdir/"dalton.tar.gz"
         self.ref_cmo = numpy.array(
             [
                 [0.71551428, -0.72497592, 0.00000000, 0.00000000, 0.20543401],
@@ -83,5 +86,3 @@ Block 1
 
 
 """
-        std = capsys.readouterr()
-        assert std.out == expected

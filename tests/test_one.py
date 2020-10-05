@@ -1,41 +1,41 @@
 import unittest
 import unittest.mock as mock
-import os
 import sys
+
 import numpy as np
-from util import blocked, full
+from pytest import approx, raises
 
 from daltools import one
+from .common_tests import tmpdir
 
 
-class TestOne(unittest.TestCase):
-    def setUp(self):
-        n, _ = os.path.splitext(__file__)
-        self.tmpdir = n + ".d"
-        self.aooneint = os.path.join(self.tmpdir, "AOONEINT")
-        self.aoproper = os.path.join(self.tmpdir, "AOPROPER")
+class TestOne:
+    def setup(self):
+        self.tmpdir = tmpdir(__file__)
+        self.aooneint = self.tmpdir/"AOONEINT"
+        self.aoproper = self.tmpdir/"AOPROPER"
         self.header = one.readhead(self.aooneint)
         self.maxDiff = None
 
     def test_header_title(self):
-        self.assertIn("CH2O", self.header["ttitle"])
+        assert "CH2O" in self.header["ttitle"]
 
     def test_header_naos(self):
-        self.assertTupleEqual(self.header["naos"], (12,))
+        assert self.header["naos"] == (12,)
 
     def test_header_nsym(self):
-        self.assertEqual(self.header["nsym"], 1)
+        assert self.header["nsym"] == 1
 
     def test_header_potnuc(self):
-        self.assertAlmostEqual(self.header["potnuc"], 31.249215316217)
+        assert self.header["potnuc"] == approx(31.249215316217)
 
     def test_isordk_nucdep(self):
         isordk = one.readisordk(self.aooneint)
-        self.assertEqual(isordk["nucdep"], 4)
+        assert isordk["nucdep"] == 4
 
     def test_isordk_chrn(self):
         isordk = one.readisordk(self.aooneint)
-        self.assertTupleEqual(isordk["chrn"][:3], (6.0, 8.0, 1.0))
+        assert isordk["chrn"][:3] == (6.0, 8.0, 1.0)
 
     def test_isordk_cooo(self):
         isordk = one.readisordk(self.aooneint)
@@ -50,7 +50,7 @@ class TestOne(unittest.TestCase):
 
     def test_scfinp(self):
         scfinp = one.readscfinp(self.aooneint)
-        self.assertEqual(scfinp["nsym"], 1)
+        assert scfinp["nsym"] == 1
         coor_angstrom = (
             -1.588367,
             -0.770650,
@@ -154,13 +154,13 @@ class TestOne(unittest.TestCase):
         np.testing.assert_almost_equal(np.array(S.subblock[0]), Sref)
 
     def test_main(self):
-        sys.argv[1:] = [self.aooneint]
+        sys.argv[1:] = [str(self.aooneint)]
         with mock.patch("daltools.one.print") as mock_print:
             one.main()
         mock_print.assert_not_called()
 
     def test_main_head(self):
-        sys.argv[1:] = [self.aooneint, "--head"]
+        sys.argv[1:] = [str(self.aooneint), "--head"]
         ref_output = """\
 Header on AOONEINT
 ttitle CH2O                                                                    ------------------------                                                
@@ -176,7 +176,7 @@ float_fmt d"""
         mock_print.assert_has_calls(calls)
 
     def test_main_isordk(self):
-        sys.argv[1:] = [self.aooneint, "--isordk"]
+        sys.argv[1:] = [str(self.aooneint), "--isordk"]
         ref_output = """\
 nucdep=4 mxcent=120
 
@@ -200,7 +200,7 @@ nucdep=4 mxcent=120
         mock_print.assert_has_calls([])
 
     def test_main_scfinp(self):
-        sys.argv[1:] = [self.aooneint, "--scfinp"]
+        sys.argv[1:] = [str(self.aooneint), "--scfinp"]
         ref_output = """\
 ttitle CH2O                                                                    ------------------------                                                
 nsym 1
@@ -229,7 +229,7 @@ jfxyz (-9999999, -9999999, -9999999)"""
         mock_print.assert_has_calls(calls)
 
     def test_main_label(self):
-        sys.argv[1:] = [self.aooneint, "--label", "OVERLAP", "-v"]
+        sys.argv[1:] = [str(self.aooneint), "--label", "OVERLAP", "-v"]
         ref_output = """\
 OVERLAP 
 Block 1
@@ -253,7 +253,7 @@ Block 1
         mock_print.assert_called_once_with(ref_output)
 
     def test_main_label_unpack(self):
-        sys.argv[1:] = [self.aooneint, "--label", "OVERLAP", "-v", "-u"]
+        sys.argv[1:] = [str(self.aooneint), "--label", "OVERLAP", "-v", "-u"]
         ref_output = """\
 OVERLAP 
  (12, 12)
@@ -305,7 +305,7 @@ OVERLAP
         mock_print.assert_called_once_with(ref_output)
 
     def test_read_wrong_file(self):
-        with self.assertRaises(RuntimeError):
+        with raises(RuntimeError):
             one.readhead(self.aoproper)
 
     def test_wrong_integer_format(self):
@@ -315,9 +315,5 @@ OVERLAP
             def __len__(self):
                 return self.reclen
 
-        with self.assertRaises(RuntimeError):
+        with raises(RuntimeError):
             i = one._get_integer_format(Dummy())
-
-
-if __name__ == "__main__":  # pragma: no cover
-    unittest.main()
