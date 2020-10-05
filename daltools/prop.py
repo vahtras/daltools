@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """Module for reading data fro property integral file AOPROPER"""
-import os
+import pathlib
 import sys
 import math
 import numpy as np
@@ -13,8 +13,8 @@ def read(*args, **kwargs):
     """Read property integral"""
     propfile = kwargs.get("filename")
     if not propfile:
-        tmpdir = kwargs.get("tmpdir", "/tmp")
-        propfile = os.path.join(tmpdir, "AOPROPER")
+        tmpdir = pathlib.Path(kwargs.get("tmpdir", "/tmp"))
+        propfile = tmpdir/"AOPROPER"
 
     unpack = kwargs.get("unpack", True)
     AOPROPER = FortranBinary(propfile)
@@ -46,14 +46,14 @@ def read(*args, **kwargs):
 
 
 def grad(*args, **kwargs):
-    tmpdir = kwargs.get("tmpdir", "/tmp")
+    tmpdir = pathlib.Path(kwargs.get("tmpdir", "/tmp"))
 
     propmat = read(*args, **kwargs)
 
-    AOONEINT = os.path.join(tmpdir, "AOONEINT")
+    AOONEINT = tmpdir/"AOONEINT"
     S = one.read(label="OVERLAP", filename=AOONEINT).unpack().unblock()
 
-    SIRIFC = os.path.join(tmpdir, "SIRIFC")
+    SIRIFC = tmpdir/"SIRIFC"
     ifc = sirifc.sirifc(SIRIFC)
     Da, Db = dens.Dab(ifc_=ifc)
     cmo = ifc.cmo.unblock()

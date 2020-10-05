@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import numpy
 import sys
-import os
+from pathlib import Path
 import tarfile
 import tempfile
 from util import blocked, full
@@ -13,9 +13,9 @@ class SiriusRestart:
     def __init__(self, name="SIRIUS.RST", tgz=None):
         self.name = name
         if tgz is not None:
-            tmp = tempfile.mkdtemp()
+            tmp = Path(tempfile.mkdtemp())
             tarfile.open(tgz, "r:gz").extractall(path=tmp)
-            self.name = os.path.join(tmp, "SIRIUS.RST")
+            self.name = tmp/"SIRIUS.RST"
         self.basinfo = BasInfo(self.name)
         self._cmo = None
         self._ci = None

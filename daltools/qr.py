@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 """Quadratic response module"""
-from __future__ import print_function
 
-import os
+from pathlib import Path
 import sys
 from .sirifc import sirifc
 from .dens import ifc as dens_ifc
@@ -15,8 +14,7 @@ from .one import read as one_read
 def QR(A, B, C, wb=0.0, wc=0.0, tmpdir="/tmp", **kwargs):
     """Calculate the linear response function <<A;B>> from response vector
     on RSPVEC for B, as <[kB,A]>"""
-    # ifcfile = os.path.join(tmpdir, "SIRIFC")
-    propfile = os.path.join(tmpdir, "AOPROPER")
+    propfile = Path(tmpdir)/"AOPROPER"
     a, = prop_read(A, filename=propfile, unpack=True)
     BC = B.ljust(8) + C.ljust(8)
     dBC = D2k(BC, bcfreqs=((wb, wc),), tmpdir=tmpdir, **kwargs)
@@ -29,13 +27,12 @@ def D2k(*args, **kwargs):
     bclabs = args
 
     bcfreqs = kwargs.get("bcfreqs", ((0.0, 0.0),))
-    tmpdir = kwargs.get("tmpdir", "/tmp")
+    tmpdir = Path(kwargs.get("tmpdir", "/tmp"))
     ifc = kwargs.get("ifc", None)
 
-    SIRIFC = os.path.join(tmpdir, "SIRIFC")
-    RSPVEC = os.path.join(tmpdir, "RSPVEC")
-    # E3VEC = os.path.join(tmpdir, "E3VEC")
-    AOONEINT = os.path.join(tmpdir, "AOONEINT")
+    SIRIFC = tmpdir/"SIRIFC"
+    RSPVEC = tmpdir/"RSPVEC"
+    AOONEINT = tmpdir/"AOONEINT"
     #
     # Read interface data from SIRIFC if not provided
     #
