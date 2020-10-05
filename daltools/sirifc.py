@@ -80,7 +80,7 @@ class SirIfc(object):
         if self._cmo is None:
             with  FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
-                for i in range(3):
+                for _ in range(3):
                     fb.next()
                 ncmot4 = max(self.ncmot, 4)
                 dbl = fb.readbuf(ncmot4, self.FLOAT)
@@ -100,7 +100,7 @@ class SirIfc(object):
         if self._dv is None:
             with  FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
-                for i in range(5): 
+                for _ in range(5): 
                     fb.next()
                 mmashx = max(self.nnashx, 4)
                 dbl = fb.readbuf(self.nnashx, self.FLOAT)
@@ -264,8 +264,7 @@ class SirIfc(object):
         nb = (self.nactel - ms2)//2
         astrings = tuple(combinations(range(self.nasht)[::-1], na))[::-1]
         bstrings = tuple(combinations(range(self.nasht)[::-1], nb))[::-1]
-        dets = ((adet[::-1], bdet[::-1]) for bdet in bstrings for adet in astrings)
-        return dets
+        return ((adet[::-1], bdet[::-1]) for bdet in bstrings for adet in astrings)
 
 # For back compatibility
 sirifc = SirIfc

@@ -3,7 +3,7 @@ import numpy as np
 from daltools import dens
 from util import full
 
-from .common_tests import tmpdir
+from . import tmpdir
 
 
 class TestDens:

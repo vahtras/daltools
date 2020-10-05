@@ -3,7 +3,7 @@ from pytest import approx
 
 from daltools import rspvec, sirifc
 
-from .common_tests import tmpdir
+from . import tmpdir
 
 class TestOpenRspVec:
 

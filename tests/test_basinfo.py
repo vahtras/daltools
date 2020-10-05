@@ -8,7 +8,7 @@ import pytest
 from daltools.basinfo import BasInfo, main
 from daltools import basinfo
 
-from .common_tests import tmpdir
+from . import tmpdir
 
 
 class TestBasInfo:
@@ -63,7 +63,3 @@ IOPRHF :   0
         sys.argv[1:] = []
         with pytest.raises(SystemExit):
             main()
-
-
-if __name__ == "__main__":
-    unittest.main()

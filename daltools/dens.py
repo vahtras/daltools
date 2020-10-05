@@ -67,8 +67,7 @@ def C2Dab(C, na, nb):
 def C1D(C, n):
     """Given orbitals C and number of occupied n return density C*C.T"""
     Ci = C[:, :n]
-    Di = Ci*Ci.T
-    return Di
+    return Ci @ Ci.T
 
 def ifc(filename='SIRIFC', ifc_=None):
     """
@@ -101,6 +100,3 @@ def Dab(*args, **kwargs):
     Db = 0.5*Di 
     Da = Db + Dv
     return (Da, Db)
-
-if __name__ == "__main__":
-    pass

@@ -6,7 +6,7 @@ import numpy as np
 from pytest import approx, raises
 
 from daltools import one
-from .common_tests import tmpdir
+from . import tmpdir
 
 
 class TestOne:

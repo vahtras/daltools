@@ -4,7 +4,7 @@ from pytest import approx
 from daltools.rspvec import read
 from daltools.lr import LR
 
-from .common_tests import tmpdir
+from . import tmpdir
 
 
 class TestALR:

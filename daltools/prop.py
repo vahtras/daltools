@@ -77,8 +77,10 @@ def main():
     parser.add_argument('--packed', action='store_true', help='Work directory')
     args = parser.parse_args()
 
-    kwargs = {'tmpdir': args.tmpdir}
-    kwargs['unpack'] = not args.packed
+    kwargs = {
+        'tmpdir': args.tmpdir,
+        'unpack': not args.packed,
+    }
     prop, = read(args.label, **kwargs)
     print(str(prop))
 

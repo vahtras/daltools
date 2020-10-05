@@ -483,7 +483,3 @@ class TestSirIfcRenamed(TestSirIfc):
         self.cls = sirifc.SirIfc
         self.maxDiff = None
         self.ifc = self.cls(self.tmpdir("SIRIFC"))
-
-
-if __name__ == "__main__":  # pragma no cover
-    unittest.main()

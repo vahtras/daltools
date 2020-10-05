@@ -73,7 +73,3 @@ class TestRspVec:
         this = list(rspvec.jwop(self.ifc))
         ref = [(i, j) for i in range(8) for j in range(8, 12)]
         assert  this == ref
-
-
-if __name__ == "__main__":  # pragma: no cover
-    unittest.main()

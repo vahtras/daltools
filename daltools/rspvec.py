@@ -26,7 +26,6 @@ def read(*args, **kwargs):
     rspvec = FortranBinary(propfile)
     vecs = {}
 
-    
     for rec in rspvec:
         for lab in args:
             try:
@@ -95,11 +94,11 @@ def tomat(N, ifc, tmpdir='/tmp'):
     norbt = ifc.norbt
     new = full.matrix((norbt, norbt))
     lwop = len(N)//2
-    ij = 0
-    for i, j in jwop(ifc):
+
+    for ij, (i, j) in enumerate(jwop(ifc)):
         new[i, j] = N[ij]
         new[j, i] = N[ij+lwop]
-        ij += 1
+
     return new
 
 def tovec(mat, ifc, tmpdir='/tmp'):
@@ -107,11 +106,9 @@ def tovec(mat, ifc, tmpdir='/tmp'):
     import os
     lwop = ifc.nisht*ifc.nasht + ifc.nocct*(ifc.norbt-ifc.nocct)
     N = full.matrix((2*lwop,))
-    ij = 0
-    for i, j in  jwop(ifc):
+    for ij, (i, j) in  enumerate(jwop(ifc)):
         N[ij] = mat[i, j]
         N[ij+lwop] = mat[j, i]
-        ij += 1
     return N
 
 def jwop(ifc):

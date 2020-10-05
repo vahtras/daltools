@@ -3,7 +3,7 @@ import unittest.mock as mock
 from daltools.lr import LR, main
 from pytest import approx
 
-from .common_tests import tmpdir
+from . import tmpdir
 
 
 class TestLR:

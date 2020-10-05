@@ -3,7 +3,7 @@ import unittest.mock as mock
 from pytest import approx
 
 from daltools import mol
-from .common_tests import tmpdir
+from . import tmpdir
 
 
 class TestMol:
@@ -101,7 +101,3 @@ s-functions
         with mock.patch("daltools.mol.print") as mock_print:
             mol.printbasis(self.bas)
         mock_print.assert_called_once_with(output)
-
-
-if __name__ == "__main__":  # pragma no cover
-    unittest.main()

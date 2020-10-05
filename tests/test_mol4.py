@@ -3,7 +3,7 @@ import unittest.mock as mock
 from daltools import mol
 from pytest import approx
 
-from .common_tests import tmpdir
+from . import tmpdir
 
 
 class TestMol:

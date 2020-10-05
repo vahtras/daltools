@@ -53,36 +53,36 @@ def Dk(*args, **kwargs):
 
     NB = rspvec.read(*args, freqs=freqs, propfile=vecfile)
 
-    if absorption:
-        ReNB = {lw: NB[lw][: len(NB[lw]) // 2] for lw in NB}
-        ImNB = {lw: NB[lw][len(NB[lw]) // 2:] for lw in NB}
     #
     # Vector to matrix
     #
     cmo = ifc.cmo.unblock()
     S = one.read(filename=tmpdir/"AOONEINT").unpack().unblock()
     # (D S kb - kb S D)
-    dS = d * S
+    dS = d @ S
 
     if absorption:
+        ReNB = {lw: NB[lw][: len(NB[lw]) // 2] for lw in NB}
         Rekb = {
-            lw: cmo * rspvec.tomat(ReNB[lw], ifc, tmpdir=tmpdir).T * cmo.T
+            lw: cmo @ rspvec.tomat(ReNB[lw], ifc, tmpdir=tmpdir).T @ cmo.T
             for lw in NB
         }
+
+        ImNB = {lw: NB[lw][len(NB[lw]) // 2:] for lw in NB}
         Imkb = {
-            lw: cmo * rspvec.tomat(ImNB[lw], ifc, tmpdir=tmpdir).T * cmo.T
+            lw: cmo @ rspvec.tomat(ImNB[lw], ifc, tmpdir=tmpdir).T @ cmo.T
             for lw in NB
         }
         dkb = (
-            {lw: dS * Rekb[lw] - Rekb[lw] * dS.T for lw in Rekb},
-            {lw: dS * Imkb[lw] - Imkb[lw] * dS.T for lw in Imkb},
+            {lw: dS @ Rekb[lw] - Rekb[lw] @ dS.T for lw in Rekb},
+            {lw: dS @ Imkb[lw] - Imkb[lw] @ dS.T for lw in Imkb},
         )
     else:
         kb = {
-            lw: cmo * rspvec.tomat(NB[lw], ifc, tmpdir=tmpdir).T * cmo.T
+            lw: cmo @ rspvec.tomat(NB[lw], ifc, tmpdir=tmpdir).T @ cmo.T
             for lw in NB
         }
-        dkb = {lw: dS * kb[lw] - kb[lw] * dS.T for lw in kb}
+        dkb = {lw: dS @ kb[lw] - kb[lw] @ dS.T for lw in kb}
     return dkb
 
 

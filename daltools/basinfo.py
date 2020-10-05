@@ -44,7 +44,7 @@ class BasInfo(object):
     @property
     def ncmot(self):
         """Return numboer of MO coefficients"""
-        return sum([i*j for i, j in zip(self.nbas, self.norb)])
+        return sum(i*j for i, j in zip(self.nbas, self.norb))
 
 def main():
     """main routine"""

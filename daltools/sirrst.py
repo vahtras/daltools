@@ -78,7 +78,6 @@ class SiriusRestart(object):
                 self._ci = numpy.array(ci_record.read(len(ci_record)//8, 'd'))       
         return self._ci
 
-
 def main():
 
     import argparse

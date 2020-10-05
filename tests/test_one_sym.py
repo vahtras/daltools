@@ -6,7 +6,7 @@ from pytest import approx
 
 from daltools import one
 
-from .common_tests import tmpdir
+from . import tmpdir
 
 class TestOne:
 
