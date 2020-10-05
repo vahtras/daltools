@@ -7,12 +7,14 @@ from fortran_binary import FortranBinary
 
 def get_intcode(reclen, n_floats, n_ints):
     float_size = 8
-    int_size = (reclen - 4*float_size)//n_ints
-    int_codes = {4: 'i', 8: 'q'}
+    int_size = (reclen - 4 * float_size) // n_ints
+    int_codes = {4: "i", 8: "q"}
     return int_codes[int_size]
 
-class SirIfc(object):
+
+class SirIfc:
     """Read data from dalton interface file"""
+
     ifclabel = "SIR IPH "
 
     def __init__(self, name="SIRIFC"):
@@ -27,34 +29,39 @@ class SirIfc(object):
         self._orbdiag = None
 
         if not self.file.find(self.ifclabel):
-            raise RuntimeError("Label %s not found on %s" % (
-                self.ifclabel, name
-                )
+            raise RuntimeError(
+                "Label %s not found on %s" % (self.ifclabel, name)
             )
 
         rec = next(self.file)
 
-# Integer size from first record, 4 floats, 5 ints
-#    1) POTNUC,EMY,EACTIV,EMCSCF,ISTATE,ISPIN,NACTEL,LSYM,MS2
+        # Integer size from first record, 4 floats, 5 ints
+        #    1) POTNUC,EMY,EACTIV,EMCSCF,ISTATE,ISPIN,NACTEL,LSYM,MS2
 
         try:
             self.INT = get_intcode(len(rec), 4, 5)
-        except KeyError:#pragma no cover
-            #Allow Dalton 2013 version
+        except KeyError:  # pragma no cover
+            # Allow Dalton 2013 version
             self.INT = get_intcode(len(rec), 4, 4)
-            
-        self.FLOAT = 'd'
 
-        self.potnuc, self.emy, self.eactive, self.emcscf = self.file.readbuf(4, self.FLOAT)
-        self.istate, self.ispin, self.nactel, self.lsym  = self.file.readbuf(4, self.INT)
+        self.FLOAT = "d"
+
+        self.potnuc, self.emy, self.eactive, self.emcscf = self.file.readbuf(
+            4, self.FLOAT
+        )
+        self.istate, self.ispin, self.nactel, self.lsym = \
+            self.file.readbuf(4, self.INT)
 
         self.file.next()
-        self.nisht, self.nasht, self.nocct, self.norbt, self.nbast, \
-        self.nconf, self.nwopt, self.nwoph, self.ncdets, self.ncmot, \
-        self.nnashx, self.nnashy, self.nnorbt, self.n2orbt, self.nsym, \
-        = self.file.readbuf(15, self.INT)
+        self.nisht, self.nasht, self.nocct, self.norbt, self.nbast,\
+            self.nconf,  self.nwopt, self.nwoph, self.ncdets,\
+            self.ncmot, self.nnashx, self.nnashy, self.nnorbt,\
+            self.n2orbt, self.nsym = \
+            self.file.readbuf(15, self.INT)
 
-        self.muld2h = numpy.array(self.file.readbuf(64, self.INT)).reshape((8, 8))
+        self.muld2h = numpy.array(
+            self.file.readbuf(64, self.INT)
+            ).reshape((8, 8))
 
         self.nrhf = numpy.array(self.file.readbuf(8, self.INT))
         self.nfro = numpy.array(self.file.readbuf(8, self.INT))
@@ -63,8 +70,8 @@ class SirIfc(object):
         self.norb = numpy.array(self.file.readbuf(8, self.INT))
         self.nbas = numpy.array(self.file.readbuf(8, self.INT))
 
-        self.nelmn1, self.nelmx1, self.nelmn3, self.nelmx3, self.mctype \
-        = self.file.readbuf(5, self.INT)
+        self.nelmn1, self.nelmx1, self.nelmn3, self.nelmx3, self.mctype = \
+            self.file.readbuf(5, self.INT)
 
         self.nas1 = numpy.array(self.file.readbuf(8, self.INT))
         self.nas2 = numpy.array(self.file.readbuf(8, self.INT))
@@ -73,12 +80,11 @@ class SirIfc(object):
         self.file.close()
         return
 
-
     @property
     def cmo(self):
         """Read MO coefficients"""
         if self._cmo is None:
-            with  FortranBinary(self.name) as fb:
+            with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
                 for _ in range(3):
                     fb.next()
@@ -91,18 +97,18 @@ class SirIfc(object):
                     for ao in range(self.nbas[isym]):
                         self._cmo.subblock[isym][ao, mo] = dbl[n]
                         n += 1
-            assert(n == self.ncmot)
+            assert n == self.ncmot
         return self._cmo
 
     @property
     def dv(self):
         """Get active density matrix"""
         if self._dv is None:
-            with  FortranBinary(self.name) as fb:
+            with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
-                for _ in range(5): 
+                for _ in range(5):
                     fb.next()
-                mmashx = max(self.nnashx, 4)
+                # mmashx = max(self.nnashx, 4)
                 dbl = fb.readbuf(self.nnashx, self.FLOAT)
             self._dv = full.triangular.init(dbl)
         return self._dv
@@ -111,10 +117,11 @@ class SirIfc(object):
     def pv(self):
         """Get two-electron density"""
         if self._pv is None:
-            with  FortranBinary(self.name) as fb:
+            with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
-                for i in range(7): fb.next()
-                m2ashy = max(self.nnashx**2, 4)
+                for i in range(7):
+                    fb.next()
+                m2ashy = max(self.nnashx ** 2, 4)
                 dbl = fb.readbuf(m2ashy, self.FLOAT)
             self._pv = full.matrix((self.nnashx, self.nnashx))
             n = 0
@@ -122,16 +129,17 @@ class SirIfc(object):
                 for j in range(self.nnashx):
                     self._pv[j, i] = dbl[n]
                     n += 1
-            assert(n == self.nnashx**2)
+            assert n == self.nnashx ** 2
         return self._pv
 
     @property
     def fock(self):
         """Read Fock matrix (MO)"""
         if self._fock is None:
-            with  FortranBinary(self.name) as fb:
+            with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
-                for i in range(6): fb.next()
+                for i in range(6):
+                    fb.next()
                 m2orbt = max(self.n2orbt, 4)
                 dbl = fb.readbuf(m2orbt, self.FLOAT)
             self._fock = blocked.BlockDiagonalMatrix(self.norb, self.norb)
@@ -141,7 +149,7 @@ class SirIfc(object):
                     for j in range(self.norb[isym]):
                         self._fock.subblock[isym][j, i] = dbl[n]
                         n += 1
-            assert (n == self.n2orbt)
+            assert n == self.n2orbt
         return self._fock
 
     @property
@@ -150,7 +158,8 @@ class SirIfc(object):
         if self._fc is None:
             with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
-                for i in range(8): fb.next()
+                for i in range(8):
+                    fb.next()
                 mmorbt = max(self.nnorbt, 4)
                 dbl = fb.readbuf(mmorbt, self.FLOAT)
 
@@ -159,11 +168,11 @@ class SirIfc(object):
             for isym in range(8):
                 ij = 0
                 for i in range(self.norb[isym]):
-                    for j in range(i+1):
+                    for j in range(i + 1):
                         self._fc.subblock[isym][i, j] = dbl[ij]
                         ij += 1
                 n += ij
-            assert (n == self.nnorbt)
+            assert n == self.nnorbt
         return self._fc
 
     @property
@@ -172,7 +181,8 @@ class SirIfc(object):
         if self._fv is None:
             with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
-                for i in range(9): fb.next()
+                for i in range(9):
+                    fb.next()
                 mmorbt = max(self.nnorbt, 4)
                 dbl = fb.readbuf(mmorbt, self.FLOAT)
             self._fv = blocked.triangular(self.norb)
@@ -180,11 +190,11 @@ class SirIfc(object):
             for isym in range(8):
                 ij = 0
                 for i in range(self.norb[isym]):
-                    for j in range(i+1):
+                    for j in range(i + 1):
                         self._fv.subblock[isym][i, j] = dbl[ij]
                         ij += 1
                 n += ij
-            assert (n == self.nnorbt)
+            assert n == self.nnorbt
         return self._fv
 
     @property
@@ -192,7 +202,7 @@ class SirIfc(object):
         """Get orbital Hessian diagonal"""
         if self._orbdiag is None:
             with FortranBinary(self.name) as fb:
-                fb.find('ORBDIAG')
+                fb.find("ORBDIAG")
                 rec = next(fb)
                 self._orbdiag = rec.read(self.nwopt, self.FLOAT)
         return numpy.array(self._orbdiag)
@@ -228,11 +238,12 @@ class SirIfc(object):
             for j in range(8):
                 retstr += " %d" % self.muld2h[i, j]
             retstr += "\n"
-       
+
         def strvec(lab, vec):
             """ String representation of vector"""
             locstr = lab + ":"
-            for i in range(8): locstr += " %d" % vec[i]
+            for i in range(8):
+                locstr += " %d" % vec[i]
             return locstr + "\n"
 
         retstr += strvec("NRHF", self.nrhf)
@@ -259,21 +270,24 @@ class SirIfc(object):
 
     def xindx(self):
         from itertools import combinations
+
         ms2 = self.ispin - 1
-        na = (self.nactel + ms2)//2
-        nb = (self.nactel - ms2)//2
+        na = (self.nactel + ms2) // 2
+        nb = (self.nactel - ms2) // 2
         astrings = tuple(combinations(range(self.nasht)[::-1], na))[::-1]
         bstrings = tuple(combinations(range(self.nasht)[::-1], nb))[::-1]
-        return ((adet[::-1], bdet[::-1]) for bdet in bstrings for adet in astrings)
+        return (
+            (adet[::-1], bdet[::-1]) for bdet in bstrings for adet in astrings
+        )
+
 
 # For back compatibility
 sirifc = SirIfc
 
-if __name__ == "__main__":#pragma no cover
+if __name__ == "__main__":  # pragma no cover
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('sirifc', help='Sirius interface file (SIRIFC)')
+    parser.add_argument("sirifc", help="Sirius interface file (SIRIFC)")
     args = parser.parse_args()
     print(SirIfc(args.sirifc))
-        

@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-"""Module for reading data from Dalton one-electron integral file AOONEINT"""
-from __future__ import print_function
-import sys 
+"""
+Module for reading data from Dalton one-electron integral file AOONEINT
+"""
 import struct
 import numpy as np
 from util import full, blocked
 from fortran_binary import FortranBinary
+
 
 def readhead(filename="AOONEINT"):
     """Read data in header of AOONEINT"""
@@ -29,40 +30,46 @@ def readhead(filename="AOONEINT"):
     # Buffer should now contains MAXREP data
     #
 
-    FLOAT = 'd'
+    FLOAT = "d"
     INT = _get_integer_format(rec)
 
     nsym = rec.read(1, INT)[0]
     naos = rec.read(nsym, INT)
     potnuc = rec.read(1, FLOAT)[0]
     import collections
-    unlabeled = collections.OrderedDict([
-        ("ttitle", title),
-        ("nsym", nsym),
-        ("naos", naos),
-        ("potnuc", potnuc),
-        ("int_fmt", INT),
-        ("float_fmt", FLOAT)
-        ])
+
+    unlabeled = collections.OrderedDict(
+        [
+            ("ttitle", title),
+            ("nsym", nsym),
+            ("naos", naos),
+            ("potnuc", potnuc),
+            ("int_fmt", INT),
+            ("float_fmt", FLOAT),
+        ]
+    )
     aooneint.close()
     return unlabeled
+
 
 def _get_integer_format(header_record):
     """Determine integer format from first record of AOONEINT"""
     # from herrdn.F:
-    # WRITE (LUONEL) MAXREP+1,(NAOS(I),I=1,MAXREP+1), POTNUC,
-    #&              (0.D0,I=1,2) ! so record is minimum 32 bytes
+    #  WRITE (LUONEL) MAXREP+1,(NAOS(I),I=1,MAXREP+1), POTNUC,
+    # &              (0.D0,I=1,2) ! so record is minimum 32 bytes
     floatsize = 8
     dimensions = np.array(
-        [[intsize*(nsym+1) + 3*floatsize for intsize in [4, 8]
-         ] for nsym in [1, 2, 4, 8]]
-        )
+        [
+            [intsize * (nsym + 1) + 3 * floatsize for intsize in [4, 8]]
+            for nsym in [1, 2, 4, 8]
+        ]
+    )
     if len(header_record) in dimensions[:, 0]:
-       integer_format = 'i'
+        integer_format = "i"
     elif len(header_record) in dimensions[:, 1]:
-       integer_format = 'q'
+        integer_format = "q"
     else:
-       raise RuntimeError("Unknown binary format in AOONEINT")
+        raise RuntimeError("Unknown binary format in AOONEINT")
 
     return integer_format
 
@@ -71,38 +78,40 @@ def readisordk(filename="AOONEINT"):
     """Read data under label ISORDK in AOONEINT"""
 
     header = readhead(filename)
-    INT = header['int_fmt']
-    FLOAT = header['float_fmt']
+    INT = header["int_fmt"]
+    FLOAT = header["float_fmt"]
 
     aooneint = FortranBinary(filename)
-    table1 = aooneint.find("ISORDK")
+    aooneint.find("ISORDK")
     aooneint.next()
     aooneint.next()
     sizeofi = struct.calcsize(INT)
     sizeofd = struct.calcsize(FLOAT)
-    mxcent_ = (len(aooneint.data)-sizeofi)//(4*sizeofd)
+    mxcent_ = (len(aooneint.data) - sizeofi) // (4 * sizeofd)
     chrn_ = aooneint.readbuf(mxcent_, FLOAT)
     nucdep = aooneint.readbuf(1, INT)[0]
-    cooo_ = aooneint.readbuf(3*mxcent_, FLOAT)
+    cooo_ = aooneint.readbuf(3 * mxcent_, FLOAT)
     isordk_ = {
-        #"table":table1,
-        "chrn":chrn_,
-        "nucdep":nucdep,
-        "cooo":cooo_,
-        }
+        # "table":table1,
+        "chrn": chrn_,
+        "nucdep": nucdep,
+        "cooo": cooo_,
+    }
     aooneint.close()
     return isordk_
+
 
 def readscfinp(filename="AOONEINT"):
     """Read data under labl SCFINP in AOONEINT"""
 
     header = readhead(filename)
-    INT = header['int_fmt']
-    FLOAT = header['float_fmt']
+    INT = header["int_fmt"]
+    FLOAT = header["float_fmt"]
 
     aooneint = FortranBinary(filename)
-    table2 = aooneint.find("SCFINP")
+    aooneint.find("SCFINP")
     import collections
+
     scfinp_ = collections.OrderedDict()
     aooneint.next()
     title = aooneint.data.decode()
@@ -114,26 +123,27 @@ def readscfinp(filename="AOONEINT"):
     scfinp_["potnuc"] = aooneint.readbuf(1, FLOAT)[0]
     kmax = aooneint.readbuf(1, INT)[0]
     scfinp_["kmax"] = kmax
-    scfinp_["ncent"] = aooneint.readbuf(kmax,INT)
-    nbasis = aooneint.readbuf(1,INT)[0]
+    scfinp_["ncent"] = aooneint.readbuf(kmax, INT)
+    nbasis = aooneint.readbuf(1, INT)[0]
     scfinp_["nbasis"] = nbasis
-    scfinp_["jtran"] = aooneint.readbuf(nbasis,INT)
-    scfinp_["itran"] = aooneint.readbuf(8*nbasis,INT)
-    scfinp_["ctran"] = aooneint.readbuf(8*nbasis,FLOAT)
-    scfinp_["nbasis"] = aooneint.readbuf(1,INT)[0]
-    scfinp_["inamn"] = aooneint.readbuf(nbasis,INT)
-    scfinp_["iptyp"] = aooneint.readbuf(nbasis,INT)
-    scfinp_["dpnuc"] = aooneint.readbuf(3,FLOAT)
-    nucdep = aooneint.readbuf(1,INT)[0]
+    scfinp_["jtran"] = aooneint.readbuf(nbasis, INT)
+    scfinp_["itran"] = aooneint.readbuf(8 * nbasis, INT)
+    scfinp_["ctran"] = aooneint.readbuf(8 * nbasis, FLOAT)
+    scfinp_["nbasis"] = aooneint.readbuf(1, INT)[0]
+    scfinp_["inamn"] = aooneint.readbuf(nbasis, INT)
+    scfinp_["iptyp"] = aooneint.readbuf(nbasis, INT)
+    scfinp_["dpnuc"] = aooneint.readbuf(3, FLOAT)
+    nucdep = aooneint.readbuf(1, INT)[0]
     scfinp_["nucdep"] = nucdep
-    scfinp_["cooo"] = aooneint.readbuf(3*nucdep,FLOAT)
-    scfinp_["ifxyz"] = aooneint.readbuf(3,INT)
-    scfinp_["dummy"] = aooneint.readbuf(1,FLOAT)[0]
-    scfinp_["qpol"] = aooneint.readbuf(6,FLOAT)
-    scfinp_["qq"] = aooneint.readbuf(3,FLOAT)
-    scfinp_["jfxyz"] = aooneint.readbuf(3,INT)
+    scfinp_["cooo"] = aooneint.readbuf(3 * nucdep, FLOAT)
+    scfinp_["ifxyz"] = aooneint.readbuf(3, INT)
+    scfinp_["dummy"] = aooneint.readbuf(1, FLOAT)[0]
+    scfinp_["qpol"] = aooneint.readbuf(6, FLOAT)
+    scfinp_["qq"] = aooneint.readbuf(3, FLOAT)
+    scfinp_["jfxyz"] = aooneint.readbuf(3, INT)
     aooneint.close()
     return scfinp_
+
 
 def read(label="OVERLAP", filename="AOONEINT"):
     """Read integral for label"""
@@ -148,32 +158,33 @@ def read(label="OVERLAP", filename="AOONEINT"):
     FLOAT = unlabeled["float_fmt"]
     nnbast = 0
     for nbasi in nbas:
-        nnbast += nbasi*(nbasi+1)//2
+        nnbast += nbasi * (nbasi + 1) // 2
     s = full.matrix((nnbast,))
     #
     # Open file, locate label
     #
     aooneint = FortranBinary(filename)
-    labinfo = aooneint.find(label)
+    aooneint.find(label)
     #
     # Loop over records
     #
 
     for rec in aooneint:
-       buf = rec.read(lbuf, FLOAT)
-       ibuf = rec.read(lbuf, INT)
-       length, = rec.read(1, INT)
-       if length < 0: break
-       for i, b in zip(ibuf[:length], buf[:length]):
-           s[i-1] = b
+        buf = rec.read(lbuf, FLOAT)
+        ibuf = rec.read(lbuf, INT)
+        length, = rec.read(1, INT)
+        if length < 0:
+            break
+        for i, b in zip(ibuf[:length], buf[:length]):
+            s[i - 1] = b
 
     _S = blocked.triangular(nbas)
     off = 0
     for isym in range(nsym):
-        nbasi = nbas[isym]*(nbas[isym]+1)//2
-        _S.subblock[isym] = np.array(s[off:off+nbasi]).view(full.triangular)
+        nbasi = nbas[isym] * (nbas[isym] + 1) // 2
+        _S.subblock[isym] = np.array(s[off: off + nbasi]).view(full.triangular)
         off += nbasi
-    #aooneint.close()
+    # aooneint.close()
     return _S
 
 
@@ -182,14 +193,14 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-H', '--head', dest='head', action='store_true')
-    parser.add_argument('-i', '--isordk', dest='isordk', action='store_true')
-    parser.add_argument('-s', '--scfinp', dest='scfinp', action='store_true')
-    parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
-    parser.add_argument('-u', '--unpack', dest='unpack', action='store_true')
-    parser.add_argument('-l', '--label')
-    #breakpoint()
-    parser.add_argument('aooneint')
+    parser.add_argument("-H", "--head", dest="head", action="store_true")
+    parser.add_argument("-i", "--isordk", dest="isordk", action="store_true")
+    parser.add_argument("-s", "--scfinp", dest="scfinp", action="store_true")
+    parser.add_argument("-v", "--verbose", dest="verbose", action="store_true")
+    parser.add_argument("-u", "--unpack", dest="unpack", action="store_true")
+    parser.add_argument("-l", "--label")
+    # breakpoint()
+    parser.add_argument("aooneint")
 
     args = parser.parse_args()
 
@@ -215,7 +226,7 @@ def main():
     if args.scfinp:
         scfinp = readscfinp(args.aooneint)
         for k in scfinp:
-            if type(scfinp[k]) is float and k != 'dummy':
+            if type(scfinp[k]) is float and k != "dummy":
                 print("%s%10.6f" % (k, scfinp[k]))
             else:
                 print(k + " " + str(scfinp[k]))
