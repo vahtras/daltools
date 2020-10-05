@@ -1,8 +1,6 @@
-import unittest
-import unittest.mock as mock
-import os
 import sys
 import numpy
+import numpy.testing as npt
 from daltools.sirrst import SiriusRestart, main
 from util.blocked import BlockDiagonalMatrix
 
@@ -44,10 +42,10 @@ class TestSirRst:
         cmo1 = self.ref_cmo[:, 1]
         dref = 2 * numpy.outer(cmo0, cmo0) + numpy.outer(cmo1, cmo1)
         # assert False
-        numpy.testing.assert_allclose(self.sirrst.get_occ_density(occnum), dref)
+        npt.assert_allclose(self.sirrst.get_occ_density(occnum), dref)
 
     def test_dens_symmetry(self):
-        sir = SiriusRestart(os.path.join(self.suppdir, "hf_S.SIRIUS.RST"))
+        sir = SiriusRestart(self.suppdir/"hf_S.SIRIUS.RST")
         occupied = BlockDiagonalMatrix(sir.basinfo.nbas, sir.basinfo.nrhf)
         for nrhf, occ, cmo in zip(sir.basinfo.nrhf, occupied, sir.cmo):
             if nrhf > 0:
@@ -57,11 +55,11 @@ class TestSirRst:
         numpy.testing.assert_almost_equal(sir.get_rhf_density(), full_density)
 
     def test_hf_S_symmetry(self):
-        sirius_restart = SiriusRestart(os.path.join(self.suppdir, "hf_S.SIRIUS.RST"))
-        cmo = sirius_restart.cmo
+        sirius_restart = SiriusRestart(self.suppdir/"hf_S.SIRIUS.RST")
+        sirius_restart.cmo
 
     def test_main(self, capsys):
-        sys.argv[1:] = [os.path.join(self.suppdir, "SIRIUS.RST")]
+        sys.argv[1:] = [str(self.suppdir/"SIRIUS.RST")]
 
         main()
 
