@@ -8,14 +8,18 @@ from util import full, blocked
 
 
 def h1diag(nisht, nasht, filename="AOONEINT"):
-    """Generate density from diagonalized one-electron Hamiltonian"""
+    """
+    Generate density from diagonalized one-electron Hamiltonian
+    """
     h1 = one.read("ONEHAMIL", filename).unpack().unblock()
     S = one.read("OVERLAP", filename).unpack().unblock()
     return fdiag(h1, S, nisht, nasht)
 
 
 def fdiag(F, S, nisht, nasht):
-    """Generate density from diagonalizing input Fock matrix"""
+    """
+    Generate density from diagonalizing input Fock matrix
+    """
     C = cmo(F, S)
     return C2D(C, nisht, nasht)
 
@@ -27,9 +31,9 @@ def cmo(F, S, filename="AOONEINT"):
     respect to eigenvalue
     """
     nbast = F.shape[0]
-    e, V = (F / S).eigvec()
+    e, V = (F/S).eigvec()
     C = full.matrix((nbast, nbast))
-    N2 = (V.T * S * V).diagonal()
+    N2 = (V.T@S@V).diagonal()
     for i in range(nbast):
         Ni = 1.0 / sqrt(N2[i])
         C[:, i] = V[:, i] * Ni
@@ -60,8 +64,8 @@ def C2D(C, nisht, nasht):
     """
     Ci = C[:, :nisht]
     Ca = C[:, nisht: nisht + nasht]
-    Di = 2 * Ci * Ci.T
-    Da = Ca * Ca.T
+    Di = 2*Ci@Ci.T
+    Da = Ca@Ca.T
     return Di, Da
 
 
@@ -72,15 +76,15 @@ def C2Dab(C, na, nb):
     """
     Ca = C[:, :na]
     Cb = C[:, :nb]
-    Da = Ca * Ca.T
-    Db = Cb * Cb.T
+    Da = Ca@Ca.T
+    Db = Cb@Cb.T
     return Da, Db
 
 
 def C1D(C, n):
     """Given orbitals C and number of occupied n return density C*C.T"""
     Ci = C[:, :n]
-    return Ci @ Ci.T
+    return Ci@Ci.T
 
 
 def ifc(filename="SIRIFC", ifc_=None):
@@ -112,6 +116,6 @@ def ifc(filename="SIRIFC", ifc_=None):
 
 def Dab(*args, **kwargs):
     Di, Dv = ifc(*args, **kwargs)
-    Db = 0.5 * Di
+    Db = 0.5*Di
     Da = Db + Dv
     return (Da, Db)
