@@ -3,8 +3,11 @@
 Utility routines to generate density matrices
 """
 from math import sqrt
-from . import one, sirifc
+import numpy as np
+
 from util import full, blocked
+
+from . import one, sirifc
 
 
 def h1diag(nisht, nasht, filename="AOONEINT"):
@@ -37,15 +40,7 @@ def cmo(F, S, filename="AOONEINT"):
     for i in range(nbast):
         Ni = 1.0 / sqrt(N2[i])
         C[:, i] = V[:, i] * Ni
-        # Set the phase such that the largest component is positive
-        Cmx = 0.0
-        rephase = False
-        for j in range(nbast):
-            if abs(C[j, i]) > Cmx:
-                Cmx = abs(C[j, i])
-                rephase = C[j, i] < 0
-        if rephase:
-            C[:, i] *= -1
+    rephase_columns(C, inplace=True)
 
     #
     # Finish off with Gram Schmidt because degenerate orbitals are not
@@ -55,6 +50,22 @@ def cmo(F, S, filename="AOONEINT"):
     #
     #
     return C
+
+
+def rephase_columns(initial, inplace=False):
+    """
+    Set the phase of each column so that its largest component is positive
+    """
+    if not inplace:
+        initial = np.array(initial)
+
+    for column in initial.T:
+        ind = np.argmax(abs(column))
+        if column[ind] < 0:
+            column *= -1
+
+    if not inplace:
+        return initial
 
 
 def C2D(C, nisht, nasht):

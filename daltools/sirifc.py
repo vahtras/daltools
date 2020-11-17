@@ -5,6 +5,10 @@ from util import blocked, full
 from fortran_binary import FortranBinary
 
 
+class LabelNotFound(Exception):
+    pass
+
+
 def get_intcode(reclen, n_floats, n_ints):
     float_size = 8
     int_size = (reclen - 4 * float_size) // n_ints
@@ -202,9 +206,11 @@ class SirIfc:
         """Get orbital Hessian diagonal"""
         if self._orbdiag is None:
             with FortranBinary(self.name) as fb:
-                fb.find("ORBDIAG")
-                rec = next(fb)
-                self._orbdiag = rec.read(self.nwopt, self.FLOAT)
+                if fb.find("ORBDIAG"):
+                    rec = next(fb)
+                    self._orbdiag = rec.read(self.nwopt, self.FLOAT)
+                else:
+                    raise LabelNotFound("ORBDIAG not found")
         return numpy.array(self._orbdiag)
 
     def __str__(self):

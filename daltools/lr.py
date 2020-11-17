@@ -9,19 +9,56 @@ import pathlib
 from . import prop, sirifc, dens, rspvec, one
 
 
+class LinearResponseReader:
+    def __init__(self, A, B, w=0, tmpdir='/tmp'):
+        self.A = A
+        self.B = B
+        self.w = w
+        self.tmpdir = pathlib.Path(tmpdir)
+        self.sirifc = sirifc.SirIfc(self.tmpdir/"SIRIFC")
+        self.propfile = self.tmpdir/"AOPROPER"
+        self.absorption = False
+
+    def get_property(self):
+        self.a, = prop.read(self.A, filename=self.propfile, unpack=True)
+
+    def get_density(self):
+        self.dkb = Dk(
+            self.B, freqs=(self.w,), ifc=self.sirifc, tmpdir=self.tmpdir,
+            absorption=self.absorption
+        )
+
+    def evaluate(self):
+        return self.a & self.dkb[(self.B, self.w)]
+
+
+class CLinearResponseReader(LinearResponseReader):
+
+    def __init__(self, A, B, w=0, tmpdir='/tmp'):
+        super().__init__(A, B, w, tmpdir)
+        self.absorption = True
+
+    def evaluate(self):
+        return (
+            self.a & self.dkb[0][(self.B, self.w)],
+            self.a & self.dkb[1][(self.B, self.w)]
+        )
+
+
 def LR(A, B, w=0.0, tmpdir="/tmp", absorption=False):
-    """Calculate the linear response function <<A;B>> from response vector
-    on RSPVEC for B, as <[kB,A]>"""
-    tmpdir = pathlib.Path(tmpdir)
-    ifcfile = tmpdir/"SIRIFC"
-    propfile = tmpdir/"AOPROPER"
-    ifc = sirifc.sirifc(ifcfile)
-    a, = prop.read(A, filename=propfile, unpack=True)
-    dkb = Dk(B, freqs=(w,), ifc=ifc, tmpdir=tmpdir, absorption=absorption)
+    """
+    Calculate the linear response function <<A;B>> from response vector
+    on RSPVEC for B, as <[kB,A]>
+    """
     if absorption:
-        return (a & dkb[0][(B, w)], a & dkb[1][(B, w)])
+        reader = CLinearResponseReader(A, B, w, tmpdir)
     else:
-        return a & dkb[(B, w)]
+        reader = LinearResponseReader(A, B, w, tmpdir)
+
+    reader.get_property()
+    reader.get_density()
+
+    return reader.evaluate()
 
 
 def Dk(*args, **kwargs):

@@ -198,6 +198,7 @@ def main():
     parser.add_argument("-s", "--scfinp", dest="scfinp", action="store_true")
     parser.add_argument("-v", "--verbose", dest="verbose", action="store_true")
     parser.add_argument("-u", "--unpack", dest="unpack", action="store_true")
+    parser.add_argument("-o", "--savetxt", dest="savetxt")
     parser.add_argument("-l", "--label")
     # breakpoint()
     parser.add_argument("aooneint")
@@ -240,6 +241,8 @@ def main():
             S = s1
         if args.verbose:
             print("%s %s" % (args.label, str(S)))
+        if args.savetxt:
+            np.savetxt(args.savetxt, S)
 
 
 if __name__ == "__main__":

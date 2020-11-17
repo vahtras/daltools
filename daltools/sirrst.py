@@ -88,11 +88,15 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("SIRIUS_RST")
+    parser.add_argument("--savetxt")
 
     args = parser.parse_args()
 
     rst = SiriusRestart(args.SIRIUS_RST)
     print(str(rst))
+
+    if args.savetxt:
+        numpy.savetxt(args.savetxt, rst.cmo.unblock())
 
 
 if __name__ == "__main__":  # pragma: no cover
