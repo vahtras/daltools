@@ -34,7 +34,7 @@ def cmo(F, S, filename="AOONEINT"):
     respect to eigenvalue
     """
     nbast = F.shape[0]
-    e, V = (F/S).eigvec()
+    e, V = F.eigvec(S)
     C = full.matrix((nbast, nbast))
     N2 = (V.T@S@V).diagonal()
     for i in range(nbast):
