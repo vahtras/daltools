@@ -78,11 +78,14 @@ def main():
     parser.add_argument("label", help="Property label")
     parser.add_argument("-t", "--tmpdir", help="Work directory")
     parser.add_argument("--packed", action="store_true", help="Work directory")
+    parser.add_argument("-o", "--savetxt", dest="savetxt")
     args = parser.parse_args()
 
     kwargs = {"tmpdir": args.tmpdir, "unpack": not args.packed}
     prop, = read(args.label, **kwargs)
     print(str(prop))
+    if args.savetxt:
+        np.savetxt(args.savetxt, prop)
 
 
 if __name__ == "__main__":  # pragma no cover
