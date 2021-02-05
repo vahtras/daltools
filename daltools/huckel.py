@@ -22,6 +22,6 @@ def get_mo(wrkdir):
     H_hu = S_hu@H[1, 1]@S_hu
 
     C_hu = dens.cmo(H_hu, S_hu)
-    C0 = S_ao_hu @ C_hu / S_ao
+    C0 = S_ao.solve(S_ao_hu @ C_hu)
     C0 = C0.GS(S_ao)  # Finalize with Gram-Schmidt
     return C0

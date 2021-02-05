@@ -33,7 +33,7 @@ class TestSirRst:
     def test_dens(self):
         occupied = self.ref_cmo[:, :1]
         numpy.testing.assert_almost_equal(
-            self.sirrst.get_rhf_density(), 2 * occupied * occupied.T
+            self.sirrst.get_rhf_density(), 2 * occupied @ occupied.T
         )
 
     def test_dens_from_occnum(self):
@@ -51,7 +51,7 @@ class TestSirRst:
             if nrhf > 0:
                 occ[:, :] = cmo[:, :nrhf]
         full_occupied = occupied.unblock()
-        full_density = 2 * full_occupied * full_occupied.T
+        full_density = 2 * full_occupied @ full_occupied.T
         numpy.testing.assert_almost_equal(sir.get_rhf_density(), full_density)
 
     def test_hf_S_symmetry(self):

@@ -62,24 +62,24 @@ def D2k(*args, **kwargs):
     # transform density over unique pairs
     cmo = ifc.cmo.unblock()
     kb = {
-        lw: cmo * rspvec_tomat(NB[lw], ifc, tmpdir=tmpdir).T * cmo.T
+        lw: cmo @ rspvec_tomat(NB[lw], ifc, tmpdir=tmpdir).T @ cmo.T
         for lw in bkeys
     }
     kc = {
-        lw: cmo * rspvec_tomat(NC[lw], ifc, tmpdir=tmpdir).T * cmo.T
+        lw: cmo @ rspvec_tomat(NC[lw], ifc, tmpdir=tmpdir).T @ cmo.T
         for lw in ckeys
     }
 
     kbc = {
-        lw: cmo * rspvec_tomat(NBC[lw], ifc, tmpdir=tmpdir).T * cmo.T
+        lw: cmo @ rspvec_tomat(NBC[lw], ifc, tmpdir=tmpdir).T @ cmo.T
         for lw in bckeys
     }
 
     S = one_read(filename=AOONEINT).unpack().unblock()
-    Sd = S * d
-    dkb = {lw: kb[lw] * Sd - Sd.T * kb[lw] for lw in bkeys}
-    dkc = {lw: kc[lw] * Sd - Sd.T * kc[lw] for lw in ckeys}
-    dkbc = {lw: kbc[lw] * Sd - Sd.T * kbc[lw] for lw in bckeys}
+    Sd = S @ d
+    dkb = {lw: kb[lw] @ Sd - Sd.T @ kb[lw] for lw in bkeys}
+    dkc = {lw: kc[lw] @ Sd - Sd.T @ kc[lw] for lw in ckeys}
+    dkbc = {lw: kbc[lw] @ Sd - Sd.T @ kbc[lw] for lw in bckeys}
 
     for lbc, wb, wc in bckeys:
         lb, lc = lbc[:8], lbc[8:]
@@ -90,7 +90,7 @@ def D2k(*args, **kwargs):
         _kc = kc[(lc, wc)]
 
         _da2bc = 0.5 * (
-            _kc * S * _dkb - _dkb * S * _kc + _kb * S * _dkc - _dkc * S * _kb
+            _kc @ S @ _dkb - _dkb @ S @ _kc + _kb @ S @ _dkc - _dkc @ S @ _kb
         )
 
         if "a2test" in kwargs:

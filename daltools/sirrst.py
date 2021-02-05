@@ -37,7 +37,7 @@ class SiriusRestart:
             self.basinfo.nbas, self.basinfo.nbas
         )
         for dens, occ, cmo in zip(densities, self.basinfo.nrhf, self.cmo):
-            dens += 2 * cmo[:, :occ] * cmo[:, :occ].T
+            dens += 2 * cmo[:, :occ] @ cmo[:, :occ].T
         return densities.unblock()
 
     def get_occ_density(self, occnum):

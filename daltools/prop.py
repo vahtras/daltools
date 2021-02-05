@@ -60,8 +60,8 @@ def grad(*args, **kwargs):
 
     G = (
         rspvec.tovec(
-            cmo.T * (S * Da * P.T - P.T * Da * S) * cmo
-            + cmo.T * (S * Db * P.T - P.T * Db * S) * cmo,
+            cmo.T @ (S @ Da @ P.T - P.T @ Da @ S) @ cmo
+            + cmo.T @ (S @ Db @ P.T - P.T @ Db @ S) @ cmo,
             ifc,
         )
         for P in propmat

@@ -109,7 +109,7 @@ def ifc(filename="SIRIFC", ifc_=None):
         if ifc_.nish[isym]:
             Ci = ifc_.cmo.subblock[isym]
             Cocci = Ci[:, : ifc_.nish[isym]]
-            Di.subblock[isym] = 2 * Cocci * Cocci.T
+            Di.subblock[isym] = 2 * Cocci @ Cocci.T
     Di = Di.unblock()
     if ifc_.nasht:
         cmoa = blocked.BlockDiagonalMatrix(ifc_.nbas, ifc_.nash)

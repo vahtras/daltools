@@ -6,4 +6,4 @@
 
 Daltools is a collection of utilities for extracting data from a
 [Dalton](https://daltonprogram.org) calculation. It is experimental in nature
-and was originally designed for prototyping and testing.
+and has been designed for prototyping and testing.
