@@ -119,7 +119,7 @@ def ifc(filename="SIRIFC", ifc_=None):
                 nocci = ifc_.nish[isym] + ifc_.nash[isym]
                 cmoa.subblock[isym] = ifc_.cmo.subblock[isym][:, nishi:nocci]
         cmoa = cmoa.unblock()
-        Dv = cmoa * ifc_.dv.unpack() * cmoa.T
+        Dv = cmoa @ ifc_.dv.unpack() @ cmoa.T
     else:
         Dv = full.matrix((ifc_.nbast, ifc_.nbast))
     return Di, Dv
