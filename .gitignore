@@ -12,3 +12,4 @@ cover
 htmlcov
 .tox
 .vscode
+conda-*
