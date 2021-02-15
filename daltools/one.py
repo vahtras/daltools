@@ -83,8 +83,8 @@ def readisordk(filename="AOONEINT"):
 
     aooneint = FortranBinary(filename)
     aooneint.find("ISORDK")
-    aooneint.next()
-    aooneint.next()
+    next(aooneint)
+    next(aooneint)
     sizeofi = struct.calcsize(INT)
     sizeofd = struct.calcsize(FLOAT)
     mxcent_ = (len(aooneint.data) - sizeofi) // (4 * sizeofd)
@@ -113,9 +113,9 @@ def readscfinp(filename="AOONEINT"):
     import collections
 
     scfinp_ = collections.OrderedDict()
-    aooneint.next()
+    next(aooneint)
     title = aooneint.data.decode()
-    aooneint.next()
+    next(aooneint)
     scfinp_["ttitle"] = title
     nsym = aooneint.readbuf(1, INT)[0]
     scfinp_["nsym"] = nsym

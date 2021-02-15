@@ -56,7 +56,7 @@ class SirIfc:
         self.istate, self.ispin, self.nactel, self.lsym = \
             self.file.readbuf(4, self.INT)
 
-        self.file.next()
+        next(self.file)
         self.nisht, self.nasht, self.nocct, self.norbt, self.nbast,\
             self.nconf,  self.nwopt, self.nwoph, self.ncdets,\
             self.ncmot, self.nnashx, self.nnashy, self.nnorbt,\
@@ -91,7 +91,7 @@ class SirIfc:
             with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
                 for _ in range(3):
-                    fb.next()
+                    next(fb)
                 ncmot4 = max(self.ncmot, 4)
                 dbl = fb.readbuf(ncmot4, self.FLOAT)
             n = 0
@@ -111,7 +111,7 @@ class SirIfc:
             with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
                 for _ in range(5):
-                    fb.next()
+                    next(fb)
                 # mmashx = max(self.nnashx, 4)
                 dbl = fb.readbuf(self.nnashx, self.FLOAT)
             self._dv = full.triangular.init(dbl)
@@ -124,7 +124,7 @@ class SirIfc:
             with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
                 for i in range(7):
-                    fb.next()
+                    next(fb)
                 m2ashy = max(self.nnashx ** 2, 4)
                 dbl = fb.readbuf(m2ashy, self.FLOAT)
             self._pv = full.matrix((self.nnashx, self.nnashx))
@@ -143,7 +143,7 @@ class SirIfc:
             with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
                 for i in range(6):
-                    fb.next()
+                    next(fb)
                 m2orbt = max(self.n2orbt, 4)
                 dbl = fb.readbuf(m2orbt, self.FLOAT)
             self._fock = blocked.BlockDiagonalMatrix(self.norb, self.norb)
@@ -163,7 +163,7 @@ class SirIfc:
             with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
                 for i in range(8):
-                    fb.next()
+                    next(fb)
                 mmorbt = max(self.nnorbt, 4)
                 dbl = fb.readbuf(mmorbt, self.FLOAT)
 
@@ -186,7 +186,7 @@ class SirIfc:
             with FortranBinary(self.name) as fb:
                 fb.find(self.ifclabel)
                 for i in range(9):
-                    fb.next()
+                    next(fb)
                 mmorbt = max(self.nnorbt, 4)
                 dbl = fb.readbuf(mmorbt, self.FLOAT)
             self._fv = blocked.triangular(self.norb)

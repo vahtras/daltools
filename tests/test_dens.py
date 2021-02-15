@@ -36,7 +36,7 @@ class TestDens:
         np.testing.assert_almost_equal(db, dbref)
 
     def test_c1d(self):
-        C = full.matrix((3, 2)).random()
+        C = full.init(np.random.random((3, 2)).T)
         np.testing.assert_allclose(
             dens.C1D(C, 1),
             [

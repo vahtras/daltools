@@ -54,7 +54,7 @@ class SiriusRestart:
         if self._cmo is None:
             with FortranBinary(self.name) as fb:
                 fb.find("NEWORB")
-                cmo_rec = fb.next()
+                cmo_rec = next(fb)
                 nbas = self.basinfo.nbas
                 norb = self.basinfo.norb
                 assert len(cmo_rec) // 8 == numpy.dot(nbas, norb)
@@ -75,7 +75,7 @@ class SiriusRestart:
         if self._ci is None:
             with FortranBinary(self.name) as fb:
                 fb.find("STARTVEC")
-                ci_record = fb.next()
+                ci_record = next(fb)
                 self._ci = numpy.array(
                     ci_record.read(len(ci_record) // 8, "d")
                 )
