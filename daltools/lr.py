@@ -66,7 +66,7 @@ def Dk(*args, **kwargs):
     on RSPVEC for B, as d S kb - kb S d"""
     freqs = kwargs.get("freqs", (0.0,))
     ifc = kwargs.get("ifc", None)
-    tmpdir = kwargs.get("tmpdir", "/tmp")
+    tmpdir = pathlib.Path(kwargs.get("tmpdir", "/tmp"))
     absorption = kwargs.get("absorption", False)
     #
     # Read interface data from SIRIFC if not provided
