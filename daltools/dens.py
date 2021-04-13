@@ -8,6 +8,7 @@ import numpy as np
 from util import full, blocked
 
 from . import one, sirifc
+from .linalg import GramSchmidt
 
 
 def h1diag(nisht, nasht, filename="AOONEINT"):
@@ -46,7 +47,8 @@ def cmo(F, S, filename="AOONEINT"):
     # Finish off with Gram Schmidt because degenerate orbitals are not
     # properly orthonormalized
     #
-    C = C.GS(S)
+    GS = GramSchmidt(S)
+    C = GS.normalize(C)
     #
     #
     return C
