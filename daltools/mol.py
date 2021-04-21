@@ -172,7 +172,7 @@ def occupied_per_atom(molecule):
                 if _l == 0:
                     nocclist[a].append(offset)
                     nocclist[a].append(offset+1)
-            elif Z <= 8:
+            elif Z <= 10:
                 if _l == 0:
                     nocclist[a].append(offset)
                     nocclist[a].append(offset+1)

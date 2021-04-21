@@ -15,7 +15,6 @@ class TestMol:
         self.bas = mol.readin(dalton_bas)
         self.maxDiff = None
 
-
     def test_pass(self):
         with raises(NotImplementedError):
             mol.occupied_per_atom(self.bas)
