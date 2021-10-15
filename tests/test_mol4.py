@@ -26,11 +26,11 @@ class TestMol:
             == approx(2.2852428069)
 
     def test_num(self):
-        assert mol.nuc(self.bas) == approx(62.46624333537319)
+        assert mol.nuc(self.bas) == approx(56.16649212051651)
 
     def test_opa(self):
         assert mol.occupied_per_atom(self.bas) == \
-            [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5, 6, 7, 8], [0, 1]]
+            [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5, 6, 7, 8], [0]]
 
     def test_cpa(self):
         assert mol.contracted_per_atom(self.bas) == [5, 9, 1]
@@ -53,7 +53,7 @@ p-functions
     2.9412494 [0.15591627]
     0.6834831 [0.60768372]
     0.2222899 [0.39195739]
-Atom type 2 charge 18.000000
+Atom type 2 charge 16.000000
 center 1 [0.0, 0.0627329390583, 0.7398832489011]
 s-functions
     674.4463 [0.154329, 0.0, 0.0]

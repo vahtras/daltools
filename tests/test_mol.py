@@ -1,9 +1,28 @@
 import unittest.mock as mock
 
+import numpy as np
+from pytest import approx, mark
+
 from daltools import mol
-from pytest import approx
 
 from . import tmpdir
+
+
+def _test_data(label, charge, prim, cont):
+    return {
+        'charge': charge,
+        'label': [label],
+        'center': [[0, 0, 0]],
+        'basis': [
+            [
+                {
+                    'prim': np.random.random(p).tolist(),
+                    'cont': np.random.random((p, c)).tolist(),
+                }
+            ]
+            for p, c in zip(prim, cont)
+        ],
+    }
 
 
 class TestMol:
@@ -31,6 +50,48 @@ class TestMol:
     def test_opa(self):
         assert mol.occupied_per_atom(self.bas) == \
             [[0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0], [0]]
+
+    @mark.parametrize(
+        'molecule, expected',
+        [
+            ([_test_data('H', 1, [1], [1])], [[0]]),
+            ([_test_data('He', 2, [2], [2])], [[0]]),
+            ([_test_data('Li', 3, [2], [2])], [[0, 1]]),
+            ([_test_data('B', 4, [2, 1], [2, 1])], [[0, 1]]),
+            ([_test_data('C', 6, [3, 2], [3, 2])], [[0, 1, 3, 4, 5]]),
+            (
+                [_test_data('Na', 11, [8, 4, 2, 1], [4, 3, 2, 1])],
+                [[0, 1, 2, 4, 5, 6]]
+            ),
+            (
+                [_test_data('Cl', 17, [8, 4, 2, 1], [4, 3, 2, 1])],
+                [[0, 1, 2, 4, 5, 6, 7, 8, 9]]
+            ),
+            (
+                [_test_data('Ca', 20, [8, 4, 2, 1], [4, 3, 2, 1])],
+                [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]]
+            ),
+            (
+                [_test_data('Mn', 25, [12, 10, 8, 4], [5, 4, 3, 2])],
+                [[
+                    0, 1, 2, 3,
+                    5, 6, 7, 8, 9, 10,
+                    17, 18, 19, 20, 21
+                ]]
+            ),
+            (
+                [_test_data('Br', 35, [12, 10, 8, 4], [5, 4, 3, 2])],
+                [[
+                    0, 1, 2, 3,
+                    5, 6, 7, 8, 9, 10, 11, 12, 13,
+                    17, 18, 19, 20, 21
+                ]]
+            ),
+        ],
+        ids=['H', 'He', 'Li', 'B', 'C', 'Na', 'Cl', 'Ca', 'Mn', 'Br']
+    )
+    def test_atomic_opas(self, molecule, expected):
+        assert mol.occupied_per_atom(molecule) == expected
 
     def test_cpa(self):
         assert mol.contracted_per_atom(self.bas) == [5, 5, 1, 1]

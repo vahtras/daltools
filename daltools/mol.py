@@ -165,33 +165,46 @@ def occupied_per_atom(molecule):
         Z = int(atom["charge"]+0.5)
         nocclist.append([])
         for _l in range(len(cpal[a])):
-            if Z <= 1:
+            if Z <= 2:  # H-He 1s
                 if _l == 0:
                     nocclist[a].append(offset)
-            elif Z <= 2:
+            elif Z <= 4:  # Li-Be 1s2s
                 if _l == 0:
-                    nocclist[a].append(offset)
-                    nocclist[a].append(offset+1)
-            elif Z <= 10:
+                    nocclist[a].extend(range(offset, offset+2))
+            elif Z <= 10:  # B-Ne 1s2s2p
                 if _l == 0:
-                    nocclist[a].append(offset)
-                    nocclist[a].append(offset+1)
+                    nocclist[a].extend(range(offset, offset+2))
                 elif _l == 1:
-                    nocclist[a].append(offset)
-                    nocclist[a].append(offset+1)
-                    nocclist[a].append(offset+2)
-            elif Z <= 18:
-                if _l == 0:
-                    nocclist[a].append(offset)
-                    nocclist[a].append(offset+1)
-                    nocclist[a].append(offset+2)
+                    nocclist[a].extend(range(offset, offset+3))
+            elif Z <= 12:  # Na-Mg 1s2s2p3s
+                if _l == 0: 
+                    nocclist[a].extend(range(offset, offset+3))
                 elif _l == 1:
-                    nocclist[a].append(offset)
-                    nocclist[a].append(offset+1)
-                    nocclist[a].append(offset+2)
-                    nocclist[a].append(offset+3)
-                    nocclist[a].append(offset+4)
-                    nocclist[a].append(offset+5)
+                    nocclist[a].extend(range(offset, offset+3))
+            elif Z <= 18:  # Al-Ar 1s2s2p3s3p
+                if _l == 0:
+                    nocclist[a].extend(range(offset, offset+3))
+                elif _l == 1:
+                    nocclist[a].extend(range(offset, offset+6))
+            elif Z <= 20:  # K-Ca 1s2s2p3s3p4s
+                if _l == 0:
+                    nocclist[a].extend(range(offset, offset+4))
+                elif _l == 1:
+                    nocclist[a].extend(range(offset, offset+6))
+            elif Z <= 30:  # Sc-Zn 1s2s2p3s3p3d4s
+                if _l == 0:
+                    nocclist[a].extend(range(offset, offset+4))
+                elif _l == 1:
+                    nocclist[a].extend(range(offset, offset+6))
+                elif _l == 2:
+                    nocclist[a].extend(range(offset, offset+5))
+            elif Z <= 36:  # Ga-Kr 1s2s2p3s3p3d4s4p
+                if _l == 0:
+                    nocclist[a].extend(range(offset, offset+4))
+                elif _l == 1:
+                    nocclist[a].extend(range(offset, offset+9))
+                elif _l == 2:
+                    nocclist[a].extend(range(offset, offset+5))
             else:
                 raise NotImplementedError
             offset += cpal[a][_l]

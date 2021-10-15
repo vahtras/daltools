@@ -16,5 +16,8 @@ class TestMol:
         self.maxDiff = None
 
     def test_pass(self):
+        """
+        Contains atom Z=37, which is not implemented
+        """
         with raises(NotImplementedError):
             mol.occupied_per_atom(self.bas)
