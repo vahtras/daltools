@@ -12,7 +12,7 @@ def readhead(filename="AOONEINT"):
     """Read data in header of AOONEINT"""
     aooneint = FortranBinary(filename)
     rec = next(aooneint)
-    if len(aooneint.data) == 144:
+    if len(aooneint.data) in (144, 400):
         #
         # Newer versions: title in own record
         #
