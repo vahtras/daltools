@@ -27,7 +27,7 @@ def D2k(*args, **kwargs):
     bclabs = args
 
     bcfreqs = kwargs.get("bcfreqs", ((0.0, 0.0),))
-    shg = kwargs.get("shg", True)
+    shg = kwargs.get("shg", False)
     if shg:
         bcfreqs = tuple([(x, x) for x in kwargs.get("freqs")])
 
