@@ -9,7 +9,7 @@ from . import tmpdir
 
 class TestSirIfc:
 
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
         self.cls = sirifc.sirifc
         self.maxDiff = None

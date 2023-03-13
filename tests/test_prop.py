@@ -11,7 +11,7 @@ from . import tmpdir
 
 class TestProp:
 
-    def setup(self):
+    def setup_method(self):
         self.maxDiff = None
         self.tmpdir = tmpdir(__file__)
         self.propfile = self.tmpdir/"AOPROPER"

@@ -7,7 +7,7 @@ from . import tmpdir
 
 class TestSirRst:
 
-    def setup(self):
+    def setup_method(self):
         self.suppdir = tmpdir(__file__)
         self.daltgz = self.suppdir/"mc_h2.tar.gz"
         self.sirrst = SiriusRestart(tgz=self.daltgz)

@@ -10,7 +10,7 @@ from . import tmpdir
 
 
 class TestOne:
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
         self.aooneint = self.tmpdir/"AOONEINT"
         self.aoproper = self.tmpdir/"AOPROPER"

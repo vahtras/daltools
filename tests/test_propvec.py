@@ -9,7 +9,7 @@ from . import tmpdir
 
 class TestPropVec:
 
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
 
     def test_X1(self):

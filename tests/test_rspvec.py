@@ -7,7 +7,7 @@ from . import tmpdir
 
 class TestRspVec:
 
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
         self.RSPVEC = self.tmpdir/"RSPVEC"
         self.SIRIFC = self.tmpdir/"SIRIFC"

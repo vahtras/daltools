@@ -9,7 +9,7 @@ from . import tmpdir
 
 class TestHuckel:
 
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
 
     def test_huckelmat(self):

@@ -8,7 +8,7 @@ from . import tmpdir
 
 
 class TestALR:
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
 
     def test_first_xvec(self):

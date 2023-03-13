@@ -10,7 +10,7 @@ from . import tmpdir
 
 class TestMol:
 
-    def setup(self):
+    def setup_method(self):
         dalton_bas = tmpdir(__file__)/"DALTON.BAS"
         self.bas = mol.readin(dalton_bas)
         self.maxDiff = None

@@ -14,7 +14,7 @@ from . import tmpdir
 class TestBasInfo:
     """Test class for BASINFO data"""
 
-    def setup(self):
+    def setup_method(self):
         suppdir = tmpdir(__file__)
         self.bas_info = BasInfo(suppdir/"SIRIUS.RST")
 

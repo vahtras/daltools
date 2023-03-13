@@ -8,7 +8,7 @@ from . import tmpdir
 
 class TestDens:
 
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
         self.sirifc = self.tmpdir/"SIRIFC"
         np.random.seed(0)

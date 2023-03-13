@@ -27,7 +27,7 @@ def _test_data(label, charge, prim, cont):
 
 class TestMol:
 
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
         dalton_bas = self.tmpdir/"DALTON.BAS"
         self.bas = mol.readin(dalton_bas)

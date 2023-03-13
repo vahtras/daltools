@@ -9,7 +9,7 @@ from . import tmpdir
 
 class TestSirRst:
 
-    def setup(self):
+    def setup_method(self):
         self.suppdir = tmpdir(__file__)
         self.sirrst = SiriusRestart(self.suppdir/"SIRIUS.RST")
         self.daltgz = self.suppdir/"dalton.tar.gz"

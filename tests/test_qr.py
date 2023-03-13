@@ -8,7 +8,7 @@ from . import tmpdir
 
 
 class TestQR:
-    def setup(self):
+    def setup_method(self):
         self.tmpdir = tmpdir(__file__)
 
     def assert_(self, this, ref, **kwargs):
