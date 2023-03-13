@@ -27,6 +27,10 @@ def D2k(*args, **kwargs):
     bclabs = args
 
     bcfreqs = kwargs.get("bcfreqs", ((0.0, 0.0),))
+    shg = kwargs.get("shg", False)
+    if shg:
+        bcfreqs = tuple([(x, x) for x in kwargs.get("freqs")])
+
     tmpdir = Path(kwargs.get("tmpdir", "/tmp"))
     ifc = kwargs.get("ifc", None)
 
@@ -54,7 +58,10 @@ def D2k(*args, **kwargs):
     clabs = {bclab[8:] for bclab in bclabs}
     bkeys = [(_l, w) for _l in blabs for w in bfreqs]
     ckeys = [(_l, w) for _l in clabs for w in cfreqs]
-    bckeys = [(_l, wb, wc) for _l in bclabs for wb in bfreqs for wc in cfreqs]
+    if shg:
+        bckeys = [(_l, wb, wb) for _l in bclabs for wb in bfreqs]
+    else:
+        bckeys = [(_l, wb, wc) for _l in bclabs for wb in bfreqs for wc in cfreqs]
 
     NB = rspvec_read(*blabs, freqs=bfreqs, propfile=RSPVEC)
     NC = rspvec_read(*clabs, freqs=cfreqs, propfile=RSPVEC)

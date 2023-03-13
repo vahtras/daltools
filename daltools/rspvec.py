@@ -25,6 +25,7 @@ def read(*args, **kwargs):
         # non-linear response/two frequencies
         bfreqs = kwargs.get("bfreqs", (0.0,))
     cfreqs = kwargs.get("cfreqs", (0.0,))
+    shg = kwargs.get("shg", False)
     propfile = kwargs.get("propfile", "RSPVEC")
     lr_vecs = kwargs.get("lr_vecs", False)
 
@@ -59,6 +60,8 @@ def read(*args, **kwargs):
     for _l in args:
         for b in bfreqs:
             for c in cfreqs:
+                if shg and (b != c):
+                    continue
                 if (_l, b, c) not in vecs:
                     raise RspVecError(
                         "Response vector N(%s,%g,%g) not found on file %s"
