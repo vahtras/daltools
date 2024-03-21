@@ -13,3 +13,4 @@ htmlcov
 .tox
 .vscode
 conda-*
+.python-version
