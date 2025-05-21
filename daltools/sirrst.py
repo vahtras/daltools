@@ -14,7 +14,7 @@ class SiriusRestart:
         self.name = name
         if tgz is not None:
             tmp = Path(tempfile.mkdtemp())
-            tarfile.open(tgz, "r:gz").extractall(path=tmp)
+            tarfile.open(tgz, "r:gz").extractall(path=tmp, filter='fully_trusted')
             self.name = tmp/"SIRIUS.RST"
         self.basinfo = BasInfo(self.name)
         self._cmo = None
