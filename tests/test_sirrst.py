@@ -42,7 +42,7 @@ class TestSirRst:
         cmo1 = self.ref_cmo[:, 1]
         dref = 2 * numpy.outer(cmo0, cmo0) + numpy.outer(cmo1, cmo1)
         # assert False
-        npt.assert_allclose(self.sirrst.get_occ_density(occnum), dref)
+        npt.assert_allclose(numpy.array(self.sirrst.get_occ_density(occnum)), dref)
 
     def test_dens_symmetry(self):
         sir = SiriusRestart(self.suppdir/"hf_S.SIRIUS.RST")

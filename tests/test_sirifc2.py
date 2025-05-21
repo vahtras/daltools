@@ -61,7 +61,7 @@ class TestSirIfc:
     def test_pv(self):
         pv = self.ifc.pv
         np.testing.assert_allclose(
-            pv.diagonal(), [1.87279201, -0.24404616, 0.12720799], rtol=1e-7
+            np.array(pv.diagonal()), [1.87279201, -0.24404616, 0.12720799], rtol=1e-7
         )
 
     def test_str(self):

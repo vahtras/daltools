@@ -233,7 +233,7 @@ class TestSirIfc:
             ],
         ]
 
-        np.testing.assert_allclose(self.ifc.cmo[0], ref_cmo, atol=1e-7)
+        np.testing.assert_allclose(np.array(self.ifc.cmo[0]), ref_cmo, atol=1e-7)
 
     def test_pv(self):
         pv = self.ifc.pv
@@ -257,7 +257,6 @@ class TestSirIfc:
                 0.00000000,
             ]
         )
-        print(fock)
         np.testing.assert_allclose(fock, _ref, atol=1e-8)
 
     def test_fc(self):

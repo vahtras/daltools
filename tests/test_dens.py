@@ -36,7 +36,7 @@ class TestDens:
         np.testing.assert_almost_equal(db, dbref)
 
     def test_c1d(self):
-        C = full.init(np.random.random((3, 2)).T)
+        C = np.random.random((3, 2))
         np.testing.assert_allclose(
             dens.C1D(C, 1),
             [
@@ -50,7 +50,7 @@ class TestDens:
     def test_ifc(self):
         di, dv = dens.ifc(filename=self.sirifc)
         np.testing.assert_allclose(
-            di + dv,
+            np.array(di + dv),
             [
                 [
                     2.07191150,

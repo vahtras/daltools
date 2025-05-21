@@ -52,7 +52,7 @@ def read(*args, **kwargs):
                     kzyvar = len(_rec) // 8
                     buffer_ = rspvec.readbuf(kzyvar, "d")
                     vecs[(lab, bfreq, cfreq)] = \
-                        np.array(buffer_).view(full.matrix)
+                        np.array(buffer_)# .view(full.matrix)
                     vecs[(lab1, bfreq, bfreq)] = vecs[(lab, bfreq, cfreq)]
                     vecs[(lab2, cfreq, bfreq)] = vecs[(lab, bfreq, cfreq)]
 
