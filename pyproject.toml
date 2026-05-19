@@ -1,3 +1,23 @@
+[project]
+name = "daltools"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Olav Vahtras", email = "vahtras@kth.se" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "blocked-matrix-utils>=1.0.9",
+    "fortran-binary>=1.0.8",
+    "numpy>=2.4.2",
+]
+
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.9.25,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]
