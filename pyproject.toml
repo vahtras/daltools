@@ -11,6 +11,7 @@ dependencies = [
     "blocked-matrix-utils>=1.0.9",
     "fortran-binary>=1.0.8",
     "numpy>=2.4.2",
+    "pytest>=9.0.3",
 ]
 
 [build-system]
