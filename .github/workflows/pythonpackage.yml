@@ -18,6 +18,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
         uv sync
     - name: Lint with flake8
       run: |
