@@ -1,4 +1,3 @@
-import os
 import unittest
 
 import numpy as np
@@ -38,12 +37,12 @@ class TestOne:
     # @unittest.skip('Wrong format here')
     def test_isordk_cooo(self):
         isordk = one.readisordk(self.aooneint)
-        C = [0.0000000000, 0.0000000000, -0.8802560791]
-        O = [0.0000000000, 0.0000000000, 1.0094700459]
+        _C = [0.0000000000, 0.0000000000, -0.8802560791]
+        _O = [0.0000000000, 0.0000000000, 1.0094700459]
         H1 = [0.0000000000, 1.8897261250, -2.7699822041]
         H2 = [0.0000000000, -1.8897261250, -2.7699822041]
-        np.testing.assert_almost_equal(isordk["cooo"][0::500], C)
-        np.testing.assert_almost_equal(isordk["cooo"][1::500], O)
+        np.testing.assert_almost_equal(isordk["cooo"][0::500], _C)
+        np.testing.assert_almost_equal(isordk["cooo"][1::500], _O)
         np.testing.assert_almost_equal(isordk["cooo"][2::500], H1)
         np.testing.assert_almost_equal(isordk["cooo"][3::500], H2)
 

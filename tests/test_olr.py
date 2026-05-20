@@ -1,5 +1,4 @@
-import numpy as np
-from pytest import approx, raises
+from pytest import approx
 
 from daltools.lr import LR
 from . import tmpdir

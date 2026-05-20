@@ -22,9 +22,9 @@ class Lowdin(Normalizer):
 
     def transformer(self, vectors):
         overlap = vectors.T @ self.overlap @ vectors
-        l, T = np.linalg.eigh(overlap)
-        mask = l > self.threshold
-        inverse_sqrt = T[:, mask] * np.sqrt(1 / l[mask]) @ T[:, mask].T
+        λ, T = np.linalg.eigh(overlap)
+        mask = λ > self.threshold
+        inverse_sqrt = T[:, mask] * np.sqrt(1 / λ[mask]) @ T[:, mask].T
         return inverse_sqrt
 
 

@@ -209,7 +209,7 @@ def main():
         head = readhead(args.aooneint)
         print("Header on AOONEINT")
         for k in head:
-            if type(head[k]) is float:
+            if isinstance(head[k], float):
                 print("%s %10.5f" % (k, head[k]))
             else:
                 print("%s %s" % (k, head[k]))
@@ -227,7 +227,7 @@ def main():
     if args.scfinp:
         scfinp = readscfinp(args.aooneint)
         for k in scfinp:
-            if type(scfinp[k]) is float and k != "dummy":
+            if isinstance(scfinp[k], float) and k != "dummy":
                 print("%s%10.6f" % (k, scfinp[k]))
             else:
                 print(k + " " + str(scfinp[k]))

@@ -2,7 +2,6 @@ import numpy as np
 from pytest import approx, raises
 
 from daltools import sirifc
-from util import full
 
 from . import tmpdir
 

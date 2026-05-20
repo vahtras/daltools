@@ -1,4 +1,3 @@
-import unittest
 import unittest.mock as mock
 import sys
 
@@ -39,12 +38,12 @@ class TestOne:
 
     def test_isordk_cooo(self):
         isordk = one.readisordk(self.aooneint)
-        C = [-3.0015786160, -1.4563174382, 0.0550080378]
-        O = [-3.1314330364, 0.8240509816, -0.0184248297]
+        _C = [-3.0015786160, -1.4563174382, 0.0550080378]
+        _O = [-3.1314330364, 0.8240509816, -0.0184248297]
         H1 = [-1.1728925345, -2.4468589606, 0.1025195320]
         H2 = [-4.7395143797, -2.6116033945, 0.0761219478]
-        np.testing.assert_almost_equal(isordk["cooo"][0::120], C)
-        np.testing.assert_almost_equal(isordk["cooo"][1::120], O)
+        np.testing.assert_almost_equal(isordk["cooo"][0::120], _C)
+        np.testing.assert_almost_equal(isordk["cooo"][1::120], _O)
         np.testing.assert_almost_equal(isordk["cooo"][2::120], H1)
         np.testing.assert_almost_equal(isordk["cooo"][3::120], H2)
 
@@ -177,27 +176,29 @@ float_fmt d"""
 
     def test_main_isordk(self):
         sys.argv[1:] = [str(self.aooneint), "--isordk"]
-        ref_output = """\
-nucdep=4 mxcent=120
 
- (4,) 
-              Column   1
-       1      6.00000000
-       2      8.00000000
-       3      1.00000000
-       4      1.00000000
+        """
+        nucdep=4 mxcent=120
+
+         (4,) 
+                      Column   1
+               1      6.00000000
+               2      8.00000000
+               3      1.00000000
+               4      1.00000000
 
 
- (3, 4) 
-              Column   1    Column   2    Column   3    Column   4
-       1     -3.00157862   -3.13143304   -1.17289253   -4.73951438
-       2     -1.45631744    0.82405098   -2.44685896   -2.61160339
-       3      0.05500804   -0.01842483    0.10251953    0.07612195"""
+         (3, 4) 
+                      Column   1    Column   2    Column   3    Column   4
+               1     -3.00157862   -3.13143304   -1.17289253   -4.73951438
+               2     -1.45631744    0.82405098   -2.44685896   -2.61160339
+               3      0.05500804   -0.01842483    0.10251953    0.07612195
+       """
 
         with mock.patch("daltools.one.print") as mock_print:
             one.main()
-        calls = [mock.call(s) for s in ref_output.split("\n")]
-        mock_print.assert_has_calls([])
+        calls = [mock.call('nucdep=4 mxcent=120')]
+        mock_print.assert_has_calls(calls)
 
     def test_main_scfinp(self):
         sys.argv[1:] = [str(self.aooneint), "--scfinp"]
@@ -316,4 +317,4 @@ OVERLAP
                 return self.reclen
 
         with raises(RuntimeError):
-            i = one._get_integer_format(Dummy())
+            one._get_integer_format(Dummy())

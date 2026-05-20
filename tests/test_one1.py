@@ -1,4 +1,3 @@
-import unittest
 import unittest.mock as mock
 import sys
 
@@ -86,28 +85,28 @@ float_fmt d\
 
     def test_main_isordk(self):
         sys.argv[1:] = [str(self.aooneint), "--isordk"]
-        ref_output = """\
-nucdep=3 mxcent=500
 
- (3,)
-              Column   1
-       1      8.00000000
-       2      1.00000000
-       3      1.00000000
+        """
+        nucdep=3 mxcent=500
+
+         (3,)
+                      Column   1
+               1      8.00000000
+               2      1.00000000
+               3      1.00000000
 
 
- (3, 3)
-              Column   1    Column   2    Column   3
-       2      0.00000000    1.40000000   -1.40000000
-       3      0.00000000    1.10000000    1.10000000
-"""
-
+         (3, 3)
+                      Column   1    Column   2    Column   3
+               2      0.00000000    1.40000000   -1.40000000
+               3      0.00000000    1.10000000    1.10000000
+        """
 
 
         with mock.patch("daltools.one.print") as mock_print:
             one.main()
-        calls = [mock.call(s) for s in ref_output.split("\n")]
-        mock_print.assert_has_calls([])
+        calls = [mock.call('nucdep=3 mxcent=500')]
+        mock_print.assert_has_calls(calls)
 
     def test_main_scfinp(self):
         sys.argv[1:] = [str(self.aooneint), "--scfinp"]
@@ -311,4 +310,4 @@ OVERLAP
                 return self.reclen
 
         with raises(RuntimeError):
-            i = one._get_integer_format(Dummy())
+            one._get_integer_format(Dummy())
