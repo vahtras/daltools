@@ -1,6 +1,7 @@
 import numpy
-from daltools.sirrst import SiriusRestart
+
 from daltools.sirifc import sirifc
+from daltools.sirrst import SiriusRestart
 
 from . import tmpdir
 
@@ -27,13 +28,13 @@ class TestSirRst:
         )
 
     def test_dets1(self):
-        assert list(self.sirifc.xindx())[0] == ((0,), (0,))
+        assert next(iter(self.sirifc.xindx())) == ((0,), (0,))
 
     def test_dets2(self):
         assert list(self.sirifc.xindx())[3] == ((1,), (1,))
 
     def test_dets3(self):
-        assert list(self.sirifc3.xindx())[0] == ((0, 1), ())
+        assert next(iter(self.sirifc3.xindx())) == ((0, 1), ())
 
     def test_dets4(self):
         assert self.xindx4 == \

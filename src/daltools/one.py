@@ -3,39 +3,39 @@
 Module for reading data from Dalton one-electron integral file AOONEINT
 """
 import struct
+
 import numpy as np
-from util import full, blocked
 from fortran_binary import FortranBinary
+from util import blocked, full
 
 
 def readhead(filename="AOONEINT"):
-    """Read data in header of AOONEINT"""
+    """Read old unlabelled or new MLCLINFO-labelled AOONEINT headers."""
     aooneint = FortranBinary(filename)
-    rec = next(aooneint)
-    if len(aooneint.data) in (144, 400):
-        #
-        # Newer versions: title in own record
-        #
+    try:
+        next(aooneint)
+        # Since September 2026, MLCLINFO precedes the title record.
+        labeled = (
+            len(aooneint.data) == 32
+            and aooneint.data[:8] == b"********"
+            and aooneint.data[24:] == b"MLCLINFO"
+        )
+        if labeled:
+            next(aooneint)
+        if len(aooneint.data) not in (144, 400):
+            raise RuntimeError("Unknown title format in AOONEINT")
         title = aooneint.data.decode()
-        #
-        # Next record contains MAXREP...
-        #
         rec = next(aooneint)
-    else:
-        #
-        # Older versions: not supported
-        #
-        raise RuntimeError
-    #
-    # Buffer should now contains MAXREP data
-    #
 
-    FLOAT = "d"
-    INT = _get_integer_format(rec)
+        FLOAT = "d"
+        INT = _get_integer_format(rec, labeled=labeled)
 
-    nsym = rec.read(1, INT)[0]
-    naos = rec.read(nsym, INT)
-    potnuc = rec.read(1, FLOAT)[0]
+        nsym = rec.read(1, INT)[0]
+        # New headers always store all eight irreps before POTNUC.
+        naos = rec.read(8 if labeled else nsym, INT)[:nsym]
+        potnuc = rec.read(1, FLOAT)[0]
+    finally:
+        aooneint.close()
     import collections
 
     unlabeled = collections.OrderedDict(
@@ -48,12 +48,17 @@ def readhead(filename="AOONEINT"):
             ("float_fmt", FLOAT),
         ]
     )
-    aooneint.close()
     return unlabeled
 
 
-def _get_integer_format(header_record):
-    """Determine integer format from first record of AOONEINT"""
+def _get_integer_format(header_record, labeled=False):
+    """Determine integer width from the old or new molecular info record."""
+    if labeled:
+        # WRITE (LUONEL) MAXREP+1, NAOS(1:8), POTNUC
+        for intsize, integer_format in ((4, "i"), (8, "q")):
+            if len(header_record) == 9 * intsize + 8:
+                return integer_format
+        raise RuntimeError("Unknown binary format in AOONEINT")
     # from herrdn.F:
     #  WRITE (LUONEL) MAXREP+1,(NAOS(I),I=1,MAXREP+1), POTNUC,
     # &              (0.D0,I=1,2) ! so record is minimum 32 bytes
@@ -75,41 +80,59 @@ def _get_integer_format(header_record):
 
 
 def readisordk(filename="AOONEINT"):
-    """Read data under label ISORDK in AOONEINT"""
+    """Read ISORDK, returning coordinates grouped by x, y, z in both formats.
+
+    Old files retain their MXCENT padding; new files contain NUCDEP centres.
+    """
 
     header = readhead(filename)
     INT = header["int_fmt"]
     FLOAT = header["float_fmt"]
 
     aooneint = FortranBinary(filename)
-    aooneint.find("ISORDK")
-    next(aooneint)
-    next(aooneint)
-    sizeofi = struct.calcsize(INT)
-    sizeofd = struct.calcsize(FLOAT)
-    mxcent_ = (len(aooneint.data) - sizeofi) // (4 * sizeofd)
-    chrn_ = aooneint.readbuf(mxcent_, FLOAT)
-    nucdep = aooneint.readbuf(1, INT)[0]
-    cooo_ = aooneint.readbuf(3 * mxcent_, FLOAT)
+    try:
+        aooneint.find("ISORDK")
+        rec = next(aooneint)
+        if len(rec) == 32:
+            # Old layout: four dummy reals, then padded charges/count/coords.
+            rec = next(aooneint)
+            sizeofi = struct.calcsize(INT)
+            sizeofd = struct.calcsize(FLOAT)
+            mxcent_ = (len(rec) - sizeofi) // (4 * sizeofd)
+            chrn_ = rec.read(mxcent_, FLOAT)
+            nucdep = rec.read(1, INT)[0]
+            cooo_ = rec.read(3 * mxcent_, FLOAT)
+        else:
+            # New layout: count, charges, then x/y/z for each centre.
+            nucdep = rec.read(1, INT)[0]
+            chrn_ = rec.read(nucdep, FLOAT)
+            coords = rec.read(3 * nucdep, FLOAT)
+            cooo_ = tuple(c for axis in range(3) for c in coords[axis::3])
+    finally:
+        aooneint.close()
     isordk_ = {
         # "table":table1,
         "chrn": chrn_,
         "nucdep": nucdep,
         "cooo": cooo_,
     }
-    aooneint.close()
     return isordk_
 
 
 def readscfinp(filename="AOONEINT"):
-    """Read data under labl SCFINP in AOONEINT"""
+    """Read SCFINP, which newer Dalton versions omit by default."""
 
     header = readhead(filename)
     INT = header["int_fmt"]
     FLOAT = header["float_fmt"]
 
     aooneint = FortranBinary(filename)
-    aooneint.find("SCFINP")
+    if aooneint.find("SCFINP") is None:
+        aooneint.close()
+        raise RuntimeError(
+            "SCFINP section is not present in AOONEINT "
+            "(omitted by default in newer Dalton versions)"
+        )
     import collections
 
     scfinp_ = collections.OrderedDict()
@@ -210,9 +233,9 @@ def main():
         print("Header on AOONEINT")
         for k in head:
             if isinstance(head[k], float):
-                print("%s %10.5f" % (k, head[k]))
+                print(f"{k} {head[k]:10.5f}")
             else:
-                print("%s %s" % (k, head[k]))
+                print(f"{k} {head[k]}")
 
     if args.isordk:
         isordk = readisordk(args.aooneint)
@@ -220,7 +243,7 @@ def main():
         chrn = isordk["chrn"]
         cooo = isordk["cooo"]
         mxcent = len(chrn)
-        print("nucdep=%i" % n + " mxcent=%i" % mxcent)
+        print(f"nucdep={n:d} mxcent={mxcent:d}")
         print(full.init(chrn)[:n])
         print(full.init(cooo).reshape((3, mxcent))[:, :n])
 
@@ -228,7 +251,7 @@ def main():
         scfinp = readscfinp(args.aooneint)
         for k in scfinp:
             if isinstance(scfinp[k], float) and k != "dummy":
-                print("%s%10.6f" % (k, scfinp[k]))
+                print(f"{k}{scfinp[k]:10.6f}")
             else:
                 print(k + " " + str(scfinp[k]))
 
@@ -240,7 +263,7 @@ def main():
         else:
             S = s1
         if args.verbose:
-            print("%s %s" % (args.label, str(S)))
+            print(f"{args.label} {S!s}")
         if args.savetxt:
             np.savetxt(args.savetxt, S)
 

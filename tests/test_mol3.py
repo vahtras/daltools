@@ -1,8 +1,9 @@
-import unittest.mock as mock
+from unittest import mock
 
 from pytest import approx
 
 from daltools import mol
+
 from . import tmpdir
 
 
@@ -33,7 +34,7 @@ class TestMol:
             [[0, 1, 7, 8, 9], [0, 1, 2, 3, 4], [0], [0]]
 
     def test_cpa(self):
-        assert mol.contracted_per_atom(self.bas), [33, 5, 1 == 1]
+        assert mol.contracted_per_atom(self.bas) == [33, 5, 1, 1]
 
     def test_cpal(self):
         assert mol.contracted_per_atom_l(self.bas), [[7, 9, 10, 7], [2, 3], [1], [1]]

@@ -6,8 +6,8 @@ Module for reading response vector data from RSPVEC
 import sys
 
 import numpy as np
-from util import full
 from fortran_binary import FortranBinary
+from util import full
 
 THRESHOLD = 1e-5
 
@@ -64,8 +64,7 @@ def read(*args, **kwargs):
                     continue
                 if (_l, b, c) not in vecs:
                     raise RspVecError(
-                        "Response vector N(%s,%g,%g) not found on file %s"
-                        % (_l, b, c, propfile)
+                        f"Response vector N({_l},{b:g},{c:g}) not found on file {propfile}"
                     )
 
     # complement dict with lr pointers

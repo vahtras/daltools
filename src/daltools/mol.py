@@ -1,5 +1,4 @@
 """Extract molecular info from Dalton molecule file"""
-from __future__ import print_function
 
 SPD = ('s', 'p', 'd', 'f', 'g', 'h', 'i')
 
@@ -9,8 +8,8 @@ def readin(inputfile):
 #
 # Read inputfile into list lines
 #
-    molinp = open(inputfile, 'r')
-    lines = molinp.readlines()
+    with open(inputfile, 'r') as molinp:
+        lines = molinp.readlines()
 #
 # Check if input format is INTGRL, remove aSPD lines before that
 #
@@ -97,11 +96,11 @@ def printbasis(molecule):
 
     retstr = ""
     for i, atom in enumerate(molecule, start=1):
-        retstr += ("Atom type %d charge %f\n" % (i, atom['charge']))
+        retstr += f"Atom type {i:d} charge {atom['charge']:f}\n"
         for at in range(len(atom['label'])):
             retstr += f"center {at+1} {atom['center'][at]}\n"
         for _l in range(len(atom['basis'])):
-            retstr += ("%s-functions\n" % SPD[_l])
+            retstr += f"{SPD[_l]}-functions\n"
             for block in atom['basis'][_l]:
                 prim = block['prim']
                 prim = block['prim']
@@ -177,9 +176,7 @@ def occupied_per_atom(molecule):
                 elif _l == 1:
                     nocclist[a].extend(range(offset, offset+3))
             elif Z <= 12:  # Na-Mg 1s2s2p3s
-                if _l == 0: 
-                    nocclist[a].extend(range(offset, offset+3))
-                elif _l == 1:
+                if _l == 0 or _l == 1:
                     nocclist[a].extend(range(offset, offset+3))
             elif Z <= 18:  # Al-Ar 1s2s2p3s3p
                 if _l == 0:

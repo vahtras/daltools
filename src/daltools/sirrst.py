@@ -1,11 +1,13 @@
 #!/usr/bin/env python
-import numpy
 import sys
-from pathlib import Path
 import tarfile
 import tempfile
-from util import blocked, full
+from pathlib import Path
+
+import numpy
 from fortran_binary import FortranBinary
+from util import blocked, full
+
 from .basinfo import BasInfo
 
 
@@ -14,7 +16,8 @@ class SiriusRestart:
         self.name = name
         if tgz is not None:
             tmp = Path(tempfile.mkdtemp())
-            tarfile.open(tgz, "r:gz").extractall(path=tmp, filter='fully_trusted')
+            with tarfile.open(tgz, "r:gz") as archive:
+                archive.extractall(path=tmp, filter='fully_trusted')
             self.name = tmp/"SIRIUS.RST"
         self.basinfo = BasInfo(self.name)
         self._cmo = None

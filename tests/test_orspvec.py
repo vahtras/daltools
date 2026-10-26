@@ -5,6 +5,7 @@ from daltools import rspvec, sirifc
 
 from . import tmpdir
 
+
 class TestOpenRspVec:
 
     def setup_method(self):

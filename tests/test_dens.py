@@ -1,7 +1,7 @@
 import numpy as np
+from util import full
 
 from daltools import dens
-from util import full
 
 from . import tmpdir
 
@@ -22,7 +22,7 @@ class TestDens:
             ]
         )
 
-        di, da = dens.h1diag(1, 1, filename=self.tmpdir/"AOONEINT")
+        di, _da = dens.h1diag(1, 1, filename=self.tmpdir/"AOONEINT")
         np.testing.assert_almost_equal(di, diref)
 
     def test_Dab(self):

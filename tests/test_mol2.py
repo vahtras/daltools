@@ -1,8 +1,9 @@
-import unittest.mock as mock
+from unittest import mock
 
 from pytest import approx
 
 from daltools import mol
+
 from . import tmpdir
 
 

@@ -1,6 +1,7 @@
 from pytest import approx
 
 from daltools.lr import LR
+
 from . import tmpdir
 
 
