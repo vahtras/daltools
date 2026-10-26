@@ -1,8 +1,8 @@
 import numpy.testing as npt
 from pytest import approx
 
-from daltools.rspvec import read
 from daltools.lr import LR
+from daltools.rspvec import read
 
 from . import tmpdir
 

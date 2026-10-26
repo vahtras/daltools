@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 """Quadratic response module"""
 
-from pathlib import Path
 import sys
-from .sirifc import sirifc
+from pathlib import Path
+
 from .dens import ifc as dens_ifc
+from .one import read as one_read
 from .prop import read as prop_read
 from .rspvec import read as rspvec_read
 from .rspvec import tomat as rspvec_tomat
-from .one import read as one_read
+from .sirifc import sirifc
 
 
 def QR(A, B, C, wb=0.0, wc=0.0, tmpdir="/tmp", **kwargs):
@@ -124,7 +125,7 @@ def main():
     )
     args = parser.parse_args()
 
-    print("%12.5g" % QR(args.A, args.B, args.C, tmpdir=args.tmpdir))
+    print(f"{QR(args.A, args.B, args.C, tmpdir=args.tmpdir):12.5g}")
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -3,9 +3,10 @@
 Module for reading data from Dalton one-electron integral file AOONEINT
 """
 import struct
+
 import numpy as np
-from util import full, blocked
 from fortran_binary import FortranBinary
+from util import blocked, full
 
 
 def readhead(filename="AOONEINT"):
@@ -232,9 +233,9 @@ def main():
         print("Header on AOONEINT")
         for k in head:
             if isinstance(head[k], float):
-                print("%s %10.5f" % (k, head[k]))
+                print(f"{k} {head[k]:10.5f}")
             else:
-                print("%s %s" % (k, head[k]))
+                print(f"{k} {head[k]}")
 
     if args.isordk:
         isordk = readisordk(args.aooneint)
@@ -242,7 +243,7 @@ def main():
         chrn = isordk["chrn"]
         cooo = isordk["cooo"]
         mxcent = len(chrn)
-        print("nucdep=%i" % n + " mxcent=%i" % mxcent)
+        print(f"nucdep={n:d} mxcent={mxcent:d}")
         print(full.init(chrn)[:n])
         print(full.init(cooo).reshape((3, mxcent))[:, :n])
 
@@ -250,7 +251,7 @@ def main():
         scfinp = readscfinp(args.aooneint)
         for k in scfinp:
             if isinstance(scfinp[k], float) and k != "dummy":
-                print("%s%10.6f" % (k, scfinp[k]))
+                print(f"{k}{scfinp[k]:10.6f}")
             else:
                 print(k + " " + str(scfinp[k]))
 
@@ -262,7 +263,7 @@ def main():
         else:
             S = s1
         if args.verbose:
-            print("%s %s" % (args.label, str(S)))
+            print(f"{args.label} {S!s}")
         if args.savetxt:
             np.savetxt(args.savetxt, S)
 

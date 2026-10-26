@@ -1,10 +1,11 @@
-import unittest.mock as mock
 import sys
+from unittest import mock
 
 import numpy as np
 from pytest import approx, raises
 
 from daltools import one
+
 from . import tmpdir
 
 
@@ -303,7 +304,7 @@ OVERLAP
             one.readhead(self.aoproper)
 
     def test_wrong_integer_format(self):
-        class Dummy(object):
+        class Dummy:
             reclen = 7
 
             def __len__(self):

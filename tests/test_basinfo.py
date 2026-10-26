@@ -5,8 +5,8 @@ from unittest import mock
 import numpy
 import pytest
 
-from daltools.basinfo import BasInfo, main
 from daltools import basinfo
+from daltools.basinfo import BasInfo, main
 
 from . import tmpdir
 

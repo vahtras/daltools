@@ -1,8 +1,10 @@
 import sys
+
 import numpy
 import numpy.testing as npt
-from daltools.sirrst import SiriusRestart, main
 from util.blocked import BlockDiagonalMatrix
+
+from daltools.sirrst import SiriusRestart, main
 
 from . import tmpdir
 
@@ -56,7 +58,7 @@ class TestSirRst:
 
     def test_hf_S_symmetry(self):
         sirius_restart = SiriusRestart(self.suppdir/"hf_S.SIRIUS.RST")
-        sirius_restart.cmo
+        assert sirius_restart.cmo is not None
 
     def test_main(self, capsys):
         sys.argv[1:] = [str(self.suppdir/"SIRIUS.RST")]

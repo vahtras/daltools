@@ -7,6 +7,7 @@ from daltools import one
 
 from . import tmpdir
 
+
 class TestOne:
 
     def setup_method(self):

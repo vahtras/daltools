@@ -1,11 +1,12 @@
 import sys
 import unittest
-import unittest.mock as mock
+from unittest import mock
 
 import numpy as np
 from util import full
 
 from daltools import prop
+
 from . import tmpdir
 
 

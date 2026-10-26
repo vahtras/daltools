@@ -1,9 +1,9 @@
-from util import full
-
 import numpy as np
 from pytest import approx, raises
+from util import full
 
 from daltools import sirifc
+
 from . import tmpdir
 
 

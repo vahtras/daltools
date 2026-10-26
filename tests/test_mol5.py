@@ -2,6 +2,7 @@
 from pytest import raises
 
 from daltools import mol
+
 from . import tmpdir
 
 

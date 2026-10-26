@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """Module for reading SIRIUS interface file (SIRIFC)"""
 import numpy
-from util import blocked, full
 from fortran_binary import FortranBinary
+from util import blocked, full
 
 
 class LabelNotFound(Exception):
@@ -34,7 +34,7 @@ class SirIfc:
 
         if not self.file.find(self.ifclabel):
             raise RuntimeError(
-                "Label %s not found on %s" % (self.ifclabel, name)
+                f"Label {self.ifclabel} not found on {name}"
             )
 
         rec = next(self.file)
@@ -82,7 +82,6 @@ class SirIfc:
         self.nas3 = numpy.array(self.file.readbuf(8, self.INT))
 
         self.file.close()
-        return
 
     @property
     def cmo(self):
@@ -215,41 +214,41 @@ class SirIfc:
 
     def __str__(self):
         retstr = ""
-        retstr += "Nuclear Potential Energy: %12.6f\n" % self.potnuc
-        retstr += "Electronic energy       : %12.6f\n" % self.emy
-        retstr += "Active energy           : %12.6f\n" % self.eactive
-        retstr += "MCSCF energy            : %12.6f\n" % self.emcscf
-        retstr += "State                   : %d\n" % self.istate
-        retstr += "Spin                    : %d\n" % self.ispin
-        retstr += "Active electrons        : %d\n" % self.nactel
-        retstr += "Symmetry                : %d\n" % self.lsym
-        retstr += "NISHT                   : %d\n" % self.nisht
-        retstr += "NASHT                   : %d\n" % self.nasht
-        retstr += "NOCCT                   : %d\n" % self.nocct
-        retstr += "NORBT                   : %d\n" % self.norbt
-        retstr += "NBAST                   : %d\n" % self.nbast
-        retstr += "NCONF                   : %d\n" % self.nconf
-        retstr += "NWOPT                   : %d\n" % self.nwopt
-        retstr += "NWOPH                   : %d\n" % self.nwoph
-        retstr += "NCDETS                  : %d\n" % self.ncdets
-        retstr += "NCMOT                   : %d\n" % self.ncmot
-        retstr += "NNASHX                  : %d\n" % self.nnashx
-        retstr += "NNASHY                  : %d\n" % self.nnashy
-        retstr += "NNORBT                  : %d\n" % self.nnorbt
-        retstr += "N2ORBT                  : %d\n" % self.n2orbt
-        retstr += "NSYM                    : %d\n" % self.nsym
+        retstr += f"Nuclear Potential Energy: {self.potnuc:12.6f}\n"
+        retstr += f"Electronic energy       : {self.emy:12.6f}\n"
+        retstr += f"Active energy           : {self.eactive:12.6f}\n"
+        retstr += f"MCSCF energy            : {self.emcscf:12.6f}\n"
+        retstr += f"State                   : {self.istate:d}\n"
+        retstr += f"Spin                    : {self.ispin:d}\n"
+        retstr += f"Active electrons        : {self.nactel:d}\n"
+        retstr += f"Symmetry                : {self.lsym:d}\n"
+        retstr += f"NISHT                   : {self.nisht:d}\n"
+        retstr += f"NASHT                   : {self.nasht:d}\n"
+        retstr += f"NOCCT                   : {self.nocct:d}\n"
+        retstr += f"NORBT                   : {self.norbt:d}\n"
+        retstr += f"NBAST                   : {self.nbast:d}\n"
+        retstr += f"NCONF                   : {self.nconf:d}\n"
+        retstr += f"NWOPT                   : {self.nwopt:d}\n"
+        retstr += f"NWOPH                   : {self.nwoph:d}\n"
+        retstr += f"NCDETS                  : {self.ncdets:d}\n"
+        retstr += f"NCMOT                   : {self.ncmot:d}\n"
+        retstr += f"NNASHX                  : {self.nnashx:d}\n"
+        retstr += f"NNASHY                  : {self.nnashy:d}\n"
+        retstr += f"NNORBT                  : {self.nnorbt:d}\n"
+        retstr += f"N2ORBT                  : {self.n2orbt:d}\n"
+        retstr += f"NSYM                    : {self.nsym:d}\n"
         retstr += "MULD2H:\n"
         for i in range(8):
             retstr += "   "
             for j in range(8):
-                retstr += " %d" % self.muld2h[i, j]
+                retstr += f" {self.muld2h[i, j]:d}"
             retstr += "\n"
 
         def strvec(lab, vec):
             """ String representation of vector"""
             locstr = lab + ":"
             for i in range(8):
-                locstr += " %d" % vec[i]
+                locstr += f" {vec[i]:d}"
             return locstr + "\n"
 
         retstr += strvec("NRHF", self.nrhf)
@@ -258,11 +257,11 @@ class SirIfc:
         retstr += strvec("NASH", self.nash)
         retstr += strvec("NORB", self.norb)
         retstr += strvec("NBAS", self.nbas)
-        retstr += "NELMN1                  : %d\n" % self.nelmn1
-        retstr += "NELMX1                  : %d\n" % self.nelmx1
-        retstr += "NELMN3                  : %d\n" % self.nelmn3
-        retstr += "NELMX3                  : %d\n" % self.nelmx3
-        retstr += "MCTYPE                  : %d\n" % self.mctype
+        retstr += f"NELMN1                  : {self.nelmn1:d}\n"
+        retstr += f"NELMX1                  : {self.nelmx1:d}\n"
+        retstr += f"NELMN3                  : {self.nelmn3:d}\n"
+        retstr += f"NELMX3                  : {self.nelmx3:d}\n"
+        retstr += f"MCTYPE                  : {self.mctype:d}\n"
         retstr += strvec("NAS1", self.nas1)
         retstr += strvec("NAS2", self.nas2)
         retstr += strvec("NAS3", self.nas3)

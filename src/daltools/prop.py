@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 """Module for reading data fro property integral file AOPROPER"""
+import math
 import pathlib
 import sys
-import math
+
 import numpy as np
-from util import full
 from fortran_binary import FortranBinary
-from . import one, sirifc, dens, rspvec
+from util import full
+
+from . import dens, one, rspvec, sirifc
 
 
 def read(*args, **kwargs):
@@ -34,7 +36,7 @@ def read(*args, **kwargs):
             rec = next(AOPROPER)
             buffer_ = rec.read(len(rec) // 8, "d")
             if symtype == b"SQUARE  ":
-                n = int(round(math.sqrt(len(buffer_))))
+                n = round(math.sqrt(len(buffer_)))
                 mat[label] = full.init(buffer_).reshape((n, n))
             else:
                 mat[label] = np.array(buffer_).view(full.triangular)
