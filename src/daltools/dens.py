@@ -3,9 +3,9 @@
 Utility routines to generate density matrices
 """
 from math import sqrt
-import numpy as np
 
-from util import full, blocked
+import numpy as np
+from util import blocked, full
 
 from . import one, sirifc
 from .linalg import GramSchmidt
@@ -35,7 +35,7 @@ def cmo(F, S, filename="AOONEINT"):
     respect to eigenvalue
     """
     nbast = F.shape[0]
-    e, V = F.eigvec(S)
+    _e, V = F.eigvec(S)
     C = full.matrix((nbast, nbast))
     N2 = (V.T@S@V).diagonal()
     for i in range(nbast):
@@ -49,8 +49,6 @@ def cmo(F, S, filename="AOONEINT"):
     #
     GS = GramSchmidt(S)
     C = GS.normalize(C)
-    #
-    #
     return C
 
 

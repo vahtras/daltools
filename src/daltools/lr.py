@@ -3,10 +3,10 @@
 Linear response module
 """
 
-import sys
 import pathlib
+import sys
 
-from . import prop, sirifc, dens, rspvec, one
+from . import dens, one, prop, rspvec, sirifc
 
 
 class LinearResponseReader:
@@ -135,7 +135,7 @@ def main():
     )
     args = parser.parse_args()
 
-    print("{:.6f}".format(LR(args.A, args.B, tmpdir=args.tmpdir)))
+    print(f"{LR(args.A, args.B, tmpdir=args.tmpdir):.6f}")
 
 
 if __name__ == "__main__":  # pragma no cover

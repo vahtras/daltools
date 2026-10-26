@@ -4,6 +4,7 @@
         """
 
 import sys
+
 import numpy
 from fortran_binary import FortranBinary
 
